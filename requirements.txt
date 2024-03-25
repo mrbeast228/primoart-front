@@ -20,3 +20,6 @@ blinker==1.6.2
 
 # flask_mysqldb
 # psycopg2-binary
+
+# PrimoArd deps
+Font-Awesome-Flask==0.1.4
