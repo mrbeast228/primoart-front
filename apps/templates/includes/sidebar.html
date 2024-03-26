@@ -47,7 +47,7 @@
               <li class="nav-item {% if 'sandbox-' in segment %} active {% endif %}">
                 <span
                   class="nav-link  collapsed  d-flex justify-content-between align-items-center"
-                  data-bs-toggle="collapse" data-bs-target="#submenu-app">
+                  data-bs-toggle="collapse" data-bs-target="#submenu-sandbox">
                   <span>
                   <span class="sidebar-icon">
                     <i>{{font_awesome.render_icon("fas fa-gamepad")}}</i>
@@ -60,16 +60,16 @@
                 </span>
 
                 <div class="multi-level collapse {% if 'sandbox-' in segment %} show {% endif %}"
-                  role="list" id="submenu-app" aria-expanded="false">
+                  role="list" id="submenu-sandbox" aria-expanded="false">
                   <ul class="flex-column nav">
                     <li class="nav-item {% if 'sandbox-main-dashboard' in segment %} active {% endif %}">
                       <a class="nav-link" href="/sandbox-main-dashboard.html">
                         <span class="sidebar-text">Основной дашборд</span>
                       </a>
                     </li>
-                    <li class="nav-item {% if 'sandbox-transactions' in segment %} active {% endif %}">
-                      <a class="nav-link" href="/sandbox-transactions.html">
-                        <span class="sidebar-text">SLA</span>
+                    <li class="nav-item {% if 'sandbox-transaction-step-run' in segment %} active {% endif %}">
+                      <a class="nav-link" href="/sandbox-step-run.html">
+                        <span class="sidebar-text">Запуск транзакции</span>
                       </a>
                     </li>
                     <li class="nav-item {% if 'sandbox-transactions' in segment %} active {% endif %}">
