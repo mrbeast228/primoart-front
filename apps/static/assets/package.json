@@ -34,6 +34,7 @@
         "chart.js": "^4.4.2",
         "chartist": "^0.11.4",
         "chartist-plugin-tooltips": "^0.0.17",
+        "chartjs-chart-matrix": "^2.0.1",
         "datatables.net-bs5": "^2.0.3",
         "datatables.net-dt": "^2.0.3",
         "jquery": "^3.7.1",

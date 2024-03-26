@@ -17,9 +17,27 @@ function rand(min, max) {
   return min + (_seed / 233280) * (max - min);
 }
 
-transactioncharts = {
+function generateData() {
+  const adapter = new helpers._adapters._date();
+  const data = [];
+  let dt = adapter.startOf(new Date(), 'month');
+  const end = adapter.endOf(dt, 'month');
+  while (dt <= end) {
+    const iso = adapter.format(dt, 'yyyy-MM-dd');
+    data.push({
+      x: Utils.isoDayOfWeek(dt),
+      y: iso,
+      d: iso,
+      v: Math.random() * 50
+    });
+    dt = new Date(dt.setDate(dt.getDate() + 1));
+  }
+  return data;
+}
 
-    initPerformanceChart: function() {
+performancechart = {
+
+    init: function() {
 
         const labels = ["18.03.2024", "19.03.2024", "20.03.2024", "21.03.2024", "22.03.2024", "23.03.2024", "24.03.2024", "25.03.2024"];
 
@@ -90,5 +108,42 @@ transactioncharts = {
 
         var ctx = document.getElementById("chartTransactionPerf01").getContext("2d");
         var floatingChart = new Chart(ctx, config);
+    }
+}
+
+heatmapchart = {
+
+    init: function() {
+
+        const chart = new Chart('chartheatmap01', {
+          type: 'matrix',
+          data: {
+            datasets: [{
+              label: 'Basic matrix',
+              data: [{x: 1, y: 1}, {x: 2, y: 1}, {x: 1, y: 2}, {x: 2, y: 2}],
+              borderWidth: 1,
+              borderColor: 'rgba(0,0,0,0.5)',
+              backgroundColor: 'rgba(200,200,0,0.3)',
+              width: ({chart}) => (chart.chartArea || {}).width / 2 - 1,
+              height: ({chart}) => (chart.chartArea || {}).height / 2 - 1,
+            }],
+          },
+          options: {
+            scales: {
+              x: {
+                display: false,
+                min: 0.5,
+                max: 2.5,
+                offset: false
+              },
+              y: {
+                display: false,
+                min: 0.5,
+                max: 2.5
+              }
+            }
+          }
+        });
+
     }
 }

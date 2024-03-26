@@ -138,7 +138,9 @@
                 <div class="card-body">
                     <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
                     <div class="card-mid-buffer"></div>
-
+                    <div>
+                        <canvas width="100%" height="50%" id="chartheatmap01"></canvas>
+                    </div>
                 </div>
             </div>
     </div>
@@ -236,7 +238,8 @@
             }
         });
 
-        transactioncharts.initPerformanceChart();
+        performancechart.init();
+        heatmapchart.init();
     });
 </script>
 {% endblock javascripts %}
