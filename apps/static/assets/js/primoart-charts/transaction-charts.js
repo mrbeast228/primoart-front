@@ -45,18 +45,11 @@ performancechart = {
           labels: labels,
           datasets: [
             {
-              label: 'Среднее время выполнения транзакций, с',
-              data: [13.1, 15.2, 9.5, 7.8, 18.9, 3.1, 2.7, 11.4],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
-                yAxisID: 'y'
-            },
-            {
               label: 'Количество транзакций за сутки',
               data: [1285, 1175, 2357, 1245, 1624, 476, 328, 1134],
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 borderColor: 'rgb(255, 159, 64)',
-                yAxisID: 'y1'
+                yAxisID: 'y'
             },
             {
               label: 'Количество ошибок выполнения',
