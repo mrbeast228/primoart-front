@@ -12,6 +12,9 @@
     .btn-block-custom { width: 100%; }
 </style>
 
+
+<link rel="stylesheet" href="{{ config.ASSETS_ROOT }}/css/dataTables.css" />
+
 {% endblock stylesheets %}
 
 {% block content %}
@@ -117,45 +120,58 @@
 </div>
 
 <div class="row row-mid-buffer">
-    <div class="col-12 col-sm-6 col-xl-6 mb-6">
+    <div class="col-12 col-sm-8 col-xl-8 mb-8">
             <div class="card border-0 shadow">
                 <div class="card-body">
                       <h2 class="h6 text-gray-400 mb-0">Последние события</h2>
                     <div class="card-mid-buffer"></div>
-                      <div class="table-responsive">
-                          <table class="table table-centered table-nowrap mb-0 rounded">
+                      <div class="table-responsive" >
+                          <table class="table table-centered table-nowrap mb-0 rounded" id="dashboard-events">
+                              <thead>
+                                <tr>
+                                  <th data-field="datetime">Время</th>
+                                  <th data-field="severity">Критичность</th>
+                                  <th data-field="event">Событие</th>
+                                </tr>
+                              </thead>
                               <tbody>
                                   <tr class="table-danger">
                                       <td>26.03.2024 10:17:05</td>
+                                      <td>Critical</td>
                                       <td class="fw-bold d-flex align-items-center">
                                           Транзакция&nbsp<a href="#" class="text-info me-1">jolly</a> завершилась с ошибкой
                                       </td>
                                   </tr>
                                   <tr class="table-info">
                                       <td>26.03.2024 10:15:13</td>
+                                      <td>Information</td>
                                       <td class="fw-bold d-flex align-items-center">
                                           Транзакция&nbsp<a href="#" class="text-info me-1">tested</a> выполнена успешно
                                       </td>
                                   </tr>
                                   <tr class="table-info">
                                       <td>26.03.2024 09:47:28</td>
+                                      <td>Information</td>
                                       <td class="fw-bold d-flex align-items-center">
                                           Транзакция&nbsp<a href="#" class="text-info me-1">lamentable</a> выполнена успешно
                                       </td>
                                   </tr>
                                   <tr class="table-info">
                                       <td>26.03.2024 07:52:32</td>
+                                      <td>Information</td>
                                       <td class="fw-bold d-flex align-items-center">
                                           Транзакция&nbsp<a href="#" class="text-info me-1">slimy</a> выполнена успешно
                                       </td>
                                   </tr>
                                   <tr class="table-warning">
                                       <td>26.03.2024 06:16:09</td>
+                                      <td>Warning</td>
                                       <td class="fw-bold d-flex align-items-center">
                                           Транзакция&nbsp<a href="#" class="text-info me-1">clammy</a> превысила расчетное время выполнения
                                       </td>
                                   </tr>
                               </tbody>
+
                           </table>
                       </div>
                 </div>
@@ -238,7 +254,39 @@
         </div>
 </div>
 
+
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<!-- Add JQuerry Datatables -->
+<script src="{{ config.ASSETS_ROOT }}/js/dataTables.js"></script>
+
+<script>
+    $(function() {
+        console.log("Page loaded!");
+
+        $('#dashboard-events').DataTable( {
+            "language": {
+                "decimal":        "",
+                "emptyTable":     "No data available in table",
+                "info":           "_START_-_END_ из _TOTAL_ событий",
+                "infoEmpty":      "Showing 0 to 0 of 0 entries",
+                "infoFiltered":   "(filtered from _MAX_ total entries)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Показать _MENU_ событий",
+                "loadingRecords": "Loading...",
+                "processing":     "",
+                "search":         "Поиск:",
+                "zeroRecords":    "No matching records found",
+                "aria": {
+                    "orderable":  "Order by this column",
+                    "orderableReverse": "Reverse order this column"
+                }
+            }
+        });
+
+    });
+</script>
+{% endblock javascripts %}
