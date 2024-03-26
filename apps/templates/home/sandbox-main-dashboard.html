@@ -13,7 +13,7 @@
 </style>
 
 
-<link rel="stylesheet" href="{{ config.ASSETS_ROOT }}/css/dataTables.css" />
+
 
 {% endblock stylesheets %}
 
@@ -120,7 +120,31 @@
 </div>
 
 <div class="row row-mid-buffer">
-    <div class="col-12 col-sm-8 col-xl-8 mb-8">
+
+    <div class="col-12 col-sm-12 col-xl-6 mb-6">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
+                    <div class="card-mid-buffer"></div>
+
+                </div>
+            </div>
+    </div>
+
+    <div class="col-12 col-sm-12 col-xl-6 mb-6">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
+                    <div class="card-mid-buffer"></div>
+
+                </div>
+            </div>
+    </div>
+
+</div>
+
+<div class="row row-mid-buffer">
+    <div class="col-12 col-sm-12 col-xl-12 mb-12">
             <div class="card border-0 shadow">
                 <div class="card-body">
                       <h2 class="h6 text-gray-400 mb-0">Последние события</h2>
@@ -178,80 +202,6 @@
             </div>
         </div>
 
-    <div class="col-12 col-sm-6 col-xl-6 mb-6">
-            <div class="card border-0 shadow">
-                <div class="card-body">
-                    <div class="row d-block d-xl-flex align-items-center">
-                        <div class="col-12 col-xl-12 px-xl-0">
-                            <div class="d-none d-sm-block">
-                                <h2 class="h6 text-gray-400 mb-0">Состояние сервисов</h2>
-                                <span class="fw-extrabold text-success mb-2">14&nbsp; OK</span>
-                                <span>&nbsp;/&nbsp;</span>
-                                <span></span><span class="fw-extrabold text-secondary mb-2">2&nbsp; Warning</span>
-                                <span>&nbsp;/&nbsp;</span>
-                                <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
-                            </div>
-                        </div>
-                        <div class="card-mid-buffer"></div>
-                        <div class="col-12 col-xl-12 px-xl-0">
-                            <div class="d-none d-sm-block">
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">meaty</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">lamentable</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">bloody</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">nutty</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">whole</button>
-
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">decorous</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">hissing</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">kind</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">tested</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">broken</button>
-
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">parallel</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">slimy</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">untidy</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">null</button>
-                                <button class="btn btn-pill btn-outline-secondary btn-buffer" type="button">decisive</button>
-
-                                <button class="btn btn-pill btn-outline-secondary btn-buffer" type="button">clammy</button>
-                                <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">jolly</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-   <div class="col-12 col-sm-6 col-xl-3 mb-3">
-            <div class="card border-0 shadow">
-                <div class="card-body">
-                    <div class="row d-block d-xl-flex align-items-center">
-                        <div class="col-12 col-xl-12 px-xl-0">
-                            <div class="d-none d-sm-block">
-                                <h2 class="h6 text-gray-400 mb-0">Доступность роботов</h2>
-                                <span class="fw-extrabold text-success mb-2">5&nbsp; OK</span>
-                                <span>&nbsp;/&nbsp;</span>
-                                <span></span><span class="fw-extrabold text-secondary mb-2">0&nbsp; Warning</span>
-                                <span>&nbsp;/&nbsp;</span>
-                                <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
-                            </div>
-                        </div>
-                        <div class="card-mid-buffer"></div>
-                        <div class="col-12 col-xl-12 px-xl-0">
-                            <div class="d-none d-sm-block">
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Москва</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Питер</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Ярославль</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Сочи</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Волгоград</button>
-
-                                <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">ЦОД</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 </div>
 
 
@@ -259,9 +209,6 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-<!-- Add JQuerry Datatables -->
-<script src="{{ config.ASSETS_ROOT }}/js/dataTables.js"></script>
-
 <script>
     $(function() {
         console.log("Page loaded!");
