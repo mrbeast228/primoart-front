@@ -21,21 +21,21 @@
 </div>
 
 <div class="row mb-2">
-    <div class="col-7 col-xl-7 col-md-7 mb-4">
+    <div class="col-7 col-xl-7 col-md-12 mb-4">
         <div class="card border-0 shadow">
             <div class="card-body">
-                <h2 class="h6 text-gray-400 mb-0">Время выполнения этапов транзакции</h2>
+                <h2 class="h6 text-gray-400 mb-4">Время выполнения этапов транзакции</h2>
                 <div class="card-mid-buffer"></div>
                 <div>
-                    <canvas width="100%" height="30%" id="stepRunBarChart01"></canvas>
+                    <canvas width="100%" height="40%" id="stepRunBarChart01"></canvas>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-5 col-xl-5 col-md-5">
+    <div class="col-5 col-xl-5 col-md-12">
         <div class="card border-0 shadow">
             <div class="card-body">
-                <h2 class="h6 text-gray-400 mb-4">Сводная информация по выполнению</h2>
+                <h2 class="h6 text-gray-400">Сводная информация по выполнению</h2>
                 <table class="table" id="">
                     <thead class=" text-primary">
                         <tr>
@@ -46,6 +46,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <td>
+                                <span class="fw-extrabold">Локация/Робот</span>
+                            </td>
+                            <td>
+                                <span class="fw-bold mb-2">Москва, офис заместителя</span>
+                                <div class="small mt-1">
+                                    Этот робот выполняет транзакциию<br>на <span class="text-danger fw-bolder">5%</span> медленнее других
+                                </div>
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 <span class="fw-extrabold">Время выполнения</span>
