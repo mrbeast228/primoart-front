@@ -39,7 +39,7 @@ steprunfloatchart = {
 
     init: function() {
 
-        const labels = ["DNS Lookup", "Connection", "SSL Handshake", "First Byte", "Content Transfer"]
+        const labels = ["DNS Lookup", "Connection", "SSL Handshake", "First Byte", "Content Transfer", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest", "TestTestTest"]
 
         const data = {
           labels: labels,
@@ -51,6 +51,20 @@ steprunfloatchart = {
                 [0.45, 0.59],
                 [0.59, 0.81],
                 [0.81, 1.07],
+                [0.59, 0.81],
+                [0.81, 0.1],
+                [1, 2],
+                [3, 4],
+                [5, 6],
+                [7, 8],
+                [9, 10],
+                [11, 12],
+                [13, 14],
+                [0.59, 0.81],
+                [0.59, 0.81],
+                [0.59, 0.81],
+                [0.59, 0.81],
+                [0.59, 0.81],
                 [1.07, 1.18]
               ],
                 backgroundColor: [
@@ -106,13 +120,7 @@ steprunbarchart = {
           datasets: [
             {
               label: 'Время выполнения шагов транзакции, с',
-              data: [
-                [0, 0.45],
-                [0.45, 0.59],
-                [0.59, 0.81],
-                [0.81, 1.07],
-                [1.07, 1.18]
-              ],
+              data: [0.45, 0.59, 0.31, 1.07, 1.18],
                 backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(255, 159, 64, 0.2)',
@@ -138,7 +146,12 @@ steprunbarchart = {
           data: data,
           options: {
             responsive: true,
-            indexAxis: 'y',
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            },
+
             // Elements options apply to all of the options unless overridden in a dataset
             // In this case, we are setting the border of each horizontal bar to be 2px wide
             elements: {
@@ -148,7 +161,8 @@ steprunbarchart = {
             },
             plugins: {
               legend: {
-                position: 'right',
+                position: 'top',
+                display: false
               },
               title: {
                 display: false,
@@ -158,7 +172,7 @@ steprunbarchart = {
           }
         };
 
-        var ctx = document.getElementById("chartTransactionFloationg01").getContext("2d");
+        var ctx = document.getElementById("stepRunBarChart01").getContext("2d");
         var floatingChart = new Chart(ctx, config);
     }
 }
