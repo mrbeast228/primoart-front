@@ -54,7 +54,7 @@
 						</div>
 					</div>
 
-					<div class="col-3 col-xl-3 px-xl-0 offset-md-1">
+					<div class="col-2 col-xl-2 px-xl-0 offset-md-1">
 							<div class="input-group mb-2">
                                <span class="input-group-text fw-extrabold">
                                       Длительность от, с&nbsp;
@@ -99,6 +99,31 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-8 col-xl-8 col-md-12">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400">Распределение времени выполнения транзакций</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="25%" id="transactionRunBarChart01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 col-xl-4 col-md-12">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400">Статус выполнения транзакций</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="25%" id="stepRunBarChart01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -219,6 +244,8 @@
 <script>
 	$(function() {
 	    console.log("Page loaded!");
+
+	    transactionrunbarchart.init();
 	});
 </script>
 {% endblock javascripts %}

@@ -282,3 +282,68 @@ heatmapchart = {
 
     }
 }
+
+transactionrunbarchart = {
+    init: function() {
+
+        const labels = ["< 30 c", "30-60 c", "60-120 c", "120-300 c", "> 300 c"]
+
+        const data = {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Робот "Москва", количество транзакций',
+              data: [150, 400, 320, 840, 30],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgb(75, 192, 192)'
+            },
+            {
+              label: 'Робот "Волгоград", количество транзакций',
+              data: [50, 120, 40, 310, 50],
+                backgroundColor: 'rgba(255, 205, 86, 0.2)',
+                borderColor: 'rgb(255, 205, 86)'
+            }
+          ]
+        };
+
+        console.log(data);
+
+        const config = {
+          type: 'bar',
+          data: data,
+          options: {
+            responsive: true,
+            scales: {
+              x: {
+                stacked: true,
+              },
+              y: {
+                stacked: true,
+                beginAtZero: true
+              }
+            },
+
+            // Elements options apply to all of the options unless overridden in a dataset
+            // In this case, we are setting the border of each horizontal bar to be 2px wide
+            elements: {
+              bar: {
+                borderWidth: 2,
+              }
+            },
+            plugins: {
+              legend: {
+                position: 'top',
+                display: false
+              },
+              title: {
+                display: false,
+                text: ''
+              }
+            }
+          }
+        };
+
+        var ctx = document.getElementById("transactionRunBarChart01").getContext("2d");
+        var floatingChart = new Chart(ctx, config);
+    }
+}
