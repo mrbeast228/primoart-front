@@ -67,14 +67,24 @@
                         <span class="sidebar-text">Основной дашборд</span>
                       </a>
                     </li>
-                    <li class="nav-item {% if 'sandbox-transaction-step-run' in segment %} active {% endif %}">
-                      <a class="nav-link" href="/sandbox-step-run.html">
-                        <span class="sidebar-text">Запуск транзакции</span>
+                    <li class="nav-item {% if 'sandbox-services' in segment %} active {% endif %}">
+                      <a class="nav-link" href="/sandbox-services.html">
+                        <span class="sidebar-text">Сервисы</span>
+                      </a>
+                    </li>
+                    <li class="nav-item {% if 'sandbox-robots' in segment %} active {% endif %}">
+                      <a class="nav-link" href="/sandbox-robots.html">
+                        <span class="sidebar-text">Роботы</span>
                       </a>
                     </li>
                     <li class="nav-item {% if 'sandbox-transactions' in segment %} active {% endif %}">
                       <a class="nav-link" href="/sandbox-transactions.html">
                         <span class="sidebar-text">Транзакции</span>
+                      </a>
+                    </li>
+                    <li class="nav-item {% if 'sandbox-transaction-step-run' in segment %} active {% endif %}">
+                      <a class="nav-link" href="/sandbox-step-run.html">
+                        <span class="sidebar-text">(Тех) Запуск транзакции</span>
                       </a>
                     </li>
                   </ul>
