@@ -43,6 +43,147 @@
     </div>
 </div>
 
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card ">
+          <div class="card-header">
+            <h4 class="card-title"> Simple Table</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive ">
+              <table class="table tablesorter " id="">
+                <thead class=" text-primary">
+                  <tr>
+                    <th>
+                      Локация/Робот
+                    </th>
+                    <th>
+                      Шаг
+                    </th>
+                    <th>
+                      Время запуска
+                    </th>
+                    <th>
+                      Время завершения
+                    </th>
+                    <th>
+                      Длительность
+                    </th>
+                    <th>
+                      Статус выполнения
+                    </th>
+                    <th>
+                      Скриншот
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <div>
+                      <td>
+                        Москва, офис заместителя
+                      </td>
+                      <td>
+                        Step 1
+                      </td>
+                      <td>
+                        12.02.2024 17:48:00
+                      </td>
+                      <td>
+                        12.02.2024 17:48:01
+                      </td>
+                      <td>
+                        1 с
+                      </td>
+                      <td>
+                        <span class="badge badge-pill badge-success">Success</span>
+                      </td>
+                      <td class="text-center">
+                        <i>{{font_awesome.render_icon("fas fa-image")}}</i>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div>
+                      <td>
+                        Москва, офис заместителя
+                      </td>
+                      <td>
+                        Step 2
+                      </td>
+                      <td>
+                        12.02.2024 17:48:01
+                      </td>
+                      <td>
+                        12.02.2024 17:48:11
+                      </td>
+                      <td>
+                        10 с
+                      </td>
+                      <td>
+                        <span class="badge badge-pill badge-success">Success</span>
+                      </td>
+                      <td class="text-center">
+                        <i>{{font_awesome.render_icon("fas fa-image")}}</i>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div>
+                      <td>
+                        Москва, офис заместителя
+                      </td>
+                      <td>
+                        Step 3
+                      </td>
+                      <td>
+                        12.02.2024 17:48:11
+                      </td>
+                      <td>
+                        12.02.2024 17:48:20
+                      </td>
+                      <td>
+                        9 с
+                      </td>
+                      <td>
+                        <span class="badge badge-pill badge-danger">Fail</span>
+                      </td>
+                      <td class="text-center">
+                        <i>{{font_awesome.render_icon("fas fa-image")}}</i>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div>
+                      <td>
+                        Москва, офис заместителя
+                      </td>
+                      <td>
+                        Step 4
+                      </td>
+                      <td>
+
+                      </td>
+                      <td>
+
+                      </td>
+                      <td>
+
+                      </td>
+                      <td>
+                        <span class="badge badge-pill badge-secondary">Not executed</span>
+                      </td>
+
+                    </div>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
@@ -51,7 +192,7 @@
     $(function() {
         console.log("Page loaded!");
 
-        steprunchart.init();
+        steprunfloatchart.init();
     });
 </script>
 {% endblock javascripts %}
