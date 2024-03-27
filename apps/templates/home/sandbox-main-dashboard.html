@@ -275,38 +275,13 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-<script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js"></script>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
 
 
 <script>
     $(function() {
         console.log("Page loaded!");
 
-        $('#dashboard-events').DataTable( {
-            "language": {
-                "decimal":        "",
-                "emptyTable":     "No data available in table",
-                "info":           "_START_-_END_ из _TOTAL_ событий",
-                "infoEmpty":      "Showing 0 to 0 of 0 entries",
-                "infoFiltered":   "(filtered from _MAX_ total entries)",
-                "infoPostFix":    "",
-                "thousands":      ",",
-                "lengthMenu":     "Показать _MENU_ событий",
-                "loadingRecords": "Loading...",
-                "processing":     "",
-                "search":         "Поиск:",
-                "zeroRecords":    "No matching records found",
-                "aria": {
-                    "orderable":  "Order by this column",
-                    "orderableReverse": "Reverse order this column"
-                }
-            }
-        });
+        evenlisttable.init();
 
         performancechart.init();
         heatmapchart.init();
