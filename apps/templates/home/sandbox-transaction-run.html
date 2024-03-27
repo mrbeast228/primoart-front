@@ -119,7 +119,7 @@
                 <h2 class="h6 text-gray-400">Статус выполнения транзакций</h2>
                 <div class="card-mid-buffer"></div>
                 <div>
-                    <canvas width="100%" height="25%" id="stepRunBarChart01"></canvas>
+                    <canvas width="100%" height="55%" id="transactionRunHorizontalChart01"></canvas>
                 </div>
             </div>
         </div>
@@ -246,6 +246,7 @@
 	    console.log("Page loaded!");
 
 	    transactionrunbarchart.init();
+	    transactionrunhorizontalchart.init();
 	});
 </script>
 {% endblock javascripts %}

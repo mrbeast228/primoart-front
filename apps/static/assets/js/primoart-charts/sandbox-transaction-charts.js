@@ -333,7 +333,7 @@ transactionrunbarchart = {
             plugins: {
               legend: {
                 position: 'top',
-                display: false
+                display: true
               },
               title: {
                 display: false,
@@ -344,6 +344,101 @@ transactionrunbarchart = {
         };
 
         var ctx = document.getElementById("transactionRunBarChart01").getContext("2d");
+        var floatingChart = new Chart(ctx, config);
+    }
+}
+
+transactionrundonutchart = {
+    init: function() {
+
+        const labels = ["< 30 c", "30-60 c", "60-120 c", "120-300 c", "> 300 c"]
+
+        const data = {
+          labels: ['OK', 'Warning', 'Failed'],
+          datasets: [
+            {
+              label: 'Dataset 1',
+              data: [1578, 315, 17],
+              backgroundColor: ['red', 'yellow', 'green'],
+            }
+          ]
+        };
+
+        console.log(data);
+
+        const config = {
+          type: 'doughnut',
+          data: data,
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Chart.js Doughnut Chart'
+              }
+            }
+          },
+        };
+
+        var ctx = document.getElementById("transactionRunDonutChart01").getContext("2d");
+        var floatingChart = new Chart(ctx, config);
+    }
+}
+
+transactionrunhorizontalchart = {
+    init: function() {
+
+        const labels = ["OK", "Failed"]
+
+        const data = {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Робот "Москва"',
+              data: [1578, 315],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgb(75, 192, 192)'
+            },
+            {
+              label: 'Робот "Волгоград"',
+              data: [215, 56],
+                backgroundColor: 'rgba(255, 205, 86, 0.2)',
+                borderColor: 'rgb(255, 205, 86)'
+            }
+          ]
+        };
+
+        console.log(data);
+
+        const config = {
+          type: 'bar',
+          data: data,
+          options: {
+            indexAxis: 'y',
+            // Elements options apply to all of the options unless overridden in a dataset
+            // In this case, we are setting the border of each horizontal bar to be 2px wide
+            elements: {
+              bar: {
+                borderWidth: 2,
+              }
+            },
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: false,
+                text: ''
+              }
+            }
+          },
+        };
+
+        var ctx = document.getElementById("transactionRunHorizontalChart01").getContext("2d");
         var floatingChart = new Chart(ctx, config);
     }
 }
