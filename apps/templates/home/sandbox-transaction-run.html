@@ -1,10 +1,22 @@
-{% extends "layouts/base.html" %} {% block title %} UI Buttons {% endblock %} {% block stylesheets %} {% endblock stylesheets %} {% block content %}
+{% extends "layouts/base.html" %}
+{% block title %} UI Buttons {% endblock %}
 
+{% block stylesheets %}
+<style>
+    .card-fill-all-space {
+        #border: 1px solid #444;
+        height: 100%;
+        width: 100%;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
 <div class="py-4">
 	<nav aria-label="breadcrumb" class="d-none d-md-inline-block">
 		<ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
 			<li class="breadcrumb-item">
-				<a href="#">
+				<a href="./sandbox-main-dashboard.html">
 					<svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 						<path
 							stroke-linecap="round"
@@ -102,7 +114,7 @@
 
 <div class="row mb-4">
     <div class="col-8 col-xl-8 col-md-12">
-        <div class="card border-0 shadow">
+        <div class="card border-0 shadow card-fill-all-space">
             <div class="card-body">
                 <h2 class="h6 text-gray-400">Распределение времени выполнения транзакций</h2>
                 <div class="card-mid-buffer"></div>
@@ -113,7 +125,7 @@
         </div>
     </div>
     <div class="col-4 col-xl-4 col-md-12">
-        <div class="card border-0 shadow">
+        <div class="card border-0 shadow card-fill-all-space">
             <div class="card-body">
                 <h2 class="h6 text-gray-400">Статус выполнения транзакций</h2>
                 <div class="card-mid-buffer"></div>
@@ -137,37 +149,31 @@
 						<thead class="text-primary">
 							<tr>
 								<th>
+									Время выполнения
+								</th>
+								<th>
 									Робот/Локация
 								</th>
 								<th>
 									Транзакция
 								</th>
 								<th>
-									Время запуска
-								</th>
-								<th>
-									Время завершения
-								</th>
-								<th>
-									Статус выполнения
+									Статус
 								</th>
 								<th>
 									# Шагов успешно выполненных
 								</th>
 								<th>
-									Длительность выполнения
-								</th>
-								<th>
-									Лог
-								</th>
-								<th>
-									Шаги выполнения
+									Длительность
 								</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+							<tr class="table-warning">
 								<div>
+									<td >
+										<a href="./sandbox-step-run.html" class="text-info me-1">12.02.2024 17:48 - 12.02.2024 17:50</a>
+									</td>
 									<td>
 										Москва, офис заместителя
 									</td>
@@ -175,13 +181,7 @@
 										TR-010
 									</td>
 									<td>
-										12.02.2024 17:48
-									</td>
-									<td>
-										12.02.2024 17:50
-									</td>
-									<td>
-										<div class="btn btn-secondary">Warning</div>
+										Warning
 									</td>
 									<td>
 										3/4
@@ -189,16 +189,13 @@
 									<td>
 										120 c
 									</td>
-									<td class="text-center">
-										<i>{{font_awesome.render_icon("fas fa-file-text")}}</i>
-									</td>
-									<td class="text-center">
-										<i>{{font_awesome.render_icon("fas fa-angle-down")}}</i>
-									</td>
 								</div>
 							</tr>
-							<tr>
+							<tr class="table-success">
 								<div>
+									<td>
+										<a href="#" class="text-info me-1">12.02.2024 18:30 - 12.02.2024 18:35</a>
+									</td>
 									<td>
 										Питер, офис помощника
 									</td>
@@ -206,25 +203,13 @@
 										TR-010
 									</td>
 									<td>
-										12.02.2024 18:30
-									</td>
-									<td>
-										12.02.2024 18:35
-									</td>
-									<td>
-										<span class="badge badge-pill badge-success">success</span>
+										Success
 									</td>
 									<td>
 										4/4
 									</td>
 									<td>
 										140 c
-									</td>
-									<td class="text-center">
-										<i>{{font_awesome.render_icon("fas fa-file-text")}}</i>
-									</td>
-									<td class="text-center">
-										<i>{{font_awesome.render_icon("fas fa-angle-down")}}</i>
 									</td>
 								</div>
 							</tr>
