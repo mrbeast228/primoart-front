@@ -208,6 +208,33 @@
 
 </div>
 
+<div class="row mb-5">
+    <div class="col-12 col-sm-12 col-xl-6">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к ошибкам выполнения</h2>
+                    <div class="card-mid-buffer"></div>
+                    <div>
+                        <canvas width="100%" height="50%" id="transactionTimeVsErrsChart01"></canvas>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="col-12 col-sm-12 col-xl-6">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-0">Распределение транзакций по статусу выполнения</h2>
+                    <div class="card-mid-buffer"></div>
+                    <div>
+                        <canvas width="100%" height="50%" id="transactionScatterChart01"></canvas>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+</div>
+
 <div class="row row-mid-buffer">
     <div class="col-12 col-sm-12 col-xl-12 mb-12">
             <div class="card border-0 shadow">
@@ -285,6 +312,9 @@
 
         performancechart.init();
         heatmapchart.init();
+
+        servicetimevserrchart.init();
+        scatterstatuschart.init();
 
     });
 </script>

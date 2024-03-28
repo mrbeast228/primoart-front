@@ -283,6 +283,77 @@ heatmapchart = {
     }
 }
 
+servicetimevserrchart = {
+    init: function() {
+
+        const labels = ["meaty", "lamentable", "tested", "clammy", "jolly"]
+
+        const data = {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Среднее время выполнения транзакций, с',
+              data: [150, 400, 320, 840, 500],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgb(75, 192, 192)',
+                order: 1,
+                yAxisID: 'y'
+            },
+            {
+              label: 'Процент ошибок выполнения',
+              data: [12, 24, 37, 5, 30],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgb(75, 192, 192)',
+                type: 'line',
+                order: 0,
+                yAxisID: 'y1'
+            }
+          ]
+        };
+
+        console.log(data);
+
+        const config = {
+          type: 'bar',
+          data: data,
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+                display: true
+              },
+              title: {
+                display: false,
+                text: ''
+              }
+            },
+            scales: {
+              y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+              },
+              y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                min: 0,
+                max: 100,
+                // grid line settings
+                grid: {
+                  drawOnChartArea: false, // only want the grid lines for one axis to show up
+                },
+              }
+            }
+          }
+        };
+
+        var ctx = document.getElementById("transactionTimeVsErrsChart01").getContext("2d");
+        var floatingChart = new Chart(ctx, config);
+    }
+}
+
 transactionrunbarchart = {
     init: function() {
 
@@ -440,5 +511,65 @@ transactionrunhorizontalchart = {
 
         var ctx = document.getElementById("transactionRunHorizontalChart01").getContext("2d");
         var floatingChart = new Chart(ctx, config);
+    }
+}
+
+scatterstatuschart = {
+    init: function() {
+
+        const data = {
+          datasets: [
+          {
+            label: 'OK',
+            data: [{
+              x: -10,
+              y: 0
+            }, {
+              x: 0,
+              y: 10
+            }, {
+              x: 10,
+              y: 5
+            }, {
+              x: 0.5,
+              y: 5.5
+            }],
+            backgroundColor: 'rgb(255, 99, 132)'
+          },
+          {
+            label: 'Failed',
+            data: [{
+              x: -10,
+              y: 0
+            }, {
+              x: 0,
+              y: 10
+            }, {
+              x: 10,
+              y: 5
+            }, {
+              x: 0.5,
+              y: 5.5
+            }],
+            backgroundColor: 'rgb(235, 80, 100)'
+          }
+        ],
+        };
+
+        const config = {
+          type: 'scatter',
+          data: data,
+          options: {
+            scales: {
+              x: {
+                type: 'linear',
+                position: 'bottom'
+              }
+            }
+          }
+        };
+
+        var ctx = document.getElementById("transactionScatterChart01").getContext("2d");
+        var scatterChart = new Chart(ctx, config);
     }
 }
