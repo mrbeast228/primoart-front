@@ -539,19 +539,19 @@ scatterstatuschart = {
           {
             label: 'Failed',
             data: [{
-              x: -10,
-              y: 0
+              x: -15,
+              y: 2
             }, {
-              x: 0,
-              y: 10
+              x: 3,
+              y: 17
             }, {
-              x: 10,
-              y: 5
+              x: 27,
+              y: 1
             }, {
-              x: 0.5,
-              y: 5.5
+              x: 16,
+              y: 4
             }],
-            backgroundColor: 'rgb(235, 80, 100)'
+            backgroundColor: 'rgb(75, 140, 60)'
           }
         ],
         };
