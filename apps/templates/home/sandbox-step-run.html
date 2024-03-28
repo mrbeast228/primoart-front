@@ -1,6 +1,15 @@
 {% extends "layouts/base.html" %}
 {% block title %} UI Buttons {% endblock %}
 {% block stylesheets %}
+<style>
+    .card-fill-all-space {
+    #border: 1px solid #444;
+    height: 100%;
+    width: 100%;
+}
+</style>
+
+
 {% endblock stylesheets %}
 {% block content %}
 <div class="py-4">
@@ -20,9 +29,10 @@
     </nav>
 </div>
 
-<div class="row mb-2">
-    <div class="col-7 col-xl-7 col-md-12 mb-4">
-        <div class="card border-0 shadow">
+<div class="container-flex">
+<div class="row equal mb-2">
+    <div class="col-7 col-xl-7 col-md-12 mb-2">
+        <div class="card border-0 shadow card-fill-all-space">
             <div class="card-body">
                 <h2 class="h6 text-gray-400 mb-4">Время выполнения этапов транзакции</h2>
                 <div class="card-mid-buffer"></div>
@@ -32,8 +42,8 @@
             </div>
         </div>
     </div>
-    <div class="col-5 col-xl-5 col-md-12">
-        <div class="card border-0 shadow">
+    <div class="col-5 col-xl-5 col-md-12 mb-2">
+        <div class="card border-0 shadow card-fill-all-space">
             <div class="card-body">
                 <h2 class="h6 text-gray-400">Сводная информация по выполнению</h2>
                 <table class="table" id="">
@@ -102,12 +112,30 @@
                                 <span class="fw-bold text-text-primary mb-2">12.02.2024 17:48:25</span>
                             </td>
                         </tr>
+                       <tr>
+                            <td>
+                                <span class="fw-extrabold">Лог</span>
+                            </td>
+                            <td>
+                                <i>{{font_awesome.render_icon("fas fa-lg fa-file-text")}}</i>
+                            </td>
+                        </tr>
+                       <tr>
+                            <td>
+                                <span class="fw-extrabold">Скриншот</span>
+                            </td>
+                            <td>
+                                <i>{{font_awesome.render_icon("fas fa-lg fa-image")}}</i>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card ">
@@ -134,9 +162,6 @@
                                 <th>
                                     Статус выполнения
                                 </th>
-                                <th>
-                                    Скриншот
-                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -158,10 +183,7 @@
                                         1 с
                                     </td>
                                     <td>
-                                        <span class="badge badge-pill badge-success">Success</span>
-                                    </td>
-                                    <td class="text-center">
-                                        <i>{{font_awesome.render_icon("fas fa-image")}}</i>
+                                        Success
                                     </td>
                                 </div>
                             </tr>
@@ -183,10 +205,7 @@
                                         10 с
                                     </td>
                                     <td>
-                                        <span class="badge badge-pill badge-success">Success</span>
-                                    </td>
-                                    <td class="text-center">
-                                        <i>{{font_awesome.render_icon("fas fa-image")}}</i>
+                                        Success
                                     </td>
                                 </div>
                             </tr>
@@ -208,10 +227,7 @@
                                         9 с
                                     </td>
                                     <td>
-                                        <span class="badge badge-pill badge-danger">Fail</span>
-                                    </td>
-                                    <td class="text-center">
-                                        <i>{{font_awesome.render_icon("fas fa-image")}}</i>
+                                        Fail
                                     </td>
                                 </div>
                             </tr>
@@ -230,7 +246,7 @@
                                     <td>
                                     </td>
                                     <td>
-                                        <span class="badge badge-pill badge-secondary">Not executed</span>
+                                        Not executed
                                     </td>
                                 </div>
                             </tr>
