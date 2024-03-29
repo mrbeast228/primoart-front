@@ -40,53 +40,52 @@
 </div>
 
 <!-- Фильтр  -->
-<div class="row">
-    <div class="col-12 col-sm-12 col-xl-12 mb-4">
-            <div class="card border-0 shadow ">
-                <div class="card-body">
-                    <div class="row d-block d-xl-flex align-items-center">
-                        <div class="col-2 col-xl-2 px-xl-0">
-                          <div>
-                              <label class="my-1 me-2" for="project">Проект</label>
-                              <select class="form-select" id="project" aria-label="Default select example">
-                                  <option selected>Все проекты</option>
-                                  <option value="1">Проект Мохоровича</option>
-                                  <option value="2">Проект Манхэттен</option>
-                                  <option value="3">Проект X</option>
-                              </select>
-                          </div>
-                        </div>
-                        <div class="col-1 col-xl-1 px-xl-0">
-                        </div>
-                        <div class="col-3 col-xl-3 px-xl-0">
-                          <div>
-                              <label>Начало</label>
-                              <div class="input-group">
-                                  <input class="form-control" id="start-date" type="date" placeholder="dd/mm/yyyy" required>
-                                  <input class="form-control" id="start-time" type="time" required>
-                              </div>
-                          </div>
-                        </div>
-                        <div class="col-3 col-xl-3 px-xl-0" style="margin-left: 20px;">
-                          <div>
-                              <label>Завершение</label>
-                              <div class="input-group">
-                                  <input class="form-control" id="end-date" type="date" placeholder="dd/mm/yyyy" required>
-                                  <input class="form-control" id="end-time" type="time" required>
-                              </div>
-                          </div>
-                        </div>
-                        <div class="col-1 col-xl-1 px-xl-0">
-                        </div>
-                        <div class="col-1 col-xl-1 px-xl-0">
-                            <label class="invisible">Применить</label>
-                            <button class="btn btn-tertiary" type="button">Применить</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </div>
+<div class="row d-block d-xl-flex align-items-top">
+	<div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
+		<span>
+			<button class="btn btn-icon-only btn-outline-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+			  <i>{{font_awesome.render_icon("fas fa-xl fa-filter")}}</i>
+			</button>
+		</span>
+	</div>
+<div>
+
+<div class="row mb-4 collapse show" id="collapseFilter">
+	<div class="col-12 col-sm-12 col-xl-12">
+		<div class="card border-0 shadow">
+			<div class="card-body">
+				<div class="row d-block d-xl-flex align-items-top mb-4">
+					<div class="col-3 col-xl-3 px-xl-0 offset-xl-9">
+							<div class="input-group mb-2">
+                               <span class="input-group-text fw-extrabold">
+                                      Начало&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  </span>
+								<input class="form-control" id="start-date" type="date" placeholder="dd/mm/yyyy" required />
+								<input class="form-control" id="start-time" type="time" required />
+							</div>
+							<div class="input-group">
+                               <span class="input-group-text fw-extrabold">
+                                      Завершение
+                                  </span>
+								<input class="form-control" id="finish-date" type="date" placeholder="dd/mm/yyyy" required />
+								<input class="form-control" id="finish-time" type="time" required />
+							</div>
+					</div>
+
+				</div>
+
+				<div class="row d-block d-xl-flex align-items-top">
+					<div class="col-1 col-xl-1 px-xl-0 offset-md-11">
+						<button class="btn btn-tertiary" type="button">Применить</button>
+					</div>
+				<div>
+			</div>
+		</div>
+			</div>
+		</div>
+	</div>
 </div>
+
 
 <!-- Область бизнес показателей  -->
 
