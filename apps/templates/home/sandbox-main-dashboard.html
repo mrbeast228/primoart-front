@@ -39,7 +39,7 @@
   </nav>
 </div>
 
-<!-- Кнопки фильтра  -->
+<!-- Кнопка фильтра  -->
 <div class="row d-block d-xl-flex align-items-top">
 	<div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
 		<span>
@@ -143,8 +143,8 @@
 
 </div>
 
-<!-- Область фильтров -->
-<div class="row mb-5">
+<!-- Область селекторов -->
+<div class="row mb-2">
    <div class="col-12 col-sm-6 col-xl-3">
             <div class="card border-0 shadow card-fill-all-space">
                 <div class="card-body">
@@ -255,8 +255,19 @@
         </div>
 </div>
 
-<div class="row mb-5">
+<!-- Кнопка фильтра первого ряда диаграмм -->
+<div class="row d-block d-xl-flex align-items-top">
+	<div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
+		<span>
+			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#firstRowCharts" aria-expanded="false" aria-controls="firstRowCharts">
+			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
+			</button>
+		</span>
+	</div>
+<div>
 
+<!-- Первый ряд диаграмм -->
+<div class="row mb-2 collapse show" id="firstRowCharts">
     <div class="col-12 col-sm-12 col-xl-6">
             <div class="card border-0 shadow">
                 <div class="card-body">
@@ -283,7 +294,19 @@
 
 </div>
 
-<div class="row mb-5">
+<!-- Кнопка фильтра первого ряда диаграмм -->
+<div class="row d-block d-xl-flex align-items-top">
+	<div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
+		<span>
+			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#secondRowCharts" aria-expanded="false" aria-controls="secondRowCharts">
+			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
+			</button>
+		</span>
+	</div>
+<div>
+
+<!-- Второй ряд диаграмм -->
+<div class="row mb-5 collapse show" id="secondRowCharts">
     <div class="col-12 col-sm-12 col-xl-6">
             <div class="card border-0 shadow">
                 <div class="card-body">
@@ -310,7 +333,7 @@
 
 </div>
 
-<div class="row row-mid-buffer">
+<div class="row">
     <div class="col-12 col-sm-12 col-xl-12 mb-12">
             <div class="card border-0 shadow">
                 <div class="card-body">
