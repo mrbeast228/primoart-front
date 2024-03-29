@@ -3,7 +3,13 @@
 {% block title %} UI Buttons {% endblock %}
 
 {% block stylesheets %}
-
+<style>
+    .card-fill-all-space {
+        #border: 1px solid #444;
+        height: 100%;
+        width: 100%;
+    }
+</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -25,6 +31,166 @@
 			<li class="breadcrumb-item"><a href="./sandbox-transactions.html">Транзакции</a></li>
 		</ol>
 	</nav>
+</div>
+
+<!-- Кнопки фильтра  -->
+<div class="row d-block d-xl-flex align-items-top">
+	<div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
+		<span>
+			<button class="btn btn-icon-only btn-outline-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+			  <i>{{font_awesome.render_icon("fas fa-xl fa-filter")}}</i>
+			</button>
+		</span>
+	</div>
+<div>
+
+<!-- Область фильтра  -->
+<div class="row mb-4 collapse show" id="collapseFilter">
+	<div class="col-12 col-sm-12 col-xl-12">
+		<div class="card border-0 shadow">
+			<div class="card-body">
+				<div class="row d-block d-xl-flex align-items-top mb-4">
+					<div class="col-3 col-xl-3 px-xl-0 offset-xl-9">
+							<div class="input-group mb-2">
+                               <span class="input-group-text fw-extrabold">
+                                      Начало&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  </span>
+								<input class="form-control" id="start-date" type="date" placeholder="dd/mm/yyyy" required />
+								<input class="form-control" id="start-time" type="time" required />
+							</div>
+							<div class="input-group">
+                               <span class="input-group-text fw-extrabold">
+                                      Завершение
+                                  </span>
+								<input class="form-control" id="finish-date" type="date" placeholder="dd/mm/yyyy" required />
+								<input class="form-control" id="finish-time" type="time" required />
+							</div>
+					</div>
+
+				</div>
+
+				<div class="row d-block d-xl-flex align-items-top">
+					<div class="col-1 col-xl-1 px-xl-0 offset-md-11">
+						<button class="btn btn-tertiary" type="button">Применить</button>
+					</div>
+				<div>
+			</div>
+		</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Область фильтров -->
+<div class="row mb-5">
+   <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <div class="row d-block d-xl-flex align-items-center">
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">Состояние проектов</h2>
+                                <span class="fw-extrabold text-success mb-2">2&nbsp; OK</span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span></span><span class="fw-extrabold text-secondary mb-2">1&nbsp; Warning</span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span class="fw-extrabold text-danger mb-2">0&nbsp; Critical</span>
+                            </div>
+                        </div>
+                        <div class="card-mid-buffer"></div>
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Выдача кредитов</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Обслуживание счетов</button>
+
+                                <button class="btn btn-pill btn-outline-warning btn-buffer" type="button">Нагрузочные тесты</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="col-12 col-sm-6 col-xl-6">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <div class="row d-block d-xl-flex align-items-center">
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">Состояние сервисов</h2>
+                                <span class="fw-extrabold text-success mb-2">14&nbsp; OK</span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span></span><span class="fw-extrabold text-secondary mb-2">2&nbsp; Warning</span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
+                            </div>
+                        </div>
+                        <div class="card-mid-buffer"></div>
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Кредиты</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Ипотека</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Автокредит</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Микрозайм</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">whole</button>
+
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">decorous</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">hissing</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">kind</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">tested</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">broken</button>
+
+                                <button class="btn btn-pill btn-outline-success btn-buffer active" type="button">Дебетовые карты</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Кредитные карты</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Сберегательные счета</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Чековые счета</button>
+                                <button class="btn btn-pill btn-outline-secondary btn-buffer" type="button">Ипотечные кредиты</button>
+
+                                <button class="btn btn-pill btn-outline-secondary btn-buffer" type="button">Онлайн-банкинг</button>
+                                <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">Инвестиционные счета</button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-xl-12 px-xl-0 text-end">
+                            <hr/>
+                            <a href="" class="text-info me-1">
+                                <span class="small">Перейти к выбранному сервису</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+   <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <div class="row d-block d-xl-flex align-items-center">
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">Доступность роботов</h2>
+                                <span class="fw-extrabold text-success mb-2">5&nbsp; OK</span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span></span><span class="fw-extrabold text-secondary mb-2">0&nbsp; Warning</span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
+                            </div>
+                        </div>
+                        <div class="card-mid-buffer"></div>
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Москва</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Питер</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Ярославль</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Сочи</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Волгоград</button>
+
+                                <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">ЦОД</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 
 {% endblock content %}
