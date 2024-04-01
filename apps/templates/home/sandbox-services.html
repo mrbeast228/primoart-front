@@ -11,6 +11,8 @@
     }
 
     .btn-buffer { margin-top:2px; margin-bottom:2px; }
+
+    .filter-buffer {margin-right: 20px; margin-left: 20px;}
 </style>
 {% endblock stylesheets %}
 
@@ -52,7 +54,39 @@
 		<div class="card border-0 shadow">
 			<div class="card-body">
 				<div class="row d-block d-xl-flex align-items-top mb-4">
-					<div class="col-3 col-xl-3 px-xl-0 offset-xl-9">
+					<div class="col-3 col-xl-3 px-xl-0 offset-xl-5">
+						<div class="input-group mb-2">
+                               <span class="input-group-text fw-extrabold">
+                                      Проект
+                                  </span>
+							<select class="form-select" id="robot" aria-label="Default select example">
+								<option selected>Все проекты</option>
+								<option value="1">Выдача кредитов</option>
+								<option value="2">Обслуживание счетов</option>
+								<option value="3">Нагрузочные тесты</option>
+							</select>
+						</div>
+						<div class="input-group ">
+                               <span class="input-group-text fw-extrabold">
+                                      Сервис
+                                  </span>
+							<select class="form-select" id="status" aria-label="Default select example">
+								<option selected>Все</option>
+								<option value="1">Кредиты</option>
+								<option value="2">Ипотека</option>
+								<option value="3">Автокредит</option>
+								<option value="4">Микрозайм</option>
+								<option value="5">Дебетовые карты</option>
+								<option value="6">Кредитные карты</option>
+								<option value="7">Сберегательные счета</option>
+								<option value="8">Чековые счета</option>
+								<option value="9">Ипотечные кредиты</option>
+								<option value="10">Онлайн-банкинг</option>
+								<option value="11">Инвестиционные счета</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-3 col-xl-3 px-xl-0  filter-buffer">
 							<div class="input-group mb-2">
                                <span class="input-group-text fw-extrabold">
                                       Начало&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -181,7 +215,7 @@
                         </div>
                         <div class="col-12 col-xl-12 px-xl-0 text-end">
                             <hr/>
-                            <a href="" class="text-info me-1">
+                            <a href="./sandbox-transaction-run.html" class="text-info me-1">
                                 <span class="small">Перейти к выбранной транзакции</span>
                             </a>
                         </div>
@@ -194,10 +228,11 @@
 
 <!-- Кнопка фильтра первого ряда диаграмм -->
 <div class="row d-block d-xl-flex align-items-top">
-	<div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
+	<div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
 		<span>
+            TODO, название для ряда
 			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#firstRowCharts" aria-expanded="false" aria-controls="firstRowCharts">
-			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
+			   <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
 			</button>
 		</span>
 	</div>
@@ -233,8 +268,9 @@
 
 <!-- Кнопка фильтра первого ряда диаграмм -->
 <div class="row d-block d-xl-flex align-items-top">
-	<div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
+	<div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
 		<span>
+            TODO, название для ряда
 			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#secondRowCharts" aria-expanded="false" aria-controls="secondRowCharts">
 			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
 			</button>
