@@ -115,6 +115,8 @@
 			</div>
 		</div>
 	</div>
+
+
 </div>
 
 <!-- Область бизнес показателей  -->
@@ -174,13 +176,13 @@
 
 <!-- Область селекторов -->
 <div class="row mb-2">
-    <div class="col-12 col-sm-12 col-xl-12">
+    <div class="col-12 col-sm-12 col-xl-9">
             <div class="card border-0 shadow card-fill-all-space">
                 <div class="card-body">
                     <div class="row d-block d-xl-flex align-items-center">
                         <div class="col-12 col-xl-12 px-xl-0">
                             <div class="d-none d-sm-block">
-                                <h2 class="h6 text-gray-400 mb-0">Состояние транзакий</h2>
+                                <h2 class="h6 text-gray-400 mb-0">Состояние транзакций</h2>
                                 <span class="fw-extrabold text-success mb-2">14&nbsp; OK</span>
                                 <span>&nbsp;/&nbsp;</span>
                                 <span></span><span class="fw-extrabold text-secondary mb-2">2&nbsp; Warning</span>
@@ -224,6 +226,37 @@
             </div>
         </div>
 
+  <div class="col-12 col-sm-12 col-xl-3">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <div class="row d-block d-xl-flex align-items-center">
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">Доступность роботов</h2>
+                                <span class="fw-extrabold text-success mb-2">5&nbsp; OK</span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span></span><span class="fw-extrabold text-secondary mb-2">0&nbsp; Warning</span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
+                            </div>
+                        </div>
+                        <div class="card-mid-buffer"></div>
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Москва</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Питер</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Ярославль</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Сочи</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Волгоград</button>
+
+                                <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">ЦОД</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 </div>
 
 <!-- Кнопка фильтра первого ряда диаграмм -->
@@ -240,33 +273,49 @@
 
 <!-- Первый ряд диаграмм -->
 <div class="row mb-2 collapse show" id="firstRowCharts">
-    <div class="col-12 col-sm-12 col-xl-6">
-            <div class="card border-0 shadow">
+    <div class="col-12 col-sm-12 col-xl-4">
+            <div class="card border-0 shadow card-fill-all-space">
                 <div class="card-body">
-                    <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
+                    <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к ошибкам выполнения</h2>
                     <div class="card-mid-buffer"></div>
                     <div>
-                        <canvas width="100%" height="50%" id="chartTransactionPerf01"></canvas>
+                        <canvas width="100%" height="75%" id="transactionTimeVsErrsChart01"></canvas>
                     </div>
                 </div>
             </div>
     </div>
 
-    <div class="col-12 col-sm-12 col-xl-6">
-            <div class="card border-0 shadow">
+    <div class="col-12 col-sm-12 col-xl-4">
+            <div class="card border-0 shadow card-fill-all-space">
                 <div class="card-body">
                     <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
                     <div class="card-mid-buffer"></div>
                     <div>
-                        <canvas width="100%" height="50%" id="chartheatmap01"></canvas>
+                        <canvas width="100%" height="75%" id="chartheatmap01"></canvas>
                     </div>
                 </div>
             </div>
     </div>
 
+    <div class="col-12 col-sm-12 col-xl-4">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
+                    <div class="card-mid-buffer"></div>
+                    <div>
+                        <canvas width="100%" height="75%" id="chartTransactionPerf01"></canvas>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+
+
+
 </div>
 
-<!-- Кнопка фильтра первого ряда диаграмм -->
+<!-- Кнопка фильтра второго ряда диаграмм -->
 <div class="row d-block d-xl-flex align-items-top">
 	<div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
 		<span>
@@ -280,17 +329,6 @@
 
 <!-- Второй ряд диаграмм -->
 <div class="row mb-5 collapse show" id="secondRowCharts">
-    <div class="col-12 col-sm-12 col-xl-6">
-            <div class="card border-0 shadow">
-                <div class="card-body">
-                    <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к ошибкам выполнения</h2>
-                    <div class="card-mid-buffer"></div>
-                    <div>
-                        <canvas width="100%" height="50%" id="transactionTimeVsErrsChart01"></canvas>
-                    </div>
-                </div>
-            </div>
-    </div>
 
     <div class="col-12 col-sm-12 col-xl-6">
             <div class="card border-0 shadow">
