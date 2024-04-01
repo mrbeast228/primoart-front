@@ -335,7 +335,19 @@
 
 </div>
 
-<div class="row">
+<!-- Кнопка коллапса таблицы событий -->
+<div class="row d-block d-xl-flex align-items-top">
+	<div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+        TODO, название для ряда
+		<span>
+			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#eventTable" aria-expanded="false" aria-controls="eventTable">
+			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
+			</button>
+		</span>
+	</div>
+<div>
+
+<div class="row collapse show" id="eventTable">
     <div class="col-12 col-sm-12 col-xl-12 mb-12">
             <div class="card border-0 shadow">
                 <div class="card-body">

@@ -2,18 +2,357 @@
 
 {% block title %} UI Buttons {% endblock %}
 
+<!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
+<style>
+    .row-top-buffer { margin-top:20px; }
+    .row-mid-buffer { margin-top:-20px; }
+    .card-mid-buffer { margin-top:10px; }
+    .btn-buffer { margin-top:2px; margin-bottom:2px; }
+    .btn-block-custom { width: 100%; }
+</style>
+
+<style>
+    .card-fill-all-space {
+        #border: 1px solid #444;
+        height: 100%;
+        width: 100%;
+    }
+</style>
+
 
 {% endblock stylesheets %}
 
 {% block content %}
+
+<!-- Хлебокрошки  -->
+<div class="py-4">
+  <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+      <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+          <li class="breadcrumb-item">
+              <a href="#">
+                  <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+              </a>
+          </li>
+          <li class="breadcrumb-item"><a href="#">Роботы</a></li>
+      </ol>
+  </nav>
+</div>
+
+<!-- Кнопка фильтра  -->
+<div class="row d-block d-xl-flex align-items-top">
+	<div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
+		<span>
+			<button class="btn btn-icon-only btn-outline-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+			  <i>{{font_awesome.render_icon("fas fa-xl fa-filter")}}</i>
+			</button>
+		</span>
+	</div>
+<div>
+
+<!-- Область фильтра  -->
+<div class="row mb-4 collapse show" id="collapseFilter">
+	<div class="col-12 col-sm-12 col-xl-12">
+		<div class="card border-0 shadow">
+			<div class="card-body">
+				<div class="row d-block d-xl-flex align-items-top mb-4">
+					<div class="col-3 col-xl-3 px-xl-0 offset-xl-9">
+							<div class="input-group mb-2">
+                               <span class="input-group-text fw-extrabold">
+                                      Начало&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  </span>
+								<input class="form-control" id="start-date" type="date" placeholder="dd/mm/yyyy" required />
+								<input class="form-control" id="start-time" type="time" required />
+							</div>
+							<div class="input-group">
+                               <span class="input-group-text fw-extrabold">
+                                      Завершение
+                                  </span>
+								<input class="form-control" id="finish-date" type="date" placeholder="dd/mm/yyyy" required />
+								<input class="form-control" id="finish-time" type="time" required />
+							</div>
+					</div>
+
+				</div>
+
+				<div class="row d-block d-xl-flex align-items-top">
+					<div class="col-1 col-xl-1 px-xl-0 offset-md-11">
+						<button class="btn btn-tertiary" type="button">Применить</button>
+					</div>
+				<div>
+			</div>
+		</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Область бизнес показателей  -->
+<div class="row mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <div class="row d-block d-xl-flex align-items-center">
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">Процент успешных запусков</h2>
+                                <h3 class="fw-extrabold text-success mb-2">96.78%</h3>
+                            </div>
+                            <small class="d-flex align-items-center text-gray-500">
+                                01.03.2024 - 31.03.2024,&nbsp;
+                                <i>{{font_awesome.render_icon("fas fa-globe")}}</i>
+                                &nbsp;Москва
+                            </small>
+                            <div class="small d-flex mt-1">
+                                <div>Изменение относительно прошлого месяца <svg class="icon icon-xs text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg><span class="text-success fw-bolder">22%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <div class="row d-block d-xl-flex align-items-center">
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">TODO, Бизнес-показатель</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="col-12 col-sm-6 col-xl-6">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <div class="row d-block d-xl-flex align-items-center">
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">TODO, Верхнеуровневая аналитика</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+<!-- Область селекторов -->
+<div class="row mb-2">
+
+   <div class="col-12 col-sm-12 col-xl-12">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <div class="row d-block d-xl-flex align-items-center">
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">Доступность роботов</h2>
+                                <span class="fw-extrabold text-success mb-2">5&nbsp; OK</span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span></span><span class="fw-extrabold text-secondary mb-2">0&nbsp; Warning</span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
+                            </div>
+                        </div>
+                        <div class="card-mid-buffer"></div>
+                        <div class="col-12 col-xl-12 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Москва</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Питер</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Ярославль</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Сочи</button>
+                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Волгоград</button>
+
+                                <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">ЦОД</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<!-- Кнопка фильтра первого ряда диаграмм -->
+<div class="row d-block d-xl-flex align-items-top">
+	<div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+        TODO, название для ряда
+		<span>
+			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#firstRowCharts" aria-expanded="false" aria-controls="firstRowCharts">
+			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
+			</button>
+		</span>
+	</div>
+<div>
+
+<!-- Первый ряд диаграмм -->
+<div class="row mb-2 collapse show" id="firstRowCharts">
+    <div class="col-12 col-sm-12 col-xl-6">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
+                    <div class="card-mid-buffer"></div>
+                    <div>
+                        <canvas width="100%" height="50%" id="chartTransactionPerf01"></canvas>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="col-12 col-sm-12 col-xl-6">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
+                    <div class="card-mid-buffer"></div>
+                    <div>
+                        <canvas width="100%" height="50%" id="chartheatmap01"></canvas>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+</div>
+
+<!-- Кнопка коллапса второго ряда диаграмм -->
+<div class="row d-block d-xl-flex align-items-top">
+	<div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+        TODO, название для ряда
+		<span>
+			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#secondRowCharts" aria-expanded="false" aria-controls="secondRowCharts">
+			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
+			</button>
+		</span>
+	</div>
+<div>
+
+<!-- Второй ряд диаграмм -->
+<div class="row mb-5 collapse show" id="secondRowCharts">
+    <div class="col-12 col-sm-12 col-xl-6">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к ошибкам выполнения</h2>
+                    <div class="card-mid-buffer"></div>
+                    <div>
+                        <canvas width="100%" height="50%" id="transactionTimeVsErrsChart01"></canvas>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="col-12 col-sm-12 col-xl-6">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-0">Распределение транзакций по статусу выполнения</h2>
+                    <div class="card-mid-buffer"></div>
+                    <div>
+                        <canvas width="100%" height="50%" id="transactionScatterChart01"></canvas>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+</div>
+
+<!-- Кнопка коллапса таблицы событий -->
+<div class="row d-block d-xl-flex align-items-top">
+	<div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+        TODO, название для ряда
+		<span>
+			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#eventTable" aria-expanded="false" aria-controls="eventTable">
+			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
+			</button>
+		</span>
+	</div>
+<div>
+
+<div class="row collapse show" id="eventTable">
+    <div class="col-12 col-sm-12 col-xl-12 mb-12">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                      <h2 class="h6 text-gray-400 mb-0">Последние события</h2>
+                    <div class="card-mid-buffer"></div>
+                      <div class="table-responsive" >
+                          <table class="table table-centered table-nowrap mb-0 rounded" id="dashboard-events">
+                              <thead>
+                                <tr>
+                                  <th data-field="datetime">Время</th>
+                                  <th data-field="severity">Критичность</th>
+                                  <th data-field="event">Событие</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                  <tr class="table-danger">
+                                      <td>26.03.2024 10:17:05</td>
+                                      <td>Critical</td>
+                                      <td class="fw-bold d-flex align-items-center">
+                                          Транзакция&nbsp<a href="#" class="text-info me-1">jolly</a> завершилась с ошибкой
+                                      </td>
+                                  </tr>
+                                  <tr class="table-info">
+                                      <td>26.03.2024 10:15:13</td>
+                                      <td>Information</td>
+                                      <td class="fw-bold d-flex align-items-center">
+                                          Транзакция&nbsp<a href="#" class="text-info me-1">tested</a> выполнена успешно
+                                      </td>
+                                  </tr>
+                                  <tr class="table-info">
+                                      <td>26.03.2024 09:47:28</td>
+                                      <td>Information</td>
+                                      <td class="fw-bold d-flex align-items-center">
+                                          Транзакция&nbsp<a href="#" class="text-info me-1">lamentable</a> выполнена успешно
+                                      </td>
+                                  </tr>
+                                  <tr class="table-info">
+                                      <td>26.03.2024 07:52:32</td>
+                                      <td>Information</td>
+                                      <td class="fw-bold d-flex align-items-center">
+                                          Транзакция&nbsp<a href="#" class="text-info me-1">slimy</a> выполнена успешно
+                                      </td>
+                                  </tr>
+                                  <tr class="table-warning">
+                                      <td>26.03.2024 06:16:09</td>
+                                      <td>Warning</td>
+                                      <td class="fw-bold d-flex align-items-center">
+                                          Транзакция&nbsp<a href="#" class="text-info me-1">clammy</a> превысила расчетное время выполнения
+                                      </td>
+                                  </tr>
+                              </tbody>
+
+                          </table>
+                      </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+
+
+
 <script>
     $(function() {
         console.log("Page loaded!");
+
+        evenlisttable.init();
+
+        performancechart.init();
+        heatmapchart.init();
+
+        servicetimevserrchart.init();
+        scatterstatuschart.init();
+
     });
+</script>
+<script>
 </script>
 {% endblock javascripts %}
