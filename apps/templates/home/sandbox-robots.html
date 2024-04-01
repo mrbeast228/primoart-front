@@ -178,7 +178,39 @@
         </div>
 </div>
 
-<!-- Кнопка фильтра первого ряда диаграмм -->
+<!-- Кнопка коллапса карты -->
+<div class="row d-block d-xl-flex align-items-top">
+	<div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+        TODO, название для ряда
+		<span>
+			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#mapRow" aria-expanded="false" aria-controls="mapRow">
+			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
+			</button>
+		</span>
+	</div>
+<div>
+    
+<!-- Область карты  -->
+<div class="row collapse show" id="mapRow">
+    <div class="col-12 col-sm-12 col-xl-12">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <iframe width="100%"
+                            height="550"
+                            frameborder="0"
+                            scrolling="no"
+                            marginheight="0"
+                            marginwidth="0"
+                            src="http://www.openstreetmap.org/export/embed.html?bbox=79.84942674636841%2C6.899900944350287%2C79.85650777816772%2C6.90436374803887&amp;layers=ND"
+                            style="border: 1px solid black">
+                    </iframe>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+<!-- Кнопка коллапса первого ряда диаграмм -->
 <div class="row d-block d-xl-flex align-items-top">
 	<div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
         TODO, название для ряда
