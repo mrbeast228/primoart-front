@@ -1,4 +1,4 @@
-function toggleVisibility(buttonId, elementToToggleId, hiddenSpanId) {
+function toggleCollapsableLink(buttonId, hiddenSpanId, elementToToggleId) {
 
     // Кейс с повторно нажатой кнопкой, закрываем все что есть
     var isCurrentlyActive = $("#" + buttonId).hasClass('active');

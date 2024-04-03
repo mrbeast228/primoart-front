@@ -10,14 +10,14 @@
     .card-mid-buffer { margin-top:10px; }
     .btn-buffer { margin-top:2px; margin-bottom:2px; }
     .btn-block-custom { width: 100%; }
-</style>
 
-<style>
     .card-fill-all-space {
         #border: 1px solid #444;
         height: 100%;
         width: 100%;
     }
+
+    .btn-service {} // Пустой класс для переключения селекторов
 </style>
 
 
@@ -212,12 +212,18 @@
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
                             {% for service in context.services %}
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">{{ service.name }}
+                            <button class="btn btn-pill btn-outline-success btn-buffer btn-service"
+                                    id="btn_service_id_{{ service.service_id }}"
+                                    type="button"
+                                    onclick="toggleCollapsableLink('btn_service_id_{{ service.service_id }}', 'service_id_{{ service.service_id}}', 'service_collapsable_link')"
+                            >
+                                <span hidden id="service_id_{{ service.service_id}}">{{ service.service_id }}</span>
+                                {{ service.name }}
                             </button>
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="col-12 col-xl-12 px-xl-0 text-end">
+                    <div class="col-12 col-xl-12 px-xl-0 text-end" id="service_collapsable_link">
                         <hr/>
                         <a href="./sandbox-services.html" class="text-info me-1">
                             <span class="small">Перейти к выбранному сервису</span>
@@ -373,50 +379,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="table-danger">
-                            <td>26.03.2024 10:17:05</td>
-                            <td>Critical</td>
-                            <td class="fw-bold d-flex align-items-center">
-                                Транзакция&nbsp<a href="#"
-                                                  class="text-info me-1">jolly</a>
-                                завершилась с ошибкой
-                            </td>
-                        </tr>
-                        <tr class="table-info">
-                            <td>26.03.2024 10:15:13</td>
-                            <td>Information</td>
-                            <td class="fw-bold d-flex align-items-center">
-                                Транзакция&nbsp<a href="#"
-                                                  class="text-info me-1">tested</a>
-                                выполнена успешно
-                            </td>
-                        </tr>
-                        <tr class="table-info">
-                            <td>26.03.2024 09:47:28</td>
-                            <td>Information</td>
-                            <td class="fw-bold d-flex align-items-center">
-                                Транзакция&nbsp<a href="#" class="text-info me-1">lamentable</a>
-                                выполнена успешно
-                            </td>
-                        </tr>
-                        <tr class="table-info">
-                            <td>26.03.2024 07:52:32</td>
-                            <td>Information</td>
-                            <td class="fw-bold d-flex align-items-center">
-                                Транзакция&nbsp<a href="#"
-                                                  class="text-info me-1">slimy</a>
-                                выполнена успешно
-                            </td>
-                        </tr>
-                        <tr class="table-warning">
-                            <td>26.03.2024 06:16:09</td>
-                            <td>Warning</td>
-                            <td class="fw-bold d-flex align-items-center">
-                                Транзакция&nbsp<a href="#"
-                                                  class="text-info me-1">clammy</a>
-                                превысила расчетное время выполнения
-                            </td>
-                        </tr>
                         </tbody>
 
                     </table>
@@ -432,7 +394,8 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
 
 <script>
     $(function() {
@@ -444,7 +407,6 @@
         heatmapchart.init();
 
         servicetimevserrchart.init();
-        scatterstatuschart.init();
 
     });
 </script>
