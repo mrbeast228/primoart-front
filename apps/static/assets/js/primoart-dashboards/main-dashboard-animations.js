@@ -1,13 +1,26 @@
-function toggleVisibility(buttonId, elementToToggleId) {
-    // Toggle visibility of the element
-    $("#" + elementToToggleId).toggle();
+function toggleVisibility(buttonId, elementToToggleId, hiddenSpanId) {
 
-    // Get value from hidden input and append to the content if the element is visible
-    //if ($("#" + elementToToggleId).is(":visible")) {
-    //    var valueFromHiddenInput = $("#" + hiddenInputId).val();
-    //    $("#" + elementToToggleId).append(valueFromHiddenInput);
-    //}
+    // Кейс с повторно нажатой кнопкой, закрываем все что есть
+    var isCurrentlyActive = $("#" + buttonId).hasClass('active');
 
-    // Toggle class of the button
-    $("#" + buttonId).toggleClass("active");
+    if(isCurrentlyActive) {
+        $('.btn-service').removeClass('active');
+        $("#" + elementToToggleId).hide();
+    } else {
+
+        // Toggle visibility of the element
+        $("#" + elementToToggleId).show();
+
+        // Get value from hidden input and append to the content if the element is visible
+        if ($("#" + elementToToggleId).is(":visible")) {
+            var hiddenIdValue = $("#" + hiddenSpanId).text(); // Get the ID value
+            // Append the ID value to the href of the link inside the elementToToggle
+            $("#" + elementToToggleId + " a").attr("href", function(i, originalHref) {
+                return "./sandbox-services.html?service_id=" + hiddenIdValue;
+            });
+        }
+
+        $('.btn-service').removeClass('active');
+        $("#" + buttonId).addClass('active');
+    }
 }

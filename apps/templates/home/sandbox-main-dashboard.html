@@ -18,6 +18,8 @@
         height: 100%;
         width: 100%;
     }
+
+    .btn-service {} // Пустой класс для переключения селекторов
 </style>
 
 
@@ -211,52 +213,58 @@
                     <div class="card-mid-buffer"></div>
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Кредиты
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">Кредиты
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Ипотека
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">Ипотека
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
                                 Автокредит
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
                                 Микрозайм
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">whole
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">whole
                             </button>
 
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">decorous
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">decorous
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">hissing
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">hissing
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">kind
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">kind
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">tested
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">tested
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">broken
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">broken
                             </button>
 
-                            <button class="btn btn-pill btn-outline-success btn-buffer active" id="btn_debet_cards" type="button"
-                                    onclick="toggleVisibility('btn_debet_cards', 'service_link')"
+                            <button class="btn btn-pill btn-outline-success btn-buffer btn-service active" type="button"
+                                    id="btn_debet_cards"
+                                    onclick="toggleVisibility('btn_debet_cards', 'service_link', 'id_debet_cards')"
                             >
+                                <span hidden id="id_debet_cards">uuid-for-debet-cards</span>
                                 Дебетовые карты
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Кредитные
-                                карты
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button"
+                                    id="btn_credit_cards"
+                                    onclick="toggleVisibility('btn_credit_cards', 'service_link', 'id_credit_cards')"
+                            >
+                                <span hidden id="id_credit_cards">uuid-for-credit-cards</span>
+                                Кредитные карты
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
                                 Сберегательные счета
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Чековые
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">Чековые
                                 счета
                             </button>
-                            <button class="btn btn-pill btn-outline-secondary btn-buffer" type="button">
+                            <button class="btn btn-pill btn-outline-secondary btn-service btn-buffer" type="button">
                                 Ипотечные кредиты
                             </button>
 
-                            <button class="btn btn-pill btn-outline-secondary btn-buffer" type="button">
+                            <button class="btn btn-pill btn-outline-secondary btn-service btn-buffer" type="button">
                                 Онлайн-банкинг
                             </button>
-                            <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">
+                            <button class="btn btn-pill btn-outline-danger btn-service btn-buffer" type="button">
                                 Инвестиционные счета
                             </button>
                         </div>
