@@ -39,6 +39,8 @@ class RouterHelper:
             print(f"[DBG][create_context] ctx['services'] = '{ctx['services']}'")
             ctx['projects'] = APIConnector.get_business_processes_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['projects'] = '{ctx['projects']}'")
+            ctx['robots'] = APIConnector.get_robots_list(page=page_number, per_page=per_page)
+            print(f"[DBG][create_context] ctx['robots'] = '{ctx['robots']}'")
 
         elif template == 'business_process_list.html':
             service_id = request.args.get('service_id', None, type=str)
