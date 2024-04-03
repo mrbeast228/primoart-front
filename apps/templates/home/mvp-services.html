@@ -13,354 +13,371 @@
     .btn-buffer { margin-top:2px; margin-bottom:2px; }
 
     .filter-buffer {margin-right: 20px; margin-left: 20px;}
+
+    .btn-transaction {} // Пустой класс для переключения селекторов
+    .btn-robot {} // Пустой класс для переключения селекторов
 </style>
 {% endblock stylesheets %}
 
 {% block content %}
 <div class="py-4">
-	<nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-		<ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-			<li class="breadcrumb-item">
-				<a href="./sandbox-main-dashboard.html">
-					<svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-						></path>
-					</svg>
-				</a>
-			</li>
-			<li class="breadcrumb-item"><a href="">Сервисы</a></li>
-		</ol>
-	</nav>
+    <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+        <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+            <li class="breadcrumb-item">
+                <a href="./sandbox-main-dashboard.html">
+                    <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                        ></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="breadcrumb-item"><a href="">Сервисы</a></li>
+        </ol>
+    </nav>
 </div>
 
 <!-- Кнопки фильтра  -->
 <div class="row d-block d-xl-flex align-items-top">
-	<div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
+    <div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
 		<span>
-			<button class="btn btn-icon-only btn-outline-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+			<button class="btn btn-icon-only btn-outline-tertiary d-inline-flex align-items-center" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false"
+                    aria-controls="collapseFilter">
 			  <i>{{font_awesome.render_icon("fas fa-xl fa-filter")}}</i>
 			</button>
 		</span>
-	</div>
-<div>
+    </div>
+    <div>
 
-<!-- Область фильтра  -->
-<div class="row mb-4 collapse show" id="collapseFilter">
-	<div class="col-12 col-sm-12 col-xl-12">
-		<div class="card border-0 shadow">
-			<div class="card-body">
-				<div class="row d-block d-xl-flex align-items-top mb-4">
-					<div class="col-3 col-xl-3 px-xl-0 offset-xl-5">
-						<div class="input-group mb-2">
+        <!-- Область фильтра  -->
+        <div class="row mb-4 collapse show" id="collapseFilter">
+            <div class="col-12 col-sm-12 col-xl-12">
+                <div class="card border-0 shadow">
+                    <div class="card-body">
+                        <div class="row d-block d-xl-flex align-items-top mb-4">
+                            <div class="col-3 col-xl-3 px-xl-0 offset-xl-5">
+                                <div class="input-group mb-2">
                                <span class="input-group-text fw-extrabold">
                                       Проект
                                   </span>
-							<select class="form-select" id="robot" aria-label="Default select example">
-								<option selected>Все проекты</option>
-								<option value="1">Выдача кредитов</option>
-								<option value="2">Обслуживание счетов</option>
-								<option value="3">Нагрузочные тесты</option>
-							</select>
-						</div>
-						<div class="input-group ">
+                                    <select class="form-select" id="robot" aria-label="Default select example">
+                                        <option selected>Все проекты</option>
+                                        <option value="1">Выдача кредитов</option>
+                                        <option value="2">Обслуживание счетов</option>
+                                        <option value="3">Нагрузочные тесты</option>
+                                    </select>
+                                </div>
+                                <div class="input-group ">
                                <span class="input-group-text fw-extrabold">
                                       Сервис
                                   </span>
-							<select class="form-select" id="status" aria-label="Default select example">
-								<option selected>Все</option>
-								<option value="1">Кредиты</option>
-								<option value="2">Ипотека</option>
-								<option value="3">Автокредит</option>
-								<option value="4">Микрозайм</option>
-								<option value="5">Дебетовые карты</option>
-								<option value="6">Кредитные карты</option>
-								<option value="7">Сберегательные счета</option>
-								<option value="8">Чековые счета</option>
-								<option value="9">Ипотечные кредиты</option>
-								<option value="10">Онлайн-банкинг</option>
-								<option value="11">Инвестиционные счета</option>
-							</select>
-						</div>
-					</div>
-					<div class="col-3 col-xl-3 px-xl-0  filter-buffer">
-							<div class="input-group mb-2">
+                                    <select class="form-select" id="status" aria-label="Default select example">
+                                        <option selected>Все</option>
+                                        <option value="1">Кредиты</option>
+                                        <option value="2">Ипотека</option>
+                                        <option value="3">Автокредит</option>
+                                        <option value="4">Микрозайм</option>
+                                        <option value="5">Дебетовые карты</option>
+                                        <option value="6">Кредитные карты</option>
+                                        <option value="7">Сберегательные счета</option>
+                                        <option value="8">Чековые счета</option>
+                                        <option value="9">Ипотечные кредиты</option>
+                                        <option value="10">Онлайн-банкинг</option>
+                                        <option value="11">Инвестиционные счета</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-3 col-xl-3 px-xl-0  filter-buffer">
+                                <div class="input-group mb-2">
                                <span class="input-group-text fw-extrabold">
                                       Начало&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                   </span>
-								<input class="form-control" id="start-date" type="date" placeholder="dd/mm/yyyy" required />
-								<input class="form-control" id="start-time" type="time" required />
-							</div>
-							<div class="input-group">
+                                    <input class="form-control" id="start-date" type="date" placeholder="dd/mm/yyyy"
+                                           required/>
+                                    <input class="form-control" id="start-time" type="time" required/>
+                                </div>
+                                <div class="input-group">
                                <span class="input-group-text fw-extrabold">
                                       Завершение
                                   </span>
-								<input class="form-control" id="finish-date" type="date" placeholder="dd/mm/yyyy" required />
-								<input class="form-control" id="finish-time" type="time" required />
-							</div>
-					</div>
-
-				</div>
-
-				<div class="row d-block d-xl-flex align-items-top">
-					<div class="col-1 col-xl-1 px-xl-0 offset-md-11">
-						<button class="btn btn-tertiary" type="button">Применить</button>
-					</div>
-				<div>
-			</div>
-		</div>
-			</div>
-		</div>
-	</div>
-
-
-</div>
-
-<!-- Область бизнес показателей  -->
-<div class="row mb-4">
-    <div class="col-12 col-sm-6 col-xl-3">
-            <div class="card border-0 shadow card-fill-all-space">
-                <div class="card-body">
-                    <div class="row d-block d-xl-flex align-items-center">
-                        <div class="col-12 col-xl-12 px-xl-0">
-                            <div class="d-none d-sm-block">
-                                <h2 class="h6 text-gray-400 mb-0">SLA сервиса <span сlass="fw-extrabold">Дебетовые карты</span></h2>
-                                <h3 class="fw-extrabold text-success mb-2">97.34%</h3>
+                                    <input class="form-control" id="finish-date" type="date" placeholder="dd/mm/yyyy"
+                                           required/>
+                                    <input class="form-control" id="finish-time" type="time" required/>
+                                </div>
                             </div>
-                            <small class="d-flex align-items-center text-gray-500">
-                                01.03.2024 - 31.03.2024,&nbsp;
-                                <i>{{font_awesome.render_icon("fas fa-globe")}}</i>
-                                &nbsp;Москва
-                            </small>
-                            <div class="small d-flex mt-1">
-                                <div>Изменение относительно прошлого месяца<svg class="icon icon-xs text-warning" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span class="text-warning fw-bolder">0.5%</span></div>
+
+                        </div>
+
+                        <div class="row d-block d-xl-flex align-items-top">
+                            <div class="col-1 col-xl-1 px-xl-0 offset-md-11">
+                                <button class="btn btn-tertiary" type="button">Применить</button>
+                            </div>
+                            <div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
 
-    <div class="col-12 col-sm-6 col-xl-3">
-            <div class="card border-0 shadow card-fill-all-space">
-                <div class="card-body">
-                    <div class="row d-block d-xl-flex align-items-center">
-                        <div class="col-12 col-xl-12 px-xl-0">
-                            <div class="d-none d-sm-block">
-                                <h2 class="h6 text-gray-400 mb-0">TODO, Бизнес-показатель</h2>
+        <!-- Область бизнес показателей  -->
+        <div class="row mb-4">
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border-0 shadow card-fill-all-space">
+                    <div class="card-body">
+                        <div class="row d-block d-xl-flex align-items-center">
+                            <div class="col-12 col-xl-12 px-xl-0">
+                                <div class="d-none d-sm-block">
+                                    <h2 class="h6 text-gray-400 mb-0">SLA сервиса <span сlass="fw-extrabold">Дебетовые карты</span>
+                                    </h2>
+                                    <h3 class="fw-extrabold text-success mb-2">97.34%</h3>
+                                </div>
+                                <small class="d-flex align-items-center text-gray-500">
+                                    01.03.2024 - 31.03.2024,&nbsp;
+                                    <i>{{font_awesome.render_icon("fas fa-globe")}}</i>
+                                    &nbsp;Москва
+                                </small>
+                                <div class="small d-flex mt-1">
+                                    <div>Изменение относительно прошлого месяца
+                                        <svg class="icon icon-xs text-warning" fill="currentColor" viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                  clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="text-warning fw-bolder">0.5%</span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    <div class="col-12 col-sm-6 col-xl-6">
-            <div class="card border-0 shadow card-fill-all-space">
-                <div class="card-body">
-                    <div class="row d-block d-xl-flex align-items-center">
-                        <div class="col-12 col-xl-12 px-xl-0">
-                            <div class="d-none d-sm-block">
-                                <h2 class="h6 text-gray-400 mb-0">TODO, Верхнеуровневая аналитика</h2>
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border-0 shadow card-fill-all-space">
+                    <div class="card-body">
+                        <div class="row d-block d-xl-flex align-items-center">
+                            <div class="col-12 col-xl-12 px-xl-0">
+                                <div class="d-none d-sm-block">
+                                    <h2 class="h6 text-gray-400 mb-0">TODO, Бизнес-показатель</h2>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-</div>
-
-<!-- Область селекторов -->
-<div class="row mb-2">
-    <div class="col-12 col-sm-12 col-xl-9">
-            <div class="card border-0 shadow card-fill-all-space">
-                <div class="card-body">
-                    <div class="row d-block d-xl-flex align-items-center">
-                        <div class="col-12 col-xl-12 px-xl-0">
-                            <div class="d-none d-sm-block">
-                                <h2 class="h6 text-gray-400 mb-0">Состояние транзакций</h2>
-                                <span class="fw-extrabold text-success mb-2">14&nbsp; OK</span>
-                                <span>&nbsp;/&nbsp;</span>
-                                <span></span><span class="fw-extrabold text-secondary mb-2">2&nbsp; Warning</span>
-                                <span>&nbsp;/&nbsp;</span>
-                                <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
-                            </div>
-                        </div>
-                        <div class="card-mid-buffer"></div>
-                        <div class="col-12 col-xl-12 px-xl-0">
-                            <div class="d-none d-sm-block">
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Кредиты</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Ипотека</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Автокредит</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Микрозайм</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">whole</button>
-
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">decorous</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">hissing</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">kind</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">tested</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">broken</button>
-
-                                <button class="btn btn-pill btn-outline-success btn-buffer active" type="button">Дебетовые карты</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Кредитные карты</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Сберегательные счета</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Чековые счета</button>
-                                <button class="btn btn-pill btn-outline-secondary btn-buffer" type="button">Ипотечные кредиты</button>
-
-                                <button class="btn btn-pill btn-outline-secondary btn-buffer" type="button">Онлайн-банкинг</button>
-                                <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">Инвестиционные счета</button>
-                            </div>
-                        </div>
-                        <div class="col-12 col-xl-12 px-xl-0 text-end">
-                            <hr/>
-                            <a href="./sandbox-transaction-run.html" class="text-info me-1">
-                                <span class="small">Перейти к выбранной транзакции</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-  <div class="col-12 col-sm-12 col-xl-3">
-            <div class="card border-0 shadow card-fill-all-space">
-                <div class="card-body">
-                    <div class="row d-block d-xl-flex align-items-center">
-                        <div class="col-12 col-xl-12 px-xl-0">
-                            <div class="d-none d-sm-block">
-                                <h2 class="h6 text-gray-400 mb-0">Доступность роботов</h2>
-                                <span class="fw-extrabold text-success mb-2">5&nbsp; OK</span>
-                                <span>&nbsp;/&nbsp;</span>
-                                <span></span><span class="fw-extrabold text-secondary mb-2">0&nbsp; Warning</span>
-                                <span>&nbsp;/&nbsp;</span>
-                                <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
-                            </div>
-                        </div>
-                        <div class="card-mid-buffer"></div>
-                        <div class="col-12 col-xl-12 px-xl-0">
-                            <div class="d-none d-sm-block">
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Москва</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Питер</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Ярославль</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Сочи</button>
-                                <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Волгоград</button>
-
-                                <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">ЦОД</button>
+            <div class="col-12 col-sm-6 col-xl-6">
+                <div class="card border-0 shadow card-fill-all-space">
+                    <div class="card-body">
+                        <div class="row d-block d-xl-flex align-items-center">
+                            <div class="col-12 col-xl-12 px-xl-0">
+                                <div class="d-none d-sm-block">
+                                    <h2 class="h6 text-gray-400 mb-0">TODO, Верхнеуровневая аналитика</h2>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
-</div>
+        <!-- Область селекторов -->
+        <div class="row mb-2">
+            <div class="col-12 col-sm-12 col-xl-9">
+                <div class="card border-0 shadow card-fill-all-space">
+                    <div class="card-body">
+                        <div class="row d-block d-xl-flex align-items-center">
+                            <div class="col-12 col-xl-12 px-xl-0">
+                                <div class="d-none d-sm-block">
+                                    <h2 class="h6 text-gray-400 mb-0">Состояние транзакций</h2>
+                                    <span class="fw-extrabold text-success mb-2">14&nbsp; OK</span>
+                                    <span>&nbsp;/&nbsp;</span>
+                                    <span></span><span class="fw-extrabold text-secondary mb-2">2&nbsp; Warning</span>
+                                    <span>&nbsp;/&nbsp;</span>
+                                    <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
+                                </div>
+                            </div>
+                            <div class="card-mid-buffer"></div>
+                            <div class="col-12 col-xl-12 px-xl-0">
+                                <div class="d-none d-sm-block">
+                                    {% for transaction in context.transactions %}
+                                    <button class="btn btn-pill btn-outline-success btn-buffer btn-transaction"
+                                            id="btn_transaction_id_{{ transaction.transaction_id }}"
+                                            type="button"
+                                            onclick="clickTransactionLink('btn_transaction_id_{{ transaction.transaction_id }}', 'transaction_id_{{ transaction.transaction_id}}', 'transaction_collapsable_link')"
+                                    >
+                                        <span hidden id="transaction_id_{{ transaction.transaction_id}}">{{ transaction.transaction_id }}</span>
+                                        {{ transaction.name }}
+                                    </button>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-12 col-xl-12 px-xl-0 text-end" style="display: none;" id="transaction_collapsable_link">
+                                <hr/>
+                                <a href="./mvp-transaction.html" class="text-info me-1">
+                                    <span class="small">Перейти к выбранной транзакции</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<!-- Кнопка фильтра первого ряда диаграмм -->
-<div class="row d-block d-xl-flex align-items-top">
-	<div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+            <div class="col-12 col-sm-12 col-xl-3">
+                <div class="card border-0 shadow card-fill-all-space">
+                    <div class="card-body">
+                        <div class="row d-block d-xl-flex align-items-center">
+                            <div class="col-12 col-xl-12 px-xl-0">
+                                <div class="d-none d-sm-block">
+                                    <h2 class="h6 text-gray-400 mb-0">Доступность роботов</h2>
+                                    <span class="fw-extrabold text-success mb-2">5&nbsp; OK</span>
+                                    <span>&nbsp;/&nbsp;</span>
+                                    <span></span><span class="fw-extrabold text-secondary mb-2">0&nbsp; Warning</span>
+                                    <span>&nbsp;/&nbsp;</span>
+                                    <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
+                                </div>
+                            </div>
+                            <div class="card-mid-buffer"></div>
+                            <div class="col-12 col-xl-12 px-xl-0">
+                                <div class="d-none d-sm-block">
+                                    <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Москва
+                                    </button>
+                                    <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Питер
+                                    </button>
+                                    <button class="btn btn-pill btn-outline-success btn-buffer" type="button">
+                                        Ярославль
+                                    </button>
+                                    <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Сочи
+                                    </button>
+                                    <button class="btn btn-pill btn-outline-success btn-buffer" type="button">
+                                        Волгоград
+                                    </button>
+
+                                    <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">ЦОД
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Кнопка фильтра первого ряда диаграмм -->
+        <div class="row d-block d-xl-flex align-items-top">
+            <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
 		<span>
             TODO, название для ряда
-			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#firstRowCharts" aria-expanded="false" aria-controls="firstRowCharts">
+			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#firstRowCharts" aria-expanded="false"
+                    aria-controls="firstRowCharts">
 			   <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
 			</button>
 		</span>
-	</div>
-<div>
-
-<!-- Первый ряд диаграмм -->
-<div class="row mb-2 collapse show" id="firstRowCharts">
-    <div class="col-12 col-sm-12 col-xl-4">
-            <div class="card border-0 shadow card-fill-all-space">
-                <div class="card-body">
-                    <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к ошибкам выполнения</h2>
-                    <div class="card-mid-buffer"></div>
-                    <div>
-                        <canvas width="100%" height="75%" id="transactionTimeVsErrsChart01"></canvas>
-                    </div>
-                </div>
             </div>
-    </div>
+            <div>
 
-    <div class="col-12 col-sm-12 col-xl-4">
-            <div class="card border-0 shadow card-fill-all-space">
-                <div class="card-body">
-                    <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
-                    <div class="card-mid-buffer"></div>
-                    <div>
-                        <canvas width="100%" height="75%" id="chartheatmap01"></canvas>
+                <!-- Первый ряд диаграмм -->
+                <div class="row mb-2 collapse show" id="firstRowCharts">
+                    <div class="col-12 col-sm-12 col-xl-4">
+                        <div class="card border-0 shadow card-fill-all-space">
+                            <div class="card-body">
+                                <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к ошибкам
+                                    выполнения</h2>
+                                <div class="card-mid-buffer"></div>
+                                <div>
+                                    <canvas width="100%" height="75%" id="transactionTimeVsErrsChart01"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-    </div>
 
-    <div class="col-12 col-sm-12 col-xl-4">
-            <div class="card border-0 shadow card-fill-all-space">
-                <div class="card-body">
-                    <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
-                    <div class="card-mid-buffer"></div>
-                    <div>
-                        <canvas width="100%" height="75%" id="chartTransactionPerf01"></canvas>
+                    <div class="col-12 col-sm-12 col-xl-4">
+                        <div class="card border-0 shadow card-fill-all-space">
+                            <div class="card-body">
+                                <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
+                                <div class="card-mid-buffer"></div>
+                                <div>
+                                    <canvas width="100%" height="75%" id="chartheatmap01"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="col-12 col-sm-12 col-xl-4">
+                        <div class="card border-0 shadow card-fill-all-space">
+                            <div class="card-body">
+                                <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
+                                <div class="card-mid-buffer"></div>
+                                <div>
+                                    <canvas width="100%" height="75%" id="chartTransactionPerf01"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
-            </div>
-    </div>
 
-
-
-
-
-</div>
-
-<!-- Кнопка фильтра второго ряда диаграмм -->
-<div class="row d-block d-xl-flex align-items-top">
-	<div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+                <!-- Кнопка фильтра второго ряда диаграмм -->
+                <div class="row d-block d-xl-flex align-items-top">
+                    <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
 		<span>
             TODO, название для ряда
-			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#secondRowCharts" aria-expanded="false" aria-controls="secondRowCharts">
+			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#secondRowCharts" aria-expanded="false"
+                    aria-controls="secondRowCharts">
 			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
 			</button>
 		</span>
-	</div>
-<div>
-
-<!-- Второй ряд диаграмм -->
-<div class="row mb-5 collapse show" id="secondRowCharts">
-
-    <div class="col-12 col-sm-12 col-xl-6">
-            <div class="card border-0 shadow">
-                <div class="card-body">
-                    <h2 class="h6 text-gray-400 mb-0">Распределение транзакций по статусу выполнения</h2>
-                    <div class="card-mid-buffer"></div>
-                    <div>
-                        <canvas width="100%" height="50%" id="transactionScatterChart01"></canvas>
                     </div>
-                </div>
-            </div>
-    </div>
+                    <div>
 
-</div>
+                        <!-- Второй ряд диаграмм -->
+                        <div class="row mb-5 collapse show" id="secondRowCharts">
 
-{% endblock content %}
+                            <div class="col-12 col-sm-12 col-xl-6">
+                                <div class="card border-0 shadow">
+                                    <div class="card-body">
+                                        <h2 class="h6 text-gray-400 mb-0">Распределение транзакций по статусу
+                                            выполнения</h2>
+                                        <div class="card-mid-buffer"></div>
+                                        <div>
+                                            <canvas width="100%" height="50%" id="transactionScatterChart01"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}
-<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
-<script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
+                        </div>
+
+                        {% endblock content %}
+
+                        <!-- Specific Page JS goes HERE  -->
+                        {% block javascripts %}
+                        <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
+                        <script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
 
 
-<script>
-    $(function() {
-        console.log("Page loaded!");
+                        <script>
+                            $(function() {
+                                console.log("Page loaded!");
 
-        performancechart.init();
-        heatmapchart.init();
+                                performancechart.init();
+                                heatmapchart.init();
 
-        servicetimevserrchart.init();
-        scatterstatuschart.init();
-    });
-</script>
-{% endblock javascripts %}
+                                servicetimevserrchart.init();
+                                scatterstatuschart.init();
+                            });
+                        </script>
+                        {% endblock javascripts %}

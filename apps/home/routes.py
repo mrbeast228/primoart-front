@@ -42,12 +42,18 @@ class RouterHelper:
             ctx['robots'] = APIConnector.get_robots_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['robots'] = '{ctx['robots']}'")
 
-        elif template == 'business_process_list.html':
-            service_id = request.args.get('service_id', None, type=str)
-            ctx['business_processes'] = APIConnector.get_business_processes_list(service_id, page=page_number, per_page=per_page)
 
-        elif template == 'service_list.html':
+        elif template == 'mvp-services.html':
             ctx['services'] = APIConnector.get_services_list(page=page_number, per_page=per_page)
+            print(f"[DBG][create_context] ctx['services'] = '{ctx['services']}'")
+            ctx['projects'] = APIConnector.get_business_processes_list(page=page_number, per_page=per_page)
+            print(f"[DBG][create_context] ctx['projects'] = '{ctx['projects']}'")
+            ctx['robots'] = APIConnector.get_robots_list(page=page_number, per_page=per_page)
+            print(f"[DBG][create_context] ctx['robots'] = '{ctx['robots']}'")
+
+            # TODO: реализовать возможность передачи ID сервиса, робота или проекта
+            ctx['transactions'] = APIConnector.get_transaction_list(page=page_number, per_page=per_page)
+            print(f"[DBG][create_context] ctx['transactions'] = '{ctx['transactions']}'")
 
         elif template == 'robot_list.html':
             ctx['robots'] = APIConnector.get_robots_list(page=page_number, per_page=per_page)

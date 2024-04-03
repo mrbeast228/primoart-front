@@ -119,26 +119,28 @@ class APIConnector(api_model.APIBase):
             return {}
 
     @classmethod
-    def get_transactions_list(cls, process_id='', full=True, page=1, per_page=10):
+    def get_transaction_list(cls, full=True, page=1, per_page=10):
         try:
-            url = f'{cls.api_endpoint}/transactions' if not process_id else \
-                  f'{cls.api_endpoint}/business_processes/{process_id}/transactions'
+            url = f'{cls.api_endpoint}/transactions'
+
             response = requests.get(url)
             subresult = cls.get_page(response.json()['transactions'], page, per_page)
 
             result = []
             for transaction in subresult:
                 transaction_obj = api_model.Transaction.from_json(transaction)
-                if full:
-                    transaction_obj.get_steps()
-                    transaction_obj.get_runs()
-                transaction_obj.process = cls.last_loaded_business_processes[transaction_obj.process_id].name
-                cls.last_loaded_transactions[transaction_obj.transaction_id] = transaction_obj
+
+                # Поживем пока без этого
+                # if full:
+                #    transaction_obj.get_steps()
+                #    transaction_obj.get_runs()
+                # transaction_obj.process = cls.last_loaded_business_processes[transaction_obj.process_id].name
+                # cls.last_loaded_transactions[transaction_obj.transaction_id] = transaction_obj
                 result.append(transaction_obj)
 
             return result
         except Exception as e:
-            print(f"[ERR] Can't get transactions list: {e}")
+            print(f"[ERR][get_transaction_list] Can't get transactions list: {e}")
             return []
 
     @classmethod
