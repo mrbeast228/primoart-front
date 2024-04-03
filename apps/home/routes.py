@@ -28,7 +28,11 @@ def route_template(template):
             template += '.html'
 
         # Detect the current page
+        # В переменную segment приезжает название страницы (соответствует шаблону в templates/home)
         segment = get_segment(request)
+        print(f"[DBG][route_template] segment: '{segment}'")
+
+
 
 
 
