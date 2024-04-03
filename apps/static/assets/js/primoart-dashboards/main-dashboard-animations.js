@@ -16,7 +16,8 @@ function clickServiceLink(buttonId, hiddenSpanId, elementToToggleId) {
             var hiddenIdValue = $("#" + hiddenSpanId).text(); // Get the ID value
             // Append the ID value to the href of the link inside the elementToToggle
             $("#" + elementToToggleId + " a").attr("href", function(i, originalHref) {
-                return "./sandbox-services.html?service_id=" + hiddenIdValue;
+                //console.log("[DBG][clickServiceLink] originalHref=" + originalHref);
+                return originalHref + "?service_id=" + hiddenIdValue;
             });
         }
 
@@ -43,7 +44,7 @@ function clickRobotLink(buttonId, hiddenSpanId, elementToToggleId) {
             var hiddenIdValue = $("#" + hiddenSpanId).text(); // Get the ID value
             // Append the ID value to the href of the link inside the elementToToggle
             $("#" + elementToToggleId + " a").attr("href", function(i, originalHref) {
-                return "./sandbox-robots.html?robot_id=" + hiddenIdValue;
+                return originalHref + "?robot_id=" + hiddenIdValue;
             });
         }
 
