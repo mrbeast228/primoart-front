@@ -235,7 +235,9 @@
                             <button class="btn btn-pill btn-outline-success btn-buffer" type="button">broken
                             </button>
 
-                            <button class="btn btn-pill btn-outline-success btn-buffer active" type="button">
+                            <button class="btn btn-pill btn-outline-success btn-buffer active" id="btn_debet_cards" type="button"
+                                    onclick="toggleVisibility('btn_debet_cards', 'service_link')"
+                            >
                                 Дебетовые карты
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Кредитные
@@ -259,7 +261,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="col-12 col-xl-12 px-xl-0 text-end">
+                    <div class="col-12 col-xl-12 px-xl-0 text-end" id="service_link">
                         <hr/>
                         <a href="./sandbox-services.html" class="text-info me-1">
                             <span class="small">Перейти к выбранному сервису</span>
@@ -474,7 +476,8 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
 
 <script>
     $(function() {
@@ -486,8 +489,6 @@
         heatmapchart.init();
 
         servicetimevserrchart.init();
-        scatterstatuschart.init();
-
     });
 </script>
 <script>
