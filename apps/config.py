@@ -9,6 +9,10 @@ class Config(object):
 
     basedir = os.path.abspath(os.path.dirname(__file__))
 
+    # API Connector
+    API_ENDPOINT = os.getenv('API_ENDPOINT', '127.0.0.1')
+    API_PORT = os.getenv('API_PORT', 8000)
+
     # Set up the App SECRET_KEY
     SECRET_KEY  = os.getenv('SECRET_KEY', None)
     if not SECRET_KEY:

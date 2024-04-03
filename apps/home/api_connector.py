@@ -56,12 +56,14 @@ class APIConnector(api_model.APIBase):
             url = f'{cls.api_endpoint}/services'
             response = requests.get(url)
             subresult = cls.get_page(response.json()['services'], page, per_page)
+            print(f"[DBG][get_services_list] subresult = '{subresult}'")
 
             result = []
             for service in subresult:
                 service_obj = api_model.Service.from_json(service)
-                if full:
-                    service_obj.get_business_processes()
+                # Пока прикомментил, но вероятно нам это не понадобится в будущем
+                #if full:
+                #    service_obj.get_business_processes()
                 cls.last_loaded_services[service_obj.service_id] = service_obj
                 result.append(service_obj)
 
