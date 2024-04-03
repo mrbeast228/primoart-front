@@ -55,12 +55,19 @@ class RouterHelper:
             ctx['transactions'] = APIConnector.get_transaction_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['transactions'] = '{ctx['transactions']}'")
 
+        elif template == 'mvp-transaction.html':
+            transaction_id = request.args.get('transaction_id', None, type=str)
+
+            ctx['transaction'] = APIConnector.get_transaction(transaction_id=transaction_id, full=False)
+            print(f"[DBG][create_context] ctx['transaction'] = '{ctx['transaction']}'")
+            ctx['runs'] = APIConnector.get_transaction_runs(transaction_id=transaction_id, page=page_number, per_page=per_page)
+            print(f"[DBG][create_context] ctx['runs'] = '{ctx['runs']}'")
+
+
         elif template == 'robot_list.html':
             ctx['robots'] = APIConnector.get_robots_list(page=page_number, per_page=per_page)
 
-        elif template == 'transaction_list.html':
-            process_id = request.args.get('process_id', None, type=str)
-            ctx['transactions'] = APIConnector.get_transactions_list(process_id, page=page_number, per_page=per_page)
+
 
         elif template == 'step_list.html':
             transaction_id = request.args.get('transaction_id', None, type=str)
