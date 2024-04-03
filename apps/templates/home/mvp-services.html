@@ -221,7 +221,8 @@
                                     {% endfor %}
                                 </div>
                             </div>
-                            <div class="col-12 col-xl-12 px-xl-0 text-end" style="display: none;" id="transaction_collapsable_link">
+                            <div class="col-12 col-xl-12 px-xl-0 text-end" style="display: none;"
+                                 id="transaction_collapsable_link">
                                 <hr/>
                                 <a href="./mvp-transaction.html" class="text-info me-1">
                                     <span class="small">Перейти к выбранной транзакции</span>
@@ -249,22 +250,24 @@
                             <div class="card-mid-buffer"></div>
                             <div class="col-12 col-xl-12 px-xl-0">
                                 <div class="d-none d-sm-block">
-                                    <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Москва
+                                    {% for robot in context.robots %}
+                                    <button class="btn btn-pill btn-outline-success btn-buffer btn-robot"
+                                            id="btn_robot_id_{{ robot.robot_id }}"
+                                            type="button"
+                                            onclick="clickRobotLink('btn_robot_id_{{ robot.robot_id }}', 'robot_id_{{ robot.robot_id}}', 'robot_collapsable_link')"
+                                    >
+                                        <span hidden id="robot_id_{{ robot.robot_id}}">{{ robot.robot_id }}</span>
+                                        {{ robot.name }}
                                     </button>
-                                    <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Питер
-                                    </button>
-                                    <button class="btn btn-pill btn-outline-success btn-buffer" type="button">
-                                        Ярославль
-                                    </button>
-                                    <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Сочи
-                                    </button>
-                                    <button class="btn btn-pill btn-outline-success btn-buffer" type="button">
-                                        Волгоград
-                                    </button>
-
-                                    <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">ЦОД
-                                    </button>
+                                    {% endfor %}
                                 </div>
+                            </div>
+                            <div class="col-12 col-xl-12 px-xl-0 text-end" style="display: none;"
+                                 id="robot_collapsable_link">
+                                <hr/>
+                                <a href="./mvp-robots.html" class="text-info me-1">
+                                    <span class="small">Перейти к выбранному роботу</span>
+                                </a>
                             </div>
                         </div>
                     </div>
