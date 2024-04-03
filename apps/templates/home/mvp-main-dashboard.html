@@ -18,6 +18,7 @@
     }
 
     .btn-service {} // Пустой класс для переключения селекторов
+    .btn-project {} // Пустой класс для переключения селекторов
 </style>
 
 
@@ -177,16 +178,16 @@
                     <div class="card-mid-buffer"></div>
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Выдача
-                                кредитов
+                            {% for project in context.projects %}
+                            <button class="btn btn-pill btn-outline-success btn-buffer btn-project"
+                                    id="btn_project_id_{{ project.project_id }}"
+                                    type="button"
+                                    onclick="clickProjectLink('btn_project_id_{{ project.project_id }}', 'service_id_{{ project.project_id}}', 'project_collapsable_link')"
+                            >
+                                <span hidden id="project_id_{{ project.project_id}}">{{ project.project_id }}</span>
+                                {{ project.name }}
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">
-                                Обслуживание счетов
-                            </button>
-
-                            <button class="btn btn-pill btn-outline-warning btn-buffer" type="button">
-                                Нагрузочные тесты
-                            </button>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -215,7 +216,7 @@
                             <button class="btn btn-pill btn-outline-success btn-buffer btn-service"
                                     id="btn_service_id_{{ service.service_id }}"
                                     type="button"
-                                    onclick="toggleCollapsableLink('btn_service_id_{{ service.service_id }}', 'service_id_{{ service.service_id}}', 'service_collapsable_link')"
+                                    onclick="clickServiceLink('btn_service_id_{{ service.service_id }}', 'service_id_{{ service.service_id}}', 'service_collapsable_link')"
                             >
                                 <span hidden id="service_id_{{ service.service_id}}">{{ service.service_id }}</span>
                                 {{ service.name }}

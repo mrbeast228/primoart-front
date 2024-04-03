@@ -1,4 +1,4 @@
-function toggleCollapsableLink(buttonId, hiddenSpanId, elementToToggleId) {
+function clickServiceLink(buttonId, hiddenSpanId, elementToToggleId) {
 
     // Кейс с повторно нажатой кнопкой, закрываем все что есть
     var isCurrentlyActive = $("#" + buttonId).hasClass('active');
@@ -21,6 +21,19 @@ function toggleCollapsableLink(buttonId, hiddenSpanId, elementToToggleId) {
         }
 
         $('.btn-service').removeClass('active');
+        $("#" + buttonId).addClass('active');
+    }
+}
+
+function clickProjectLink(buttonId, hiddenSpanId, elementToToggleId) {
+    // Кейс с повторно нажатой кнопкой, закрываем все что есть
+    var isCurrentlyActive = $("#" + buttonId).hasClass('active');
+
+    if(isCurrentlyActive) {
+        $('.btn-project').removeClass('active');
+        $("#" + elementToToggleId).hide();
+    } else {
+        $('.btn-project').removeClass('active');
         $("#" + buttonId).addClass('active');
     }
 }
