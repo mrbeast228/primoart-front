@@ -273,45 +273,44 @@
 
 <!-- Первый ряд диаграмм -->
 <div class="row mb-2 collapse show" id="firstRowCharts">
-    <div class="col-12 col-sm-12 col-xl-4">
-            <div class="card border-0 shadow card-fill-all-space">
-                <div class="card-body">
-                    <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к ошибкам выполнения</h2>
-                    <div class="card-mid-buffer"></div>
-                    <div>
-                        <canvas width="100%" height="75%" id="transactionTimeVsErrsChart01"></canvas>
-                    </div>
+    <div class="col-12 col-sm-12 col-xl-6 mb-2">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к ошибкам
+                    выполнения</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="35%" id="transactionTimeVsErrsChart01"></canvas>
                 </div>
             </div>
-    </div>
-
-    <div class="col-12 col-sm-12 col-xl-4">
-            <div class="card border-0 shadow card-fill-all-space">
-                <div class="card-body">
-                    <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
-                    <div class="card-mid-buffer"></div>
-                    <div>
-                        <canvas width="100%" height="75%" id="chartheatmap01"></canvas>
-                    </div>
-                </div>
-            </div>
-    </div>
-
-    <div class="col-12 col-sm-12 col-xl-4">
-            <div class="card border-0 shadow card-fill-all-space">
-                <div class="card-body">
-                    <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
-                    <div class="card-mid-buffer"></div>
-                    <div>
-                        <canvas width="100%" height="75%" id="chartTransactionPerf01"></canvas>
-                    </div>
-                </div>
-            </div>
+        </div>
     </div>
 
 
 
+    <div class="col-12 col-sm-12 col-xl-6 mb-2">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="35%" id="chartTransactionPerf01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="col-12 col-sm-12 col-xl-12">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                      <canvas width="100%" height="20%" id="chartHeatmap01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -348,6 +347,8 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-heatmap-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
 <script>
     $(function() {

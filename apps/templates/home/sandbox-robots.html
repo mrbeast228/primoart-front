@@ -212,223 +212,225 @@
 			</button>
 		</span>
     </div>
-    <div>
+</div>
 
-        <!-- Область карты  -->
-        <div class="row collapse show mb-2" id="mapRow">
-            <div class="col-12 col-sm-12 col-xl-12">
-                <div class="card border-0 shadow card-fill-all-space">
-                    <div class="card-body">
-                        <iframe width="100%"
-                                height="550"
-                                frameborder="0"
-                                scrolling="no"
-                                marginheight="0"
-                                marginwidth="0"
-                                src="http://www.openstreetmap.org/export/embed.html?bbox=79.84942674636841%2C6.899900944350287%2C79.85650777816772%2C6.90436374803887&amp;layers=ND"
-                                style="border: 1px solid black">
-                        </iframe>
-                    </div>
-                </div>
+<!-- Область карты  -->
+<div class="row collapse show mb-2" id="mapRow">
+    <div class="col-12 col-sm-12 col-xl-12">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <iframe width="100%"
+                        height="550"
+                        frameborder="0"
+                        scrolling="no"
+                        marginheight="0"
+                        marginwidth="0"
+                        src="http://www.openstreetmap.org/export/embed.html?bbox=79.84942674636841%2C6.899900944350287%2C79.85650777816772%2C6.90436374803887&amp;layers=ND"
+                        style="border: 1px solid black">
+                </iframe>
             </div>
         </div>
+    </div>
+</div>
 
 
-        <!-- Кнопка коллапса первого ряда диаграмм -->
-        <div class="row d-block d-xl-flex align-items-top">
-            <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
-                TODO, название для ряда
-                <span>
+<!-- Кнопка коллапса первого ряда диаграмм -->
+<div class="row d-block d-xl-flex align-items-top">
+    <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+        TODO, название для ряда
+        <span>
 			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button"
                     data-bs-toggle="collapse" data-bs-target="#firstRowCharts" aria-expanded="false"
                     aria-controls="firstRowCharts">
 			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
 			</button>
 		</span>
-            </div>
-            <div>
+    </div>
+</div>
 
-                <!-- Первый ряд диаграмм -->
-                <div class="row mb-2 collapse show" id="firstRowCharts">
-                    <div class="col-12 col-sm-12 col-xl-6">
-                        <div class="card border-0 shadow">
-                            <div class="card-body">
-                                <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
-                                <div class="card-mid-buffer"></div>
-                                <div>
-                                    <canvas width="100%" height="50%" id="chartTransactionPerf01"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-sm-12 col-xl-6">
-                        <div class="card border-0 shadow">
-                            <div class="card-body">
-                                <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
-                                <div class="card-mid-buffer"></div>
-                                <div>
-                                    <canvas width="100%" height="50%" id="chartheatmap01"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+<!-- Первый ряд диаграмм -->
+<div class="row mb-2 collapse show" id="firstRowCharts">
+    <div class="col-12 col-sm-12 col-xl-6">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="50%" id="chartTransactionPerf01"></canvas>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- Кнопка коллапса второго ряда диаграмм -->
-                <div class="row d-block d-xl-flex align-items-top">
-                    <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
-                        TODO, название для ряда
-                        <span>
+    <div class="col-12 col-sm-12 col-xl-6">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="50%" id="chartHeatmap01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Кнопка коллапса второго ряда диаграмм -->
+<div class="row d-block d-xl-flex align-items-top">
+    <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+        TODO, название для ряда
+        <span>
 			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button"
                     data-bs-toggle="collapse" data-bs-target="#secondRowCharts" aria-expanded="false"
                     aria-controls="secondRowCharts">
 			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
 			</button>
 		</span>
-                    </div>
-                    <div>
+    </div>
+</div>
 
-                        <!-- Второй ряд диаграмм -->
-                        <div class="row mb-5 collapse show" id="secondRowCharts">
-                            <div class="col-12 col-sm-12 col-xl-6">
-                                <div class="card border-0 shadow">
-                                    <div class="card-body">
-                                        <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к
-                                            ошибкам выполнения</h2>
-                                        <div class="card-mid-buffer"></div>
-                                        <div>
-                                            <canvas width="100%" height="50%"
-                                                    id="transactionTimeVsErrsChart01"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+<!-- Второй ряд диаграмм -->
+<div class="row mb-5 collapse show" id="secondRowCharts">
+    <div class="col-12 col-sm-12 col-xl-6">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к
+                    ошибкам выполнения</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="50%"
+                            id="transactionTimeVsErrsChart01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                            <div class="col-12 col-sm-12 col-xl-6">
-                                <div class="card border-0 shadow">
-                                    <div class="card-body">
-                                        <h2 class="h6 text-gray-400 mb-0">Распределение транзакций по статусу
-                                            выполнения</h2>
-                                        <div class="card-mid-buffer"></div>
-                                        <div>
-                                            <canvas width="100%" height="50%"
-                                                    id="transactionScatterChart01"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    <div class="col-12 col-sm-12 col-xl-6">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Распределение транзакций по статусу
+                    выполнения</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="50%"
+                            id="transactionScatterChart01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                        </div>
+</div>
 
-                        <!-- Кнопка коллапса таблицы событий -->
-                        <div class="row d-block d-xl-flex align-items-top">
-                            <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
-                                TODO, название для ряда
-                                <span>
+<!-- Кнопка коллапса таблицы событий -->
+<div class="row d-block d-xl-flex align-items-top">
+    <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+        TODO, название для ряда
+        <span>
 			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button"
                     data-bs-toggle="collapse" data-bs-target="#eventTable" aria-expanded="false"
                     aria-controls="eventTable">
 			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
 			</button>
 		</span>
-                            </div>
+    </div>
 
 
-                            <div class="row collapse show" id="eventTable">
-                                <div class="col-12 col-sm-12 col-xl-12 mb-12">
-                                    <div class="card border-0 shadow">
-                                        <div class="card-body">
-                                            <h2 class="h6 text-gray-400 mb-0">Последние события</h2>
-                                            <div class="card-mid-buffer"></div>
-                                            <div class="table-responsive">
-                                                <table class="table table-centered table-nowrap mb-0 rounded"
-                                                       id="dashboard-events">
-                                                    <thead>
-                                                    <tr>
-                                                        <th data-field="datetime">Время</th>
-                                                        <th data-field="severity">Критичность</th>
-                                                        <th data-field="event">Событие</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr class="table-danger">
-                                                        <td>26.03.2024 10:17:05</td>
-                                                        <td>Critical</td>
-                                                        <td class="fw-bold d-flex align-items-center">
-                                                            Транзакция&nbsp<a href="#"
-                                                                              class="text-info me-1">jolly</a>
-                                                            завершилась с ошибкой
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="table-info">
-                                                        <td>26.03.2024 10:15:13</td>
-                                                        <td>Information</td>
-                                                        <td class="fw-bold d-flex align-items-center">
-                                                            Транзакция&nbsp<a href="#"
-                                                                              class="text-info me-1">tested</a>
-                                                            выполнена успешно
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="table-info">
-                                                        <td>26.03.2024 09:47:28</td>
-                                                        <td>Information</td>
-                                                        <td class="fw-bold d-flex align-items-center">
-                                                            Транзакция&nbsp<a href="#"
-                                                                              class="text-info me-1">lamentable</a>
-                                                            выполнена успешно
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="table-info">
-                                                        <td>26.03.2024 07:52:32</td>
-                                                        <td>Information</td>
-                                                        <td class="fw-bold d-flex align-items-center">
-                                                            Транзакция&nbsp<a href="#"
-                                                                              class="text-info me-1">slimy</a>
-                                                            выполнена успешно
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="table-warning">
-                                                        <td>26.03.2024 06:16:09</td>
-                                                        <td>Warning</td>
-                                                        <td class="fw-bold d-flex align-items-center">
-                                                            Транзакция&nbsp<a href="#"
-                                                                              class="text-info me-1">clammy</a>
-                                                            превысила расчетное время выполнения
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
+    <div class="row collapse show" id="eventTable">
+        <div class="col-12 col-sm-12 col-xl-12 mb-12">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-0">Последние события</h2>
+                    <div class="card-mid-buffer"></div>
+                    <div class="table-responsive">
+                        <table class="table table-centered table-nowrap mb-0 rounded"
+                               id="dashboard-events">
+                            <thead>
+                            <tr>
+                                <th data-field="datetime">Время</th>
+                                <th data-field="severity">Критичность</th>
+                                <th data-field="event">Событие</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="table-danger">
+                                <td>26.03.2024 10:17:05</td>
+                                <td>Critical</td>
+                                <td class="fw-bold d-flex align-items-center">
+                                    Транзакция&nbsp<a href="#"
+                                                      class="text-info me-1">jolly</a>
+                                    завершилась с ошибкой
+                                </td>
+                            </tr>
+                            <tr class="table-info">
+                                <td>26.03.2024 10:15:13</td>
+                                <td>Information</td>
+                                <td class="fw-bold d-flex align-items-center">
+                                    Транзакция&nbsp<a href="#"
+                                                      class="text-info me-1">tested</a>
+                                    выполнена успешно
+                                </td>
+                            </tr>
+                            <tr class="table-info">
+                                <td>26.03.2024 09:47:28</td>
+                                <td>Information</td>
+                                <td class="fw-bold d-flex align-items-center">
+                                    Транзакция&nbsp<a href="#"
+                                                      class="text-info me-1">lamentable</a>
+                                    выполнена успешно
+                                </td>
+                            </tr>
+                            <tr class="table-info">
+                                <td>26.03.2024 07:52:32</td>
+                                <td>Information</td>
+                                <td class="fw-bold d-flex align-items-center">
+                                    Транзакция&nbsp<a href="#"
+                                                      class="text-info me-1">slimy</a>
+                                    выполнена успешно
+                                </td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>26.03.2024 06:16:09</td>
+                                <td>Warning</td>
+                                <td class="fw-bold d-flex align-items-center">
+                                    Транзакция&nbsp<a href="#"
+                                                      class="text-info me-1">clammy</a>
+                                    превысила расчетное время выполнения
+                                </td>
+                            </tr>
+                            </tbody>
 
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                            </div>
+    </div>
+</div>
 
+{% endblock content %}
 
-                            {% endblock content %}
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-heatmap-charts.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
 
-                            <!-- Specific Page JS goes HERE  -->
-                            {% block javascripts %}
+<script>
+    $(function() {
+        console.log("Page loaded!");
 
+        evenlisttable.init();
 
-                            <script>
-                                $(function() {
-                                    console.log("Page loaded!");
+        performancechart.init();
+        heatmapchart.init();
 
-                                    evenlisttable.init();
+        servicetimevserrchart.init();
+        scatterstatuschart.init();
 
-                                    performancechart.init();
-                                    heatmapchart.init();
-
-                                    servicetimevserrchart.init();
-                                    scatterstatuschart.init();
-
-                                });
-                            </script>
-                            <script>
-                            </script>
-                            {% endblock javascripts %}
+    });
+</script>
+<script>
+</script>
+{% endblock javascripts %}
