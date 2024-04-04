@@ -246,7 +246,7 @@ performancechart = {
     }
 }
 
-heatmapchart = {
+heatmapchart2 = {
 
     init: function() {
 
