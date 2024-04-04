@@ -162,3 +162,34 @@ def route_template(template):
 
     except:
         return render_template('home/page-500.html'), 500
+
+
+@blueprint.route('/data/projects')
+@login_required
+def r_data_projects():
+    return [{"a": 1}, {"b": 2}, {"c": 3}]
+
+@blueprint.route('/data/services')
+@login_required
+def r_data_services():
+    return [{"a": 1}, {"b": 2}, {"c": 3}]
+
+@blueprint.route('/data/robots')
+@login_required
+def r_data_robots():
+    return [{"a": 1}, {"b": 2}, {"c": 3}]
+
+@blueprint.route('/data/transactions')
+@login_required
+def r_data_transactions():
+    return [{"a": 1}, {"b": 2}, {"c": 3}]
+
+@blueprint.route('/data/steps')
+@login_required
+def r_data_steps():
+    return [{"a": 1}, {"b": 2}, {"c": 3}]
+
+@blueprint.route('/data/runs')
+@login_required
+def r_data_runs():
+    return [{"a": 1}, {"b": 2}, {"c": 3}]
