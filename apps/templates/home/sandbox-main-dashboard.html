@@ -115,7 +115,7 @@
                             &nbsp;Москва
                         </small>
                         <div class="small d-flex mt-1">
-                            <div>Изменение относительно прошлого месяца
+                            <div>Изменение относительно прошлого периода
                                 <svg class="icon icon-xs text-success" fill="currentColor" viewBox="0 0 20 20"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -131,6 +131,7 @@
         </div>
     </div>
 
+
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow card-fill-all-space">
             <div class="card-body">
@@ -143,11 +144,11 @@
                         <div class="d-flex align-items-center text-gray-500">
                             <div>
                                 При целевом показателе
-                                <span class="text-tertiary fw-bolder">99.9%</span>
+                                <span class="text-success fw-bolder">99.9%</span>
                             </div>
                         </div>
                         <div class="small d-flex mt-1">
-                            <div>Тренд на конец дня убывающий к
+                            <div>Тренд на конец дня - убывающий к
                                 <svg class="icon icon-xs text-danger" fill="currentColor" viewBox="0 0 20 20"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -169,14 +170,47 @@
                 <div class="row d-block d-xl-flex align-items-center">
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0">TODO, Верхнеуровневая аналитика</h2>
+                            <h2 class="h6 text-gray-400 mb-0">ТОП плохих сервисов</h2>
+                            <div class="table-responsive">
+                                <table class="table table-centered table-nowrap mb-0 rounded"
+                                       id="top-bad-services">
+                                    <thead>
+                                    <tr>
+                                        <th data-field="service">Сервис</th>
+                                        <th class="table-info" data-field="runs">Запуски</th>
+                                        <th class="table-secondary" data-field="timeouts">Таймауты</th>
+                                        <th class="table-danger" data-field="errors">Ошибки</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Ипотечные кредиты</td>
+                                        <td><span class="text-info">568</span></td>
+                                        <td><span class="text-secondary">37</span></td>
+                                        <td><span class="text-danger">18</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Онлайн-банкинг</td>
+                                        <td><span class="text-info">140</span></td>
+                                        <td><span class="text-secondary">76</span></td>
+                                        <td><span class="text-danger">24</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Нагрузочные тесты</td>
+                                        <td><span class="text-info">5075</span></td>
+                                        <td><span class="text-secondary">352</span></td>
+                                        <td><span class="text-danger">1554</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
 </div>
 
 <!-- Область селекторов -->
@@ -244,7 +278,8 @@
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
                                 Микрозайм
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">whole
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
+                                whole
                             </button>
 
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
@@ -253,14 +288,18 @@
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
                                 hissing
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">kind
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
+                                kind
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">tested
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
+                                tested
                             </button>
-                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">broken
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
+                                broken
                             </button>
 
-                            <button class="btn btn-pill btn-outline-success btn-buffer btn-service active" type="button"
+                            <button class="btn btn-pill btn-outline-success btn-buffer btn-service active"
+                                    type="button"
                                     id="btn_debet_cards"
                                     onclick="clickServiceLink('btn_debet_cards', 'id_debet_cards', 'service_link')"
                             >
