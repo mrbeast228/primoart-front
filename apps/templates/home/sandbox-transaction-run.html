@@ -15,345 +15,388 @@
 
 <!-- Хлебокрошки  -->
 <div class="py-4">
-	<nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-		<ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-			<li class="breadcrumb-item">
-				<a href="./sandbox-main-dashboard.html">
-					<svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-						></path>
-					</svg>
-				</a>
-			</li>
-			<li class="breadcrumb-item"><a href="./sandbox-services.html">Сервисы</a></li>
-			<li class="breadcrumb-item"><a href="./sandbox-services.html">Дебетовые карты</a></li>
-			<li class="breadcrumb-item">Транзакции</li>
-			<li class="breadcrumb-item"><a href="#">Тестовая транзакция</a></li>
-		</ol>
-	</nav>
+    <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+        <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+            <li class="breadcrumb-item">
+                <a href="./sandbox-main-dashboard.html">
+                    <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                        ></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="breadcrumb-item"><a href="./sandbox-services.html">Сервисы</a></li>
+            <li class="breadcrumb-item"><a href="./sandbox-services.html">Дебетовые карты</a></li>
+            <li class="breadcrumb-item">Транзакции</li>
+            <li class="breadcrumb-item"><a href="#">Тестовая транзакция</a></li>
+        </ol>
+    </nav>
 </div>
 
 <!-- Фильтр  -->
 <div class="row d-block d-xl-flex align-items-top">
-	<div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
+    <div class="col-1 col-xl-1 px-xl-0 offset-md-11 text-end mb-2">
 		<span>
-			<button class="btn btn-icon-only btn-outline-tertiary d-inline-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+			<button class="btn btn-icon-only btn-outline-tertiary d-inline-flex align-items-center" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false"
+                    aria-controls="collapseFilter">
 			  <i>{{font_awesome.render_icon("fas fa-xl fa-filter")}}</i>
 			</button>
 		</span>
-	</div>
-<div>
+    </div>
+</div>
 
 <div class="row mb-4 collapse show" id="collapseFilter">
-	<div class="col-12 col-sm-12 col-xl-12">
-		<div class="card border-0 shadow">
-			<div class="card-body">
-				<div class="row d-block d-xl-flex align-items-top">
-					<div class="col-2 col-xl-2 px-xl-0 ">
-						<div class="input-group mb-2">
+    <div class="col-12 col-sm-12 col-xl-12">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-top">
+                    <div class="col-2 col-xl-2 px-xl-0 ">
+                        <div class="input-group mb-2">
                                <span class="input-group-text fw-extrabold">
                                       Робот&nbsp;&nbsp;
                                   </span>
-							<select class="form-select" id="robot" aria-label="Default select example">
-								<option selected>Все роботы</option>
-								<option value="1">Москва</option>
-								<option value="2">Питер</option>
-								<option value="3">Ярославль</option>
-								<option value="4">Сочи</option>
-								<option value="5">Волгоград</option>
-								<option value="6">ЦОД</option>
-							</select>
-						</div>
-						<div class="input-group ">
+                            <select class="form-select" id="robot" aria-label="Default select example">
+                                <option selected>Все роботы</option>
+                                <option value="1">Москва</option>
+                                <option value="2">Питер</option>
+                                <option value="3">Ярославль</option>
+                                <option value="4">Сочи</option>
+                                <option value="5">Волгоград</option>
+                                <option value="6">ЦОД</option>
+                            </select>
+                        </div>
+                        <div class="input-group ">
                                <span class="input-group-text fw-extrabold">
                                       Статус
                                   </span>
-							<select class="form-select" id="status" aria-label="Default select example">
-								<option selected>Все</option>
-								<option value="1">OK</option>
-								<option value="2">Failed</option>
-							</select>
-						</div>
-					</div>
+                            <select class="form-select" id="status" aria-label="Default select example">
+                                <option selected>Все</option>
+                                <option value="1">OK</option>
+                                <option value="2">Failed</option>
+                            </select>
+                        </div>
+                    </div>
 
-					<div class="col-2 col-xl-2 px-xl-0 offset-md-1">
-							<div class="input-group mb-2">
+                    <div class="col-2 col-xl-2 px-xl-0 offset-md-1">
+                        <div class="input-group mb-2">
                                <span class="input-group-text fw-extrabold">
                                       Длительность от, с&nbsp;
                                   </span>
-								<input class="form-control" id="duration-from" type="number" min="0" placeholder="" required />
-							</div>
-							<div class="input-group">
+                            <input class="form-control" id="duration-from" type="number" min="0" placeholder=""
+                                   required/>
+                        </div>
+                        <div class="input-group">
                                <span class="input-group-text fw-extrabold">
                                       Длительность до, с
                                   </span>
-								<input class="form-control" id="duration-to" type="number" min="0" placeholder="" required />
-							</div>
-					</div>
+                            <input class="form-control" id="duration-to" type="number" min="0" placeholder=""
+                                   required/>
+                        </div>
+                    </div>
 
-					<div class="col-3 col-xl-3 px-xl-0 offset-md-1">
-							<div class="input-group mb-2">
+                    <div class="col-3 col-xl-3 px-xl-0 offset-md-1">
+                        <div class="input-group mb-2">
                                <span class="input-group-text fw-extrabold">
                                       Начало&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                   </span>
-								<input class="form-control" id="start-date" type="date" placeholder="dd/mm/yyyy" required />
-								<input class="form-control" id="start-time" type="time" required />
-							</div>
-							<div class="input-group">
+                            <input class="form-control" id="start-date" type="date" placeholder="dd/mm/yyyy"
+                                   required/>
+                            <input class="form-control" id="start-time" type="time" required/>
+                        </div>
+                        <div class="input-group">
                                <span class="input-group-text fw-extrabold">
                                       Завершение
                                   </span>
-								<input class="form-control" id="finish-date" type="date" placeholder="dd/mm/yyyy" required />
-								<input class="form-control" id="finish-time" type="time" required />
-							</div>
-					</div>
+                            <input class="form-control" id="finish-date" type="date" placeholder="dd/mm/yyyy"
+                                   required/>
+                            <input class="form-control" id="finish-time" type="time" required/>
+                        </div>
+                    </div>
 
-				</div>
+                </div>
 
-				<div class="row d-block d-xl-flex align-items-top">
-					<div class="col-1 col-xl-1 px-xl-0 offset-md-11">
-						<button class="btn btn-tertiary" type="button">Применить</button>
-					</div>
-				<div>
-			</div>
-		</div>
-			</div>
-		</div>
-	</div>
+                <div class="row d-block d-xl-flex align-items-top">
+                    <div class="col-1 col-xl-1 px-xl-0 offset-md-11">
+                        <button class="btn btn-tertiary" type="button">Применить</button>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Область бизнес показателей  -->
+<div class="row mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-center">
+                    <div class="col-12 col-xl-12 px-xl-0">
+                        <div class="d-none d-sm-block">
+                            <h2 class="h6 text-gray-400 mb-0">SLA сервиса <span
+                                    сlass="fw-extrabold">Дебетовые карты</span>
+                            </h2>
+                            <h3 class="fw-extrabold text-success mb-2">97.34%</h3>
+                        </div>
+                        <small class="d-flex align-items-center text-gray-500">
+                            01.03.2024 - 31.03.2024,&nbsp;
+                            <i>{{font_awesome.render_icon("fas fa-globe")}}</i>
+                            &nbsp;Москва
+                        </small>
+                        <div class="small d-flex mt-1">
+                            <div>Изменение относительно прошлого месяца
+                                <svg class="icon icon-xs text-warning" fill="currentColor" viewBox="0 0 20 20"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                          clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-warning fw-bolder">0.5%</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-center">
+                    <div class="col-12 col-xl-12 px-xl-0">
+                        <div class="d-none d-sm-block">
+                            <h2 class="h6 text-gray-400 mb-0">Дневной SLA</h2>
+                            <h3 class="fw-extrabold text-warning mb-2">98.34%</h3>
+                        </div>
+                        <div class="d-flex align-items-center text-gray-500">
+                            <div>
+                                При целевом показателе
+                                <span class="text-success fw-bolder">99.9%</span>
+                            </div>
+                        </div>
+                        <div class="small d-flex mt-1">
+                            <div>Тренд на конец дня - убывающий к
+                                <svg class="icon icon-xs text-danger" fill="currentColor" viewBox="0 0 20 20"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                          clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-danger fw-bolder">95.3%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-6">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400">Сводная информация по выполнению</h2>
+                <table class="table" id="">
+                    <thead class=" text-primary">
+                    <tr>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <span class="fw-extrabold">Локации/Роботы</span>
+                        </td>
+                        <td>
+                            <div class="small mt-1">
+                                Робот <span class=" fw-extrabold text-tertiary">Москва</span> выполняет транзакцию<br>на <span
+                                    class="text-danger fw-bolder">5%</span> быстрее других роботов
+                                <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
+                                    fa-info-circle")}}</i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-extrabold">Время выполнения, сек</span>
+                        </td>
+                        <td>
+                            <div><span class="small mb-2">Минимальное: </span><span class="fw-extrabold mb-2">25.7</span></div>
+                            <div><span class="small mb-2">Среднее: </span><span class="fw-extrabold mb-2">59.6</span></div>
+                            <div><span class="small mb-2">Максимальное: </span><span class="fw-extrabold mb-2">120.6</span></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <!-- Верхний ряд диаграмм  -->
 <div class="row mb-2">
     <div class="col-8 col-xl-8 col-md-12 mb-2">
-		<div class="row mb-2">
-			<div class="col-12 col-xl-12 col-md-12 mb-2">
-				<div class="card border-0 shadow card-fill-all-space">
-					<div class="card-body">
-						<h2 class="h6 text-gray-400">Распределение времени выполнения транзакции</h2>
-						<div class="card-mid-buffer"></div>
-						<div>
-							<canvas width="100%" height="25%" id="transactionRunBarChart01"></canvas>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-6 col-xl-6 col-md-12">
-				<div class="card border-0 shadow card-fill-all-space">
-					<div class="card-body">
-						<h2 class="h6 text-gray-400">Статус выполнения транзакции</h2>
-						<div class="card-mid-buffer"></div>
-						<div>
-							<canvas width="100%" height="55%" id="transactionRunHorizontalChart01"></canvas>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-6 col-xl-6 col-md-12">
-				<div class="card border-0 shadow card-fill-all-space">
-					<div class="card-body">
-						<h2 class="h6 text-gray-400">TODO, место для диаграммы</h2>
-						<div class="card-mid-buffer"></div>
-					</div>
-				</div>
-			</div>
-		</div>
+        <div class="row mb-2">
+            <div class="col-12 col-xl-12 col-md-12 mb-2">
+                <div class="card border-0 shadow card-fill-all-space">
+                    <div class="card-body">
+                        <h2 class="h6 text-gray-400">Распределение времени выполнения транзакции</h2>
+                        <div class="card-mid-buffer"></div>
+                        <div>
+                            <canvas width="100%" height="25%" id="transactionRunBarChart01"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-xl-6 col-md-12">
+                <div class="card border-0 shadow card-fill-all-space">
+                    <div class="card-body">
+                        <h2 class="h6 text-gray-400">Статус выполнения транзакции</h2>
+                        <div class="card-mid-buffer"></div>
+                        <div>
+                            <canvas width="100%" height="55%" id="transactionRunHorizontalChart01"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-xl-6 col-md-12">
+                <div class="card border-0 shadow card-fill-all-space">
+                    <div class="card-body">
+                        <h2 class="h6 text-gray-400">Распределение по статусу выполнения</h2>
+                        <div class="card-mid-buffer"></div>
+                        <div>
+                            <canvas width="100%" height="25%" id="transactionScatterChart01"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="col-4 col-xl-4 col-md-12 mb-2">
         <div class="card border-0 shadow card-fill-all-space">
             <div class="card-body">
                 <h2 class="h6 text-gray-400">Сводная информация по выполнению</h2>
-                <table class="table" id="">
-                    <thead class=" text-primary">
-                        <tr>
-                            <th>
-                            </th>
-                            <th>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <span class="fw-extrabold">Локация/Робот</span>
-                            </td>
-                            <td>
-                                <span class="fw-bold mb-2">Москва, офис заместителя</span>
-                                <div class="small mt-1">
-                                    Этот робот выполняет транзакцию<br>на <span class="text-danger fw-bolder">5%</span> медленнее других
-                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="fw-extrabold">Время выполнения</span>
-                            </td>
-                            <td>
-                                <span class="fw-bold text-success mb-2">25 секунд</span>
-                                <div class="small mt-1">
-                                    В пределах допустимого диапазона
-                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
-                                </div>
-                                <div class="small mt-1">
-                                    На <span class="text-success fw-bolder">10%</span> быстрее среднего за сегодня
-                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr >
-                            <td>
-                                <span class="fw-extrabold">Количество шагов</span>
-                            </td>
-                            <td>
-                                <span class="fw-bold text-primary mb-2">5 Всего</span>
-                                <span>&nbsp;/&nbsp;</span>
-                                <span></span><span class="fw-bold text-success mb-2">4 Success</span>
-                                <span>&nbsp;/&nbsp;</span>
-                                <span class="fw-bold text-danger mb-2">1 Failed</span>
-                                <div class="small mt-1">
-                                    Ошибки при выполнении этой транзакции <br>возникают в <span class="text-danger fw-bolder">3%</span> запусков
-                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="fw-extrabold">Начало транзакции</span>
-                            </td>
-                            <td>
-                                <span class="fw-bold text-text-primary mb-2">12.02.2024 17:48:00</span>
-                            </td>
-                        </tr>
-                       <tr>
-                            <td>
-                                <span class="fw-extrabold">Завершение транзакции</span>
-                            </td>
-                            <td>
-                                <span class="fw-bold text-text-primary mb-2">12.02.2024 17:48:25</span>
-                            </td>
-                        </tr>
-                       <tr>
-                            <td>
-                                <span class="fw-extrabold">Лог</span>
-                            </td>
-                            <td>
-                                <i>{{font_awesome.render_icon("fas fa-lg fa-file-text")}}</i>
-                            </td>
-                        </tr>
-                       <tr>
-                            <td>
-                                <span class="fw-extrabold">Скриншот</span>
-                            </td>
-                            <td>
-                                <i>{{font_awesome.render_icon("fas fa-lg fa-image")}}</i>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div>
+                    <canvas width="100%" height="100%" id="transactionStepFailChart01"></canvas>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
-
 <div class="row">
-	<div class="col-md-12">
-		<div class="card">
-			<div class="card-body">
-				<h2 class="h6 text-gray-400">Выполненные транзакции</h2>
-				<div class="table-responsive">
-					<table class="table tablesorter" id="">
-						<thead class="text-primary">
-							<tr>
-								<th>
-									Время выполнения
-								</th>
-								<th>
-									Робот/Локация
-								</th>
-								<th>
-									Транзакция
-								</th>
-								<th>
-									Статус
-								</th>
-								<th>
-									# Шагов успешно выполненных
-								</th>
-								<th>
-									Длительность
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="table-danger">
-								<div>
-									<td >
-										<a href="./sandbox-step-run.html" class="text-info me-1">12.02.2024 17:48 - 12.02.2024 17:50</a>
-									</td>
-									<td>
-										Москва, офис заместителя
-									</td>
-									<td>
-										TR-010
-									</td>
-									<td>
-										<span class="text-danger fw-bolder">Failed</span>
-									</td>
-									<td>
-										3/4
-									</td>
-									<td>
-										120 c
-									</td>
-								</div>
-							</tr>
-							<tr>
-								<div>
-									<td>
-										<a href="#" class="text-info me-1">12.02.2024 18:30 - 12.02.2024 18:35</a>
-									</td>
-									<td>
-										Питер, офис помощника
-									</td>
-									<td>
-										TR-010
-									</td>
-									<td>
-										<span class="text-success fw-bolder">Success</span>
-									</td>
-									<td>
-										4/4
-									</td>
-									<td>
-										140 c
-									</td>
-								</div>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400">Выполненные транзакции</h2>
+                <div class="table-responsive">
+                    <table class="table tablesorter" id="">
+                        <thead class="text-primary">
+                        <tr>
+                            <th>
+                                Время выполнения
+                            </th>
+                            <th>
+                                Робот/Локация
+                            </th>
+                            <th>
+                                Транзакция
+                            </th>
+                            <th>
+                                Статус
+                            </th>
+                            <th>
+                                # Шагов успешно выполненных
+                            </th>
+                            <th>
+                                Длительность
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="table-danger">
+                            <div>
+                                <td>
+                                    <a href="./sandbox-step-run.html" class="text-info me-1">12.02.2024 17:48 -
+                                        12.02.2024 17:50</a>
+                                </td>
+                                <td>
+                                    Москва, офис заместителя
+                                </td>
+                                <td>
+                                    TR-010
+                                </td>
+                                <td>
+                                    <span class="text-danger fw-bolder">Failed</span>
+                                </td>
+                                <td>
+                                    3/4
+                                </td>
+                                <td>
+                                    120 c
+                                </td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div>
+                                <td>
+                                    <a href="#" class="text-info me-1">12.02.2024 18:30 - 12.02.2024 18:35</a>
+                                </td>
+                                <td>
+                                    Питер, офис помощника
+                                </td>
+                                <td>
+                                    TR-010
+                                </td>
+                                <td>
+                                    <span class="text-success fw-bolder">Success</span>
+                                </td>
+                                <td>
+                                    4/4
+                                </td>
+                                <td>
+                                    140 c
+                                </td>
+                            </div>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-heatmap-charts.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
 <script>
-	$(function() {
-	    console.log("Page loaded!");
+    $(function() {
+        console.log("Page loaded!");
 
-	    transactionrunbarchart.init();
-	    transactionrunhorizontalchart.init();
-	});
+        transactionrunbarchart.init();
+        transactionrunhorizontalchart.init();
+
+        scatterstatuschart.init();
+
+        steprunfailchart.init();
+    });
 </script>
 {% endblock javascripts %}

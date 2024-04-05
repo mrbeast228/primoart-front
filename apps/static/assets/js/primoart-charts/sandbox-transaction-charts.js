@@ -177,6 +177,68 @@ steprunbarchart = {
     }
 }
 
+steprunfailchart = {
+
+    init: function() {
+
+        const labels = ["DNS Lookup", "Connection", "SSL Handshake", "First Byte", "Content Transfer"]
+
+        const data = {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Количество ошибок шага транзакции',
+              data: [1, 4, 3, 12,45],
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 99, 132)'
+                ]
+            }
+          ]
+        };
+
+        console.log(data);
+
+        const config = {
+          type: 'bar',
+          data: data,
+          options: {
+            indexAxis: 'y',
+            // Elements options apply to all of the options unless overridden in a dataset
+            // In this case, we are setting the border of each horizontal bar to be 2px wide
+            elements: {
+              bar: {
+                borderWidth: 2,
+              }
+            },
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: false,
+                text: ''
+              }
+            }
+          },
+        };
+
+        var ctx = document.getElementById("transactionStepFailChart01").getContext("2d");
+        var floatingChart = new Chart(ctx, config);
+    }
+}
+
 performancechart = {
 
     init: function() {
