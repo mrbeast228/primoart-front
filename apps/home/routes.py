@@ -164,9 +164,27 @@ def route_template(template):
         return render_template('home/page-500.html'), 500
 
 
-@blueprint.route('/data/projects')
+@blueprint.route('/data/projects/get')
 @login_required
-def r_data_projects():
+def r_data_projects_get():
+    return [{"a": 1}, {"b": 2}, {"c": 3}]
+
+@blueprint.route('/data/projects/add', methods=["POST"])
+@login_required
+def r_data_projects_add():
+    params = request.values
+    print(f"[DBG][r_data_projects_add] params: {params}")
+
+    return params
+
+@blueprint.route('/data/projects/edit')
+@login_required
+def r_data_projects_edit():
+    return [{"a": 1}, {"b": 2}, {"c": 3}]
+
+@blueprint.route('/data/projects/delete')
+@login_required
+def r_data_projects_delete():
     return [{"a": 1}, {"b": 2}, {"c": 3}]
 
 @blueprint.route('/data/services')

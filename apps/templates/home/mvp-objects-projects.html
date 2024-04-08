@@ -220,11 +220,12 @@
                     </div>
                 </div>
             </div>
-            <!-- Edit Modal HTML -->
+
+            <!-- Add Modal HTML -->
             <div id="addProjectModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form>
+                        <form id="addProjectForm" method="POST">
                             <div class="modal-header">
                                 <h4 class="modal-title">Новый проект</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -234,19 +235,19 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Проект</label>
-                                    <input type="text" class="form-control" required>
+                                    <input type="text" class="form-control" name="name" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Описание</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" name="description">
                                 </div>
                                 <div class="form-group">
                                     <label>Целевой SLA</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" name="target_sla">
                                 </div>
                                 <div class="form-group">
                                     <label>Владелец</label>
-                                    <input type="text" class="form-control" required>
+                                    <input type="text" class="form-control" name="owner" required>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -319,6 +320,7 @@
     </div>
 </div>
 
+<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
 
 {% endblock content %}
 
@@ -346,6 +348,18 @@
         checkbox.click(function(){
             if(!this.checked){
                 $("#selectAll").prop("checked", false);
+            }
+        });
+    });
+
+    $('#addProjectForm').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            url: '/data/projects/add',
+            type: 'post',
+            data:$('#addProjectForm').serialize(),
+            success:function(){
+                location.reload();
             }
         });
     });
