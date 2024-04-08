@@ -289,53 +289,53 @@
 			</button>
 		</span>
     </div>
-    <div>
+</div>
 
-        <!-- Первый ряд диаграмм -->
-        <div class="row mb-2 collapse show" id="firstRowCharts">
-            <div class="col-12 col-sm-12 col-xl-4">
-                <div class="card border-0 shadow card-fill-all-space">
-                    <div class="card-body">
-                        <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к ошибкам
-                            выполнения</h2>
-                        <div class="card-mid-buffer"></div>
-                        <div>
-                            <canvas width="100%" height="75%" id="transactionTimeVsErrsChart01"></canvas>
-                        </div>
-                    </div>
+<!-- Первый ряд диаграмм -->
+<div class="row mb-2 collapse show" id="firstRowCharts">
+    <div class="col-12 col-sm-12 col-xl-4">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к ошибкам
+                    выполнения</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="75%" id="transactionTimeVsErrsChart01"></canvas>
                 </div>
             </div>
-
-            <div class="col-12 col-sm-12 col-xl-4">
-                <div class="card border-0 shadow card-fill-all-space">
-                    <div class="card-body">
-                        <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
-                        <div class="card-mid-buffer"></div>
-                        <div>
-                            <canvas width="100%" height="75%" id="chartheatmap01"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-sm-12 col-xl-4">
-                <div class="card border-0 shadow card-fill-all-space">
-                    <div class="card-body">
-                        <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
-                        <div class="card-mid-buffer"></div>
-                        <div>
-                            <canvas width="100%" height="75%" id="chartTransactionPerf01"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
         </div>
+    </div>
 
-        <!-- Кнопка фильтра второго ряда диаграмм -->
-        <div class="row d-block d-xl-flex align-items-top">
-            <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+    <div class="col-12 col-sm-12 col-xl-4">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="75%" id="chartheatmap01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-12 col-xl-4">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="75%" id="chartTransactionPerf01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Кнопка фильтра второго ряда диаграмм -->
+<div class="row d-block d-xl-flex align-items-top">
+    <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
 		<span>
             TODO, название для ряда
 			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button"
@@ -344,44 +344,44 @@
 			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
 			</button>
 		</span>
-            </div>
-            <div>
+    </div>
+</div>
 
-                <!-- Второй ряд диаграмм -->
-                <div class="row mb-5 collapse show" id="secondRowCharts">
+<!-- Второй ряд диаграмм -->
+<div class="row mb-5 collapse show" id="secondRowCharts">
 
-                    <div class="col-12 col-sm-12 col-xl-6">
-                        <div class="card border-0 shadow">
-                            <div class="card-body">
-                                <h2 class="h6 text-gray-400 mb-0">Распределение транзакций по статусу
-                                    выполнения</h2>
-                                <div class="card-mid-buffer"></div>
-                                <div>
-                                    <canvas width="100%" height="50%" id="transactionScatterChart01"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+    <div class="col-12 col-sm-12 col-xl-6">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Распределение транзакций по статусу
+                    выполнения</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="50%" id="transactionScatterChart01"></canvas>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                {% endblock content %}
+</div>
 
-                <!-- Specific Page JS goes HERE  -->
-                {% block javascripts %}
-                <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
-                <script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
 
 
-                <script>
-                    $(function() {
-                        console.log("Page loaded!");
+<script>
+    $(function() {
+        console.log("Page loaded!");
 
-                        performancechart.init();
-                        heatmapchart.init();
+        performancechart.init();
+        heatmapchart.init();
 
-                        servicetimevserrchart.init();
-                        scatterstatuschart.init();
-                    });
-                </script>
-                {% endblock javascripts %}
+        servicetimevserrchart.init();
+        scatterstatuschart.init();
+    });
+</script>
+{% endblock javascripts %}
