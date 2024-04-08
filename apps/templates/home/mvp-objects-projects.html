@@ -196,25 +196,27 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox1" name="options[]" value="1">
-								<label for="checkbox1"></label>
-							</span>
-                                </td>
-                                <td>Тестовый процесс</td>
-                                <td>Процесс для тестирования роботов</td>
-                                <td>99.5%</td>
-                                <td>Maxim Demichev</td>
-                                <td>01.01.1970</td>
-                                <td>
-                                    <a href="#editProjectModal" class="edit ms-1 me-1" data-toggle="modal"><i>{{font_awesome.render_icon("fas
-                                        fa-pencil")}}</i></a>
-                                    <a href="#deleteProjectModal" class="delete ms-1 me-1" data-toggle="modal"><i>{{font_awesome.render_icon("fas
-                                        fa-trash")}}</i></a>
-                                </td>
-                            </tr>
+                                {% for project in context.projects %}
+                                    <tr>
+                                        <td>
+                                    <span class="custom-checkbox">
+                                        <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                                        <label for="checkbox1"></label>
+                                    </span>
+                                        </td>
+                                        <td>{{ project.name }}</td>
+                                        <td>{{ project.description }}</td>
+                                        <td>99.5%</td>
+                                        <td>{{ project.created_by }}</td>
+                                        <td>{{ project.created_datetime }}</td>
+                                        <td>
+                                            <a href="#editProjectModal" class="edit ms-1 me-1" data-toggle="modal"><i>{{font_awesome.render_icon("fas
+                                                fa-pencil")}}</i></a>
+                                            <a href="#deleteProjectModal" class="delete ms-1 me-1" data-toggle="modal"><i>{{font_awesome.render_icon("fas
+                                                fa-trash")}}</i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

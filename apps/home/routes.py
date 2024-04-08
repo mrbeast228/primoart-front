@@ -9,6 +9,7 @@ from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 
 from apps.home.api_connector import APIConnector
+from apps.home.api_model import *
 
 class RouterHelper:
     @staticmethod
@@ -41,6 +42,10 @@ class RouterHelper:
             print(f"[DBG][create_context] ctx['projects'] = '{ctx['projects']}'")
             ctx['robots'] = APIConnector.get_robots_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['robots'] = '{ctx['robots']}'")
+
+        elif template == 'mvp-objects-projects.html':
+            ctx['projects'] = APIConnector.get_business_processes_list(page=page_number, per_page=per_page)
+            print(f"[DBG][create_context] ctx['projects'] = '{ctx['projects']}'")
 
 
         elif template == 'mvp-services.html':
@@ -175,7 +180,16 @@ def r_data_projects_add():
     params = request.values
     print(f"[DBG][r_data_projects_add] params: {params}")
 
-    return params
+    name = params["name"]
+    description = params["description"]
+    target_sla = params["target_sla"]
+    owner = params["owner"]
+
+    result = BusinessProcess.add(name, description, owner)
+
+    print(f"[DBG][r_data_projects_add] result: {result}")
+
+    return result
 
 @blueprint.route('/data/projects/edit')
 @login_required

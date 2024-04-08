@@ -250,17 +250,45 @@ class Transaction(APIBase):
 @dataclass
 class BusinessProcess(APIBase):
     process_id: uuid.UUID
-    service_id: uuid.UUID
     name: str
     description: str
     created_datetime: datetime.datetime
     created_by: str
-    state: str
 
     transactions: Optional[list] = field(default=None, init=False)
     transactions_count: Optional[int] = field(default=None, init=False)
     sla_history: Optional[list] = field(default=None, init=False)
     service: Optional[str] = field(default=None, init=False)
+
+
+    @staticmethod
+    def add(name, description, created_by):
+        try:
+            url = f'{APIBase.api_endpoint}/processes'
+            json_data = {
+                "processes": [
+                    {
+                        "name": name,
+                        "description": description,
+                        "createdby": created_by
+                    }
+                ]
+            }
+
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            response = requests.post(url, json=json_data, headers=headers)
+            result = response.json()
+
+            print(f"[DBG][BusinessProcess/add] response: {response}")
+
+            return result
+        except Exception as e:
+            print(f"[ERR] Can't init process from id: {e}")
+            return None
+
 
     @staticmethod
     def from_id(process_id):
@@ -274,6 +302,7 @@ class BusinessProcess(APIBase):
             result.service = service.name
 
             return result
+
         except Exception as e:
             print(f"[ERR] Can't init process from id: {e}")
             return None
@@ -282,12 +311,10 @@ class BusinessProcess(APIBase):
     def from_json(json):
         return BusinessProcess(
             process_id=uuid.UUID(json['processid']),
-            service_id=uuid.UUID(json['serviceid']),
             name=json['name'],
             description=json['description'],
             created_datetime=APIBase.datetime_from_str(json['createddatetime']),
             created_by=json['createdby'],
-            state=json['state']
         )
 
     def get_transactions(self):

@@ -85,19 +85,18 @@ class APIConnector(api_model.APIBase):
             return {}
 
     @classmethod
-    def get_business_processes_list(cls, service_id='', full=True, page=1, per_page=10):
+    def get_business_processes_list(cls, full=True, page=1, per_page=10):
         try:
-            url = f'{cls.api_endpoint}/business_processes' if not service_id else \
-                  f'{cls.api_endpoint}/services/{service_id}/business_processes'
+            url = f'{cls.api_endpoint}/processes'
             response = requests.get(url)
-            subresult = cls.get_page(response.json()['business_processes'], page, per_page)
+            subresult = cls.get_page(response.json()['processes'], page, per_page)
+
+            print(f"[DBG][get_business_processes_list] subresult: {subresult}")
 
             result = []
             for business_process in subresult:
                 business_process_obj = api_model.BusinessProcess.from_json(business_process)
-                if full:
-                    business_process_obj.get_transactions()
-                business_process_obj.service = cls.last_loaded_services[business_process_obj.service_id].name
+
                 cls.last_loaded_business_processes[business_process_obj.process_id] = business_process_obj
                 result.append(business_process_obj)
 
