@@ -551,12 +551,13 @@
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-heatmap-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-datatables/primoart-datatables.js"></script>
 
 <script>
     $(function() {
         console.log("Page loaded!");
 
-        evenlisttable.init();
+        sandboxMainDashTable.init();
 
         performancechart.init();
         //heatmapchart.init();
