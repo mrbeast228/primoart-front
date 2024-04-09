@@ -196,10 +196,18 @@ def r_data_projects_add():
 def r_data_projects_edit():
     return [{"a": 1}, {"b": 2}, {"c": 3}]
 
-@blueprint.route('/data/projects/delete')
+@blueprint.route('/data/projects/delete', methods=["POST"])
 @login_required
 def r_data_projects_delete():
-    return [{"a": 1}, {"b": 2}, {"c": 3}]
+
+    params = request.json
+    print(f"[DBG][r_data_projects_delete] params: {params}")
+
+    project_id = params["project_id"]
+
+    result = BusinessProcess.delete(project_id)
+
+    return result
 
 @blueprint.route('/data/services')
 @login_required

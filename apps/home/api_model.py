@@ -286,7 +286,27 @@ class BusinessProcess(APIBase):
 
             return result
         except Exception as e:
-            print(f"[ERR] Can't init process from id: {e}")
+            print(f"[ERR] Can't add process from id: {e}")
+            return None
+
+
+    @staticmethod
+    def delete(process_id):
+        try:
+            url = f'{APIBase.api_endpoint}/processes/{process_id}'
+
+            headers = {
+                "Accept": "application/json"
+            }
+
+            response = requests.delete(url, headers=headers)
+            result = response.json()
+
+            print(f"[DBG][BusinessProcess/delete] response: {response}")
+
+            return result
+        except Exception as e:
+            print(f"[ERR] Can't delete process id: {e}")
             return None
 
 
