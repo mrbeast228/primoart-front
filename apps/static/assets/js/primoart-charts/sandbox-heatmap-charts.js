@@ -1,4 +1,4 @@
-// Heatmap data is a list of {time: <UTC Timestamp in ms>, value: <Value>} objects.
+// Heatmap data is a list of {time: <UTC Timestamp in ms>, value: <Value>, trxId: <transaction id>} objects.
 const heatmapTestData = [];
 
 const start = new Date() * 1;
@@ -6,6 +6,7 @@ for (let i = 0; i < 7 * 24; i++) {
     heatmapTestData.push({
         time: start + 1000 * 60 * 60 * i,
         value: 0.1 + Math.random() * 99.9,
+        trxId: i,
     });
 }
 
@@ -14,19 +15,24 @@ const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 function convertData(raw) {
     const adapter = new Chart._adapters._date();
 
-    return raw.map(({time, value}) => {
+    return raw.map(({time, value, trxId}) => {
         const dt = adapter.startOf(new Date(time));
         return {
             x: dt.getHours(),
             y: dayNames[(dt.getDay() + 6) % 7],
             d: dt,
-            v: value
+            v: value,
+            trxId: trxId,
         };
     });
 }
 
 heatmapchart = {
-    init: function() {
+    init: function(canvasId, dataset) {
+        if (!dataset) {
+            dataset = heatmapTestData;
+        }
+
         const scales = {
             y: {
                 type: 'category',
@@ -88,7 +94,10 @@ heatmapchart = {
                         },
                         label(context) {
                             const v = context.dataset.data[context.dataIndex];
-                            return ['d: ' + v.d, 'v: ' + v.v.toFixed(2)];
+                            return [
+                                "Дата: " + v.d,
+                                "Время выполнения, с: " + v.v.toFixed(2),
+                            ];
                         }
                     }
                 },
@@ -107,7 +116,17 @@ heatmapchart = {
             options: options,
         };
 
-        var ctx = document.getElementById("chartHeatmap01").getContext("2d");
+        var canvas = document.getElementById(canvasId);
+        var ctx = canvas.getContext("2d");
         var heatmapChart = new Chart(ctx, config);
+
+        canvas.onclick = function(e) {
+            var block = heatmapChart.getElementsAtEventForMode(e, 'nearest', {intersect: true}, true);
+            if (!block.length) return;
+            var blockData = data.datasets[block[0].datasetIndex].data[block[0].index];
+            window.open("/mvp-transaction.html?transaction_id=" + blockData.trxId);
+        }
+
+        return heatmapChart;
     }
 }

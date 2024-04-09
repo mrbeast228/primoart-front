@@ -507,7 +507,16 @@
         console.log("Page loaded!");
 
         performancechart.init();
-        heatmapchart.init();
+        heatmapchart.init("chartHeatmap01");
+
+        // TODO:
+        // axios.get("/data/services")
+        //     .then((r) => {
+        //         const data = ...;
+        //
+        //         heatmapchart.init("chartHeatmap02", data);
+        //     });
+        heatmapchart.init("chartHeatmap02");
 
         servicetimevserrchart.init();
         scatterstatuschart.init();
