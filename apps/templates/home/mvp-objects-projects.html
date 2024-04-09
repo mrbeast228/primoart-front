@@ -385,16 +385,28 @@
     var checked_checkbox = $('table tbody input[type="checkbox"]:checked');
     console.log(checked_checkbox);
 
+    var projects_to_del = [];
+
     checked_checkbox.each(function(checkbox) {
         var name = checked_checkbox[checkbox].name;
         var id = checked_checkbox[checkbox].value;
 
-        var {result} = axios.post('/data/projects/delete', { "project_id": id }, {
+        projects_to_del.push({"project_id": id});
+    });
+
+    checked_checkbox.each(function(checkbox) {
+        var name = checked_checkbox[checkbox].name;
+        var id = checked_checkbox[checkbox].value;
+
+        var {result} = axios.post('/data/projects/delete', projects_to_del, {
           headers: {
             'Content-Type': 'application/json'
           }
+        }).then(response => {
+          location.reload();
         })
     });
+
 
 });
 </script>

@@ -203,11 +203,15 @@ def r_data_projects_delete():
     params = request.json
     print(f"[DBG][r_data_projects_delete] params: {params}")
 
-    project_id = params["project_id"]
+    results = []
 
-    result = BusinessProcess.delete(project_id)
+    for project in params:
+        project_id = project["project_id"]
+        result = BusinessProcess.delete(project_id)
 
-    return result
+        results.append(result)
+
+    return results
 
 @blueprint.route('/data/services')
 @login_required
