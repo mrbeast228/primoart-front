@@ -211,12 +211,14 @@
                                 <td>{{ project.created_by }}</td>
                                 <td>{{ project.created_datetime }}</td>
                                 <td>
-                                    <a href="#editProjectModal" class="edit ms-1 me-1 text-tertiary" data-bs-toggle="modal"
-                                         data-projectid="{{ project.process_id }}"
+                                    <a href="#editProjectModal" class="edit ms-1 me-1 text-tertiary"
+                                       data-bs-toggle="modal"
+                                       data-projectid="{{ project.process_id }}"
                                     >
                                         <i>{{font_awesome.render_icon("fas fa-pencil")}}</i>
                                     </a>
-                                    <a href="#delProjectModal" class="delete ms-1 me-1 text-danger" data-bs-toggle="modal" data-bs-target="#delProjectModal"
+                                    <a href="#delProjectModal" class="delete ms-1 me-1 text-danger"
+                                       data-bs-toggle="modal" data-bs-target="#delProjectModal"
                                        data-projectid="{{ project.process_id }}"
                                     ><i>{{font_awesome.render_icon("fas fa-trash")}}</i>
                                     </a>
@@ -283,11 +285,13 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Проект</label>
-                                    <input id="mod_ed_project_name" type="text" class="form-control" name="name" required>
+                                    <input id="mod_ed_project_name" type="text" class="form-control" name="name"
+                                           required>
                                 </div>
                                 <div class="form-group">
                                     <label>Описание</label>
-                                    <input id="mod_ed_project_description" type="text" class="form-control" name="description">
+                                    <input id="mod_ed_project_description" type="text" class="form-control"
+                                           name="description">
                                 </div>
                                 <div class="form-group">
                                     <label>Целевой SLA</label>
@@ -295,7 +299,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Владелец</label>
-                                    <input id="mod_ed_project_created_by" type="text" class="form-control" name="owner" required>
+                                    <input id="mod_ed_project_created_by" type="text" class="form-control" name="owner"
+                                           required>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -417,19 +422,19 @@
 
 <!-- Кастомный сабмит добавления проекта -->
 <script>
-$('#addProjectForm').submit(function(e){
-    e.preventDefault();
+    $('#addProjectForm').submit(function(e){
+        e.preventDefault();
 
-    var data = getFormData($('#addProjectForm'));
+        var data = getFormData($('#addProjectForm'));
 
-    var {result} = axios.post('/data/projects/add', data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(response => {
-      location.reload();
-    })
-});
+        var {result} = axios.post('/data/projects/add', data, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          location.reload();
+        })
+    });
 </script>
 
 <!-- Кастомный сабмит удаления проекта(ов) -->
