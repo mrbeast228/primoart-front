@@ -373,7 +373,7 @@
                 <h2 class="h6 text-gray-400 mb-0">Последние события</h2>
                 <div class="card-mid-buffer"></div>
                 <div class="table-responsive">
-                    <table class="table table-centered table-nowrap mb-0 rounded"
+                    <table class="table table-centered table-nowrap mb-0 rounded hover"
                            id="dashboard-events">
                         <thead>
                         <tr>
@@ -402,18 +402,19 @@
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-heatmap-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-datatables/primoart-datatables.js"></script>
 
 <script>
     $(function() {
         console.log("Page loaded!");
 
-        evenlisttable.init();
+        sandboxMainDashTable.init();
 
         performancechart.init();
 
         servicetimevserrchart.init();
 
-        heatmapchart.init();
+        heatmapchart.init("chartHeatmap01");
 
     });
 </script>
