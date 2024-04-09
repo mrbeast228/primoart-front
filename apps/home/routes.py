@@ -177,7 +177,7 @@ def r_data_projects_get():
 @blueprint.route('/data/projects/add', methods=["POST"])
 @login_required
 def r_data_projects_add():
-    params = request.values
+    params = request.json
     print(f"[DBG][r_data_projects_add] params: {params}")
 
     name = params["name"]
@@ -191,10 +191,24 @@ def r_data_projects_add():
 
     return result
 
-@blueprint.route('/data/projects/edit')
+@blueprint.route('/data/projects/edit', methods=["POST"])
 @login_required
 def r_data_projects_edit():
-    return [{"a": 1}, {"b": 2}, {"c": 3}]
+
+    params = request.json
+    print(f"[DBG][r_data_projects_edit] params: {params}")
+
+    process_id = params["project_id"]
+    name = params["name"]
+    description = params["description"]
+    target_sla = params["target_sla"]
+    owner = params["owner"]
+
+    result = BusinessProcess.edit(process_id, name, description, owner)
+
+    print(f"[DBG][r_data_projects_edit] result: {result}")
+
+    return result
 
 @blueprint.route('/data/projects/delete', methods=["POST"])
 @login_required

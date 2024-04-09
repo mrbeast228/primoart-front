@@ -89,7 +89,8 @@ class Step(APIBase):
     def get_runs(self, run_result=None, max_runs=APIBase.max_runs):
         try:
             url = f'{self.api_endpoint}/steps/{self.step_id}/runs' + \
-                  (f'?first={max_runs}' if run_result is None else f'/filter?key=runresult&value={run_result}&first={max_runs}')
+                  (
+                      f'?first={max_runs}' if run_result is None else f'/filter?key=runresult&value={run_result}&first={max_runs}')
             response = requests.get(url)
             self.runs = []
             for run in response.json()['step_runs']:
@@ -260,7 +261,6 @@ class BusinessProcess(APIBase):
     sla_history: Optional[list] = field(default=None, init=False)
     service: Optional[str] = field(default=None, init=False)
 
-
     @staticmethod
     def add(name, description, created_by):
         try:
@@ -289,6 +289,35 @@ class BusinessProcess(APIBase):
             print(f"[ERR] Can't add process from id: {e}")
             return None
 
+    @staticmethod
+    def edit(process_id, name, description, created_by):
+        try:
+            url = f'{APIBase.api_endpoint}/processes/{process_id}'
+            json_data = {
+                "process_patch":
+                    {
+                        "name": name,
+                        "description": description,
+                        "createdby": created_by
+                    }
+            }
+
+            headers = {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+
+            print(f"[DBG][BusinessProcess/edit] json_data: {json_data}")
+
+            response = requests.put(url, json=json_data, headers=headers)
+            result = response.json()
+
+            print(f"[DBG][BusinessProcess/edit] response: {response}")
+
+            return result
+        except Exception as e:
+            print(f"[ERR] Can't add process from id: {e}")
+            return None
 
     @staticmethod
     def delete(process_id):
@@ -308,7 +337,6 @@ class BusinessProcess(APIBase):
         except Exception as e:
             print(f"[ERR] Can't delete process id: {e}")
             return None
-
 
     @staticmethod
     def from_id(process_id):

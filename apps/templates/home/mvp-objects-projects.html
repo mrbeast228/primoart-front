@@ -211,12 +211,15 @@
                                 <td>{{ project.created_by }}</td>
                                 <td>{{ project.created_datetime }}</td>
                                 <td>
-                                    <a href="#editProjectModal" class="edit ms-1 me-1 text-tertiary" data-toggle="modal"><i>{{font_awesome.render_icon("fas
-                                        fa-pencil")}}</i></a>
+                                    <a href="#editProjectModal" class="edit ms-1 me-1 text-tertiary" data-bs-toggle="modal"
+                                         data-projectid="{{ project.process_id }}"
+                                    >
+                                        <i>{{font_awesome.render_icon("fas fa-pencil")}}</i>
+                                    </a>
                                     <a href="#delProjectModal" class="delete ms-1 me-1 text-danger" data-bs-toggle="modal" data-bs-target="#delProjectModal"
                                        data-projectid="{{ project.process_id }}"
-                                    ><i>{{font_awesome.render_icon("fas
-                                        fa-trash")}}</i></a>
+                                    ><i>{{font_awesome.render_icon("fas fa-trash")}}</i>
+                                    </a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -264,48 +267,53 @@
                     </div>
                 </div>
             </div>
+
             <!-- Edit Modal HTML -->
             <div id="editProjectModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form>
+                        <form id="editProjectForm">
+                            <!-- Скрытый инпут для вызова из строки таблицы -->
+                            <input type="hidden" id="projectToEditId" name="project_id" value="">
                             <div class="modal-header">
-                                <h4 class="modal-title">Edit Employee</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                <h4 class="modal-title">Изменение проекта</h4>
+                                <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true">&times;
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" required>
+                                    <label>Проект</label>
+                                    <input id="mod_ed_project_name" type="text" class="form-control" name="name" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control" required>
+                                    <label>Описание</label>
+                                    <input id="mod_ed_project_description" type="text" class="form-control" name="description">
                                 </div>
                                 <div class="form-group">
-                                    <label>Address</label>
-                                    <textarea class="form-control" required></textarea>
+                                    <label>Целевой SLA</label>
+                                    <input id="mod_ed_project_sla" type="text" class="form-control" name="target_sla">
                                 </div>
                                 <div class="form-group">
-                                    <label>Phone</label>
-                                    <input type="text" class="form-control" required>
+                                    <label>Владелец</label>
+                                    <input id="mod_ed_project_created_by" type="text" class="form-control" name="owner" required>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                <input type="submit" class="btn btn-info" value="Save">
+                                <input type="button" class="btn btn-outline-default" data-bs-dismiss="modal"
+                                       value="Отмена">
+                                <input type="submit" class="btn btn-outline-success" value="Добавить">
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+
             <!-- Delete Modal HTML -->
             <div id="delProjectModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form id="delProjectForm">
-                            <!-- Скрытый инпут для вызова из строка таблицы -->
+                            <!-- Скрытый инпут для вызова из строки таблицы -->
                             <input type="hidden" id="projectToDeleteId" name="project_id" value="">
                             <div class="modal-header">
                                 <h4 class="modal-title">Удаление проекта</h4>
@@ -338,6 +346,20 @@
 
 <!-- Пример реализации CRUD на jquery -->
 <!-- https://www.tutorialrepublic.com/snippets/preview.php?topic=bootstrap&file=crud-data-table-for-database-with-modal-form -->
+
+<!-- Хелпер для конвертации данных формы в JSON -->
+<script>
+    function getFormData($form){
+        var unindexed_array = $form.serializeArray();
+        var indexed_array = {};
+
+        $.map(unindexed_array, function(n, i){
+            indexed_array[n['name']] = n['value'];
+        });
+
+        return indexed_array;
+    }
+</script>
 
 <!-- Скрипт для чекбоксов -->
 <script>
@@ -378,8 +400,17 @@
         console.log($('#projectToDeleteId').val().length);
 
     });
-    $('#delProjectModal').on('hidden.bs.modal', function (event) {
-        console.log(123);
+
+    $('#editProjectModal').on('show.bs.modal', function (event) {
+        var clicked_button = event.relatedTarget;
+        var project_id = $(clicked_button).attr("data-projectid");
+        console.log(project_id);
+
+        $('#projectToEditId').val(project_id);
+        console.log($('#projectToEditId').val());
+        console.log($('#projectToEditId').val().length);
+
+
     });
 </script>
 
@@ -388,14 +419,16 @@
 <script>
 $('#addProjectForm').submit(function(e){
     e.preventDefault();
-    $.ajax({
-        url: '/data/projects/add',
-        type: 'post',
-        data:$('#addProjectForm').serialize(),
-        success:function(){
-            location.reload();
-        }
-    });
+
+    var data = getFormData($('#addProjectForm'));
+
+    var {result} = axios.post('/data/projects/add', data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      location.reload();
+    })
 });
 </script>
 
@@ -434,4 +467,23 @@ $('#addProjectForm').submit(function(e){
         })
     });
 </script>
+
+
+<!-- Кастомный сабмит изменения проекта(ов) -->
+<script>
+    $('#editProjectForm').submit(function(e){
+        e.preventDefault();
+
+        var data = getFormData($('#editProjectForm'));
+
+        var {result} = axios.post('/data/projects/edit', data, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          location.reload();
+        })
+    });
+</script>
+
 {% endblock javascripts %}
