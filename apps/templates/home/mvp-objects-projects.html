@@ -211,9 +211,11 @@
                                 <td>{{ project.created_by }}</td>
                                 <td>{{ project.created_datetime }}</td>
                                 <td>
-                                    <a href="#editProjectModal" class="edit ms-1 me-1" data-toggle="modal"><i>{{font_awesome.render_icon("fas
+                                    <a href="#editProjectModal" class="edit ms-1 me-1 text-tertiary" data-toggle="modal"><i>{{font_awesome.render_icon("fas
                                         fa-pencil")}}</i></a>
-                                    <a href="#deleteProjectModal" class="delete ms-1 me-1" data-toggle="modal"><i>{{font_awesome.render_icon("fas
+                                    <a href="#delProjectModal" class="delete ms-1 me-1 text-danger" data-bs-toggle="modal" data-bs-target="#delProjectModal"
+                                       data-projectid="{{ project.process_id }}"
+                                    ><i>{{font_awesome.render_icon("fas
                                         fa-trash")}}</i></a>
                                 </td>
                             </tr>
@@ -303,6 +305,8 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form id="delProjectForm">
+                            <!-- Скрытый инпут для вызова из строка таблицы -->
+                            <input type="hidden" id="projectToDeleteId" name="project_id" value="">
                             <div class="modal-header">
                                 <h4 class="modal-title">Удаление проекта</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -362,9 +366,27 @@
     });
 </script>
 
+<!-- Скрипты модалов -->
+<script>
+    $('#delProjectModal').on('show.bs.modal', function (event) {
+        var clicked_button = event.relatedTarget;
+        var project_id = $(clicked_button).attr("data-projectid");
+        console.log(project_id);
+
+        $('#projectToDeleteId').val(project_id);
+        console.log($('#projectToDeleteId').val());
+        console.log($('#projectToDeleteId').val().length);
+
+    });
+    $('#delProjectModal').on('hidden.bs.modal', function (event) {
+        console.log(123);
+    });
+</script>
+
+
 <!-- Кастомный сабмит добавления проекта -->
 <script>
-    $('#addProjectForm').submit(function(e){
+$('#addProjectForm').submit(function(e){
     e.preventDefault();
     $.ajax({
         url: '/data/projects/add',
@@ -380,23 +402,28 @@
 <!-- Кастомный сабмит удаления проекта(ов) -->
 <script>
     $('#delProjectForm').submit(function(e){
-    e.preventDefault();
+        e.preventDefault();
 
-    var checked_checkbox = $('table tbody input[type="checkbox"]:checked');
-    console.log(checked_checkbox);
+        var projects_to_del = [];
 
-    var projects_to_del = [];
+        // Если установлен UUID в скрытый тэг, т.е. модал вызван из таблицы
+        if($('#projectToDeleteId').val().length > 30) {
+            projects_to_del.push({"project_id": $('#projectToDeleteId').val()});
+        } else
+        // Иначе эту удаление по селектору
+        {
+            var checked_checkbox = $('table tbody input[type="checkbox"]:checked');
+            console.log(checked_checkbox);
 
-    checked_checkbox.each(function(checkbox) {
-        var name = checked_checkbox[checkbox].name;
-        var id = checked_checkbox[checkbox].value;
+            var projects_to_del = [];
 
-        projects_to_del.push({"project_id": id});
-    });
+            checked_checkbox.each(function(checkbox) {
+                var name = checked_checkbox[checkbox].name;
+                var id = checked_checkbox[checkbox].value;
 
-    checked_checkbox.each(function(checkbox) {
-        var name = checked_checkbox[checkbox].name;
-        var id = checked_checkbox[checkbox].value;
+                projects_to_del.push({"project_id": id});
+            });
+        }
 
         var {result} = axios.post('/data/projects/delete', projects_to_del, {
           headers: {
@@ -406,8 +433,5 @@
           location.reload();
         })
     });
-
-
-});
 </script>
 {% endblock javascripts %}
