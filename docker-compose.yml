@@ -7,6 +7,10 @@ services:
     networks:
       - db_network
       - web_network
+    volumes:
+      - ./:/primoart/
+    command: /bin/bash -c "cp -ar /node_modules /primoart/apps/static/assets/ && gunicorn --config gunicorn-cfg.py run:app"
+
   nginx:
     container_name: nginx
     restart: always
@@ -17,11 +21,11 @@ services:
       - ./nginx:/etc/nginx/conf.d
     networks:
       - web_network
-    depends_on: 
+    depends_on:
       - appseed-app
+
 networks:
   db_network:
     driver: bridge
   web_network:
     driver: bridge
- 
