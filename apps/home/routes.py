@@ -333,8 +333,8 @@ def r_charts_runs():
 
     for run in runs:
         cur = {
-            "x": (datetime.strptime(run["runstart"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime("2024-01-01 00:00:00.000000", "%Y-%m-%d %H:%M:%S.%f")).days,
-            "y": (datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"], "%Y-%m-%d %H:%M:%S.%f")).seconds
+            "x": run["runstart"],
+            "y": (datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"], "%Y-%m-%d %H:%M:%S.%f")).microseconds
         }
         res["OK" if run["runresult"] == "OK" else "Failed"].append(cur)
 

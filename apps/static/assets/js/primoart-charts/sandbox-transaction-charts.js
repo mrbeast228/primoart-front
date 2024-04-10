@@ -597,15 +597,20 @@ scatterstatuschart = {
         const options = {
           scales: {
               x: {
-                type: 'linear',
+                type: "time",
                 title: {
-                    text: "Timestamp",
+                    text: "Transaction time",
                     display: true,
                 },
-                position: 'bottom'
+                position: 'bottom',
+
               },
               y: {
                 type: 'linear',
+                title: {
+                    text: "Response time, microseconds",
+                    display: true,
+                },
                 position: "left"
               }
             }
@@ -617,7 +622,7 @@ scatterstatuschart = {
           options: options
         };
 
-        var ctx = document.getElementById("transactionScatterChart01").getContext("2d");
+        var ctx = document.getElementById("transactionScatterChart02").getContext("2d");
         var scatterChart = new Chart(ctx, config);
     }
 }
