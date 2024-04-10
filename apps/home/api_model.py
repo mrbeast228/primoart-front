@@ -626,6 +626,6 @@ class Charts(APIBase):
                 "serviceid": service_id
             })
             return response.json()['heatmap']
-
+        except Exception as e:
             print(f"[ERR] Can't get heatmap data: {e}")
             return None
