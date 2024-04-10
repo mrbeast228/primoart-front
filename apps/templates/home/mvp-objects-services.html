@@ -134,13 +134,13 @@
                                 <div class="col-sm-6">
                                     <div class="d-none d-sm-block">
                                         <button class="btn btn-outline-danger ms-1 me-1"
-                                                data-bs-toggle="modal" data-bs-target="#delProjectModal">
+                                                data-bs-toggle="modal" data-bs-target="#delServiceModal">
                                             <i>{{font_awesome.render_icon("fas fa-trash")}}</i>
                                             <span>Удалить</span></button>
                                         <button class="btn btn-outline-success ms-1 me-1"
-                                                data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                                                data-bs-toggle="modal" data-bs-target="#addServiceModal">
                                             <i>{{font_awesome.render_icon("fas fa-plus")}}</i>
-                                            <span>Новый проект</span></button>
+                                            <span>Новый сервис</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -172,20 +172,20 @@
                                         <label></label>
                                     </span>
                                 </td>
-                                <td>{{ service.service_id }}</td>
+                                <td>{{ service.project_name }}</td>
                                 <td>{{ service.name }}</td>
                                 <td>{{ service.description }}</td>
                                 <td>99.5%</td>
                                 <td>{{ service.created_by }}</td>
                                 <td>
-                                    <a href="#editProjectModal" class="edit ms-1 me-1 text-tertiary"
+                                    <a href="#editServiceModal" class="edit ms-1 me-1 text-tertiary"
                                        data-bs-toggle="modal"
                                        data-serviceid="{{ service.service_id }}"
                                     >
                                         <i>{{font_awesome.render_icon("fas fa-pencil")}}</i>
                                     </a>
-                                    <a href="#delProjectModal" class="delete ms-1 me-1 text-danger"
-                                       data-bs-toggle="modal" data-bs-target="#delProjectModal"
+                                    <a href="#delServiceModal" class="delete ms-1 me-1 text-danger"
+                                       data-bs-toggle="modal" data-bs-target="#delServiceModal"
                                        data-serviceid="{{ service.service_id }}"
                                     ><i>{{font_awesome.render_icon("fas fa-trash")}}</i>
                                     </a>
@@ -199,12 +199,12 @@
             </div>
 
             <!-- Add Modal HTML -->
-            <div id="addProjectModal" class="modal fade">
+            <div id="addServiceModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="addProjectForm">
+                        <form id="addServiceАщкь">
                             <div class="modal-header">
-                                <h4 class="modal-title">Новый проект</h4>
+                                <h4 class="modal-title">Новый сервис</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </button>
@@ -212,7 +212,11 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Проект</label>
-                                    <input type="text" class="form-control" name="name" required>
+                                    <select class="form-select" aria-label="">
+                                        {% for project in context.projects %}
+                                            <option value="{{ project.process_id }}">{{ project.name }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Описание</label>
@@ -238,10 +242,10 @@
             </div>
 
             <!-- Edit Modal HTML -->
-            <div id="editProjectModal" class="modal fade">
+            <div id="editServiceModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="editProjectForm">
+                        <form id="editServiceАщкь">
                             <!-- Скрытый инпут для вызова из строки таблицы -->
                             <input type="hidden" id="projectToEditId" name="project_id" value="">
                             <div class="modal-header">
@@ -281,10 +285,10 @@
             </div>
 
             <!-- Delete Modal HTML -->
-            <div id="delProjectModal" class="modal fade">
+            <div id="delServiceModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="delProjectForm">
+                        <form id="delServiceАщкь">
                             <!-- Скрытый инпут для вызова из строки таблицы -->
                             <input type="hidden" id="projectToDeleteId" name="project_id" value="">
                             <div class="modal-header">
@@ -369,7 +373,7 @@
 
 <!-- Скрипты модалов -->
 <script>
-    $('#delProjectModal').on('show.bs.modal', function (event) {
+    $('#delServiceModal').on('show.bs.modal', function (event) {
         var clicked_button = event.relatedTarget;
         var project_id = $(clicked_button).attr("data-projectid");
         console.log(project_id);
@@ -380,7 +384,7 @@
 
     });
 
-    $('#editProjectModal').on('show.bs.modal', function (event) {
+    $('#editServiceModal').on('show.bs.modal', function (event) {
         var clicked_button = event.relatedTarget;
         var project_id = $(clicked_button).attr("data-projectid");
         console.log(project_id);
@@ -396,10 +400,10 @@
 
 <!-- Кастомный сабмит добавления проекта -->
 <script>
-    $('#addProjectForm').submit(function(e){
+    $('#addServiceАщкь').submit(function(e){
         e.preventDefault();
 
-        var data = getFormData($('#addProjectForm'));
+        var data = getFormData($('#addServiceАщкь'));
 
         var {result} = axios.post('/data/projects/add', data, {
           headers: {
@@ -413,7 +417,7 @@
 
 <!-- Кастомный сабмит удаления проекта(ов) -->
 <script>
-    $('#delProjectForm').submit(function(e){
+    $('#delServiceАщкь').submit(function(e){
         e.preventDefault();
 
         var projects_to_del = [];
@@ -450,10 +454,10 @@
 
 <!-- Кастомный сабмит изменения проекта(ов) -->
 <script>
-    $('#editProjectForm').submit(function(e){
+    $('#editServiceАщкь').submit(function(e){
         e.preventDefault();
 
-        var data = getFormData($('#editProjectForm'));
+        var data = getFormData($('#editServiceАщкь'));
 
         var {result} = axios.post('/data/projects/edit', data, {
           headers: {

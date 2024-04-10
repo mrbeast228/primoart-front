@@ -341,19 +341,19 @@ class BusinessProcess(APIBase):
     @staticmethod
     def from_id(process_id):
 
-        print(f"[DBG][BusinessProcess/from_id] process_id: {process_id}")
+        #print(f"[DBG][BusinessProcess/from_id] process_id: {process_id}")
 
         try:
             url = f'{APIBase.api_endpoint}/processes/{process_id}'
-            print(f"[DBG][BusinessProcess/from_id] url: {url}")
+            #print(f"[DBG][BusinessProcess/from_id] url: {url}")
 
             response = requests.get(url)
 
             subresult = response.json()
-            print(f"[DBG][BusinessProcess/from_id] subresult: {subresult}")
+            #print(f"[DBG][BusinessProcess/from_id] subresult: {subresult}")
 
             result = BusinessProcess.from_json(subresult["process"])
-            print(f"[DBG][BusinessProcess/from_id] result: {result}")
+            #print(f"[DBG][BusinessProcess/from_id] result: {result}")
 
             return result
 
@@ -363,7 +363,7 @@ class BusinessProcess(APIBase):
 
     @staticmethod
     def from_json(json):
-        print(f"[DBG][BusinessProcess/from_json] json: {json}")
+        #print(f"[DBG][BusinessProcess/from_json] json: {json}")
 
         return BusinessProcess(
             process_id=json['processid'],
@@ -427,7 +427,7 @@ class Service(APIBase):
 
     @staticmethod
     def from_json(json):
-        print(f"[DBG][Service/from_json] json: {json}")
+        #print(f"[DBG][Service/from_json] json: {json}")
 
         return Service(
             service_id=uuid.UUID(json['serviceid']),
