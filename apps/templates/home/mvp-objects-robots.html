@@ -134,18 +134,18 @@
                                 <div class="col-sm-6">
                                     <div class="d-none d-sm-block">
                                         <button class="btn btn-outline-danger ms-1 me-1"
-                                                data-bs-toggle="modal" data-bs-target="#delProjectModal">
+                                                data-bs-toggle="modal" data-bs-target="#delRobotModal">
                                             <i>{{font_awesome.render_icon("fas fa-trash")}}</i>
                                             <span>Удалить</span></button>
                                         <button class="btn btn-outline-success ms-1 me-1"
-                                                data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                                                data-bs-toggle="modal" data-bs-target="#addRobotModal">
                                             <i>{{font_awesome.render_icon("fas fa-plus")}}</i>
-                                            <span>Новый проект</span></button>
+                                            <span>Новый робот</span></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <table id="projects-table" class="table table-centered table-nowrap mb-0 rounded table-hover">
+                        <table id="robots-table" class="table table-centered table-nowrap mb-0 rounded table-hover">
                             <thead>
                             <tr>
                                 <th>
@@ -154,39 +154,42 @@
                                             <label for="selectAll"></label>
                                         </span>
                                 </th>
-                                <th>Проект</th>
-                                <th>Описание</th>
+                                <th>Робот</th>
+                                <th>IP-адрес</th>
+                                <th>Локация</th>
+                                <th>Координаты</th>
                                 <th>Целевой SLA</th>
-                                <th>Владелец</th>
-                                <th>Последняя модификация</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for project in context.projects %}
+                            {% for robot in context.robots %}
                             <tr>
                                 <td>
                                     <span class="custom-checkbox">
-                                        <input type="checkbox" class="checkbox" name="project_id"
-                                               value="{{ project.process_id }}">
+                                        <input type="checkbox" class="checkbox" name="robot_id"
+                                               value="{{ robot.robot_id }}">
                                         <label></label>
                                     </span>
                                 </td>
-                                <td>{{ project.name }}</td>
-                                <td>{{ project.description }}</td>
+                                <td>{{ robot.name }}</td>
+                                <td>{{ robot.ip_address }}</td>
+                                <td>{{ robot.city }}</td>
+                                <td>{{ robot.description }}</td>
+                                <td>40.7128, -74.006</td>
                                 <td>99.5%</td>
-                                <td>{{ project.created_by }}</td>
-                                <td>{{ project.created_datetime }}</td>
+                                <td>{{ robot.created_by }}</td>
+                                <td>{{ robot.created_datetime }}</td>
                                 <td>
-                                    <a href="#editProjectModal" class="edit ms-1 me-1 text-tertiary"
+                                    <a href="#editRobotModal" class="edit ms-1 me-1 text-tertiary"
                                        data-bs-toggle="modal"
-                                       data-projectid="{{ project.process_id }}"
+                                       data-projectid="{{ robot.robot_id }}"
                                     >
                                         <i>{{font_awesome.render_icon("fas fa-pencil")}}</i>
                                     </a>
-                                    <a href="#delProjectModal" class="delete ms-1 me-1 text-danger"
-                                       data-bs-toggle="modal" data-bs-target="#delProjectModal"
-                                       data-projectid="{{ project.process_id }}"
+                                    <a href="#delRobotModal" class="delete ms-1 me-1 text-danger"
+                                       data-bs-toggle="modal" data-bs-target="#delRobotModal"
+                                       data-projectid="{{ robot.robot_id }}"
                                     ><i>{{font_awesome.render_icon("fas fa-trash")}}</i>
                                     </a>
                                 </td>
@@ -199,19 +202,19 @@
             </div>
 
             <!-- Add Modal HTML -->
-            <div id="addProjectModal" class="modal fade">
+            <div id="addRobotModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form id="addProjectForm">
                             <div class="modal-header">
-                                <h4 class="modal-title">Новый проект</h4>
+                                <h4 class="modal-title">Новый робот</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label>Проект</label>
+                                    <label>Робот</label>
                                     <input type="text" class="form-control" name="name" required>
                                 </div>
                                 <div class="form-group">
@@ -238,20 +241,20 @@
             </div>
 
             <!-- Edit Modal HTML -->
-            <div id="editProjectModal" class="modal fade">
+            <div id="editRobotModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form id="editProjectForm">
                             <!-- Скрытый инпут для вызова из строки таблицы -->
-                            <input type="hidden" id="projectToEditId" name="project_id" value="">
+                            <input type="hidden" id="projectToEditId" name="robot_id" value="">
                             <div class="modal-header">
-                                <h4 class="modal-title">Изменение проекта</h4>
+                                <h4 class="modal-title">Изменение робота</h4>
                                 <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true">&times;
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label>Проект</label>
+                                    <label>Робот</label>
                                     <input id="mod_ed_project_name" type="text" class="form-control" name="name"
                                            required>
                                 </div>
@@ -281,20 +284,20 @@
             </div>
 
             <!-- Delete Modal HTML -->
-            <div id="delProjectModal" class="modal fade">
+            <div id="delRobotModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form id="delProjectForm">
                             <!-- Скрытый инпут для вызова из строки таблицы -->
-                            <input type="hidden" id="projectToDeleteId" name="project_id" value="">
+                            <input type="hidden" id="projectToDeleteId" name="robot_id" value="">
                             <div class="modal-header">
-                                <h4 class="modal-title">Удаление проекта</h4>
+                                <h4 class="modal-title">Удаление робота</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>Вы действительно хотите удалить проект(ы)?</p>
+                                <p>Вы действительно хотите удалить робот(ы)?</p>
                             </div>
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-outline-default" data-bs-dismiss="modal"
@@ -336,7 +339,7 @@
 
 <!-- Инициализация DataTable -->
 <script>
-    objectsProjectsTable.init();
+    objectsRobotsTable.init("robots-table");
 </script>
 
 <!-- Скрипт для чекбоксов -->
@@ -369,23 +372,23 @@
 
 <!-- Скрипты модалов -->
 <script>
-    $('#delProjectModal').on('show.bs.modal', function (event) {
+    $('#delRobotModal').on('show.bs.modal', function (event) {
         var clicked_button = event.relatedTarget;
-        var project_id = $(clicked_button).attr("data-projectid");
-        console.log(project_id);
+        var robot_id = $(clicked_button).attr("data-projectid");
+        console.log(robot_id);
 
-        $('#projectToDeleteId').val(project_id);
+        $('#projectToDeleteId').val(robot_id);
         console.log($('#projectToDeleteId').val());
         console.log($('#projectToDeleteId').val().length);
 
     });
 
-    $('#editProjectModal').on('show.bs.modal', function (event) {
+    $('#editRobotModal').on('show.bs.modal', function (event) {
         var clicked_button = event.relatedTarget;
-        var project_id = $(clicked_button).attr("data-projectid");
-        console.log(project_id);
+        var robot_id = $(clicked_button).attr("data-projectid");
+        console.log(robot_id);
 
-        $('#projectToEditId').val(project_id);
+        $('#projectToEditId').val(robot_id);
         console.log($('#projectToEditId').val());
         console.log($('#projectToEditId').val().length);
 
@@ -394,7 +397,7 @@
 </script>
 
 
-<!-- Кастомный сабмит добавления проекта -->
+<!-- Кастомный сабмит добавления робота -->
 <script>
     $('#addProjectForm').submit(function(e){
         e.preventDefault();
@@ -411,7 +414,7 @@
     });
 </script>
 
-<!-- Кастомный сабмит удаления проекта(ов) -->
+<!-- Кастомный сабмит удаления робота(ов) -->
 <script>
     $('#delProjectForm').submit(function(e){
         e.preventDefault();
@@ -420,7 +423,7 @@
 
         // Если установлен UUID в скрытый тэг, т.е. модал вызван из таблицы
         if($('#projectToDeleteId').val().length > 30) {
-            projects_to_del.push({"project_id": $('#projectToDeleteId').val()});
+            projects_to_del.push({"robot_id": $('#projectToDeleteId').val()});
         } else
         // Иначе эту удаление по селектору
         {
@@ -433,7 +436,7 @@
                 var name = checked_checkbox[checkbox].name;
                 var id = checked_checkbox[checkbox].value;
 
-                projects_to_del.push({"project_id": id});
+                projects_to_del.push({"robot_id": id});
             });
         }
 
@@ -448,7 +451,7 @@
 </script>
 
 
-<!-- Кастомный сабмит изменения проекта(ов) -->
+<!-- Кастомный сабмит изменения робота(ов) -->
 <script>
     $('#editProjectForm').submit(function(e){
         e.preventDefault();
