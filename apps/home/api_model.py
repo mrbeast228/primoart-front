@@ -441,6 +441,25 @@ class Service(APIBase):
             print(f"[ERR] Can't add service: {e}")
             return None
 
+    @staticmethod
+    def delete(service_id):
+        try:
+            url = f'{APIBase.api_endpoint}/services/{service_id}'
+
+            headers = {
+                "Accept": "application/json"
+            }
+
+            response = requests.delete(url, headers=headers)
+            result = response.json()
+
+            print(f"[DBG][Service/delete] response: {response}")
+
+            return result
+        except Exception as e:
+            print(f"[ERR] Can't delete service id: {e}")
+            return None
+
 
     @staticmethod
     def from_id(service_id):

@@ -250,6 +250,24 @@ def r_data_services_add():
 
     return result
 
+
+@blueprint.route('/data/services/delete', methods=["POST"])
+@login_required
+def r_data_services_delete():
+
+    params = request.json
+    print(f"[DBG][r_data_services_delete] params: {params}")
+
+    results = []
+
+    for service in params:
+        service_id = service["service_id"]
+        result = Service.delete(service_id)
+
+        results.append(result)
+
+    return results
+
 @blueprint.route('/data/services')
 @login_required
 def r_data_services():

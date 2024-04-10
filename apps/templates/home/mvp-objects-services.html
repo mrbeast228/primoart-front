@@ -167,7 +167,7 @@
                             <tr>
                                 <td>
                                     <span class="custom-checkbox">
-                                        <input type="checkbox" class="checkbox" name="project_id"
+                                        <input type="checkbox" class="checkbox" name="service_id"
                                                value="{{ service.service_id }}">
                                         <label></label>
                                     </span>
@@ -251,7 +251,7 @@
                     <div class="modal-content">
                         <form id="editServiceForm">
                             <!-- Скрытый инпут для вызова из строки таблицы -->
-                            <input type="hidden" id="projectToEditId" name="project_id" value="">
+                            <input type="hidden" id="serviceToEditId" name="service_id" value="">
                             <div class="modal-header">
                                 <h4 class="modal-title">Изменение проекта</h4>
                                 <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true">&times;
@@ -260,21 +260,21 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Проект</label>
-                                    <input id="mod_ed_project_name" type="text" class="form-control" name="name"
+                                    <input id="mod_ed_service_name" type="text" class="form-control" name="name"
                                            required>
                                 </div>
                                 <div class="form-group">
                                     <label>Описание</label>
-                                    <input id="mod_ed_project_description" type="text" class="form-control"
+                                    <input id="mod_ed_service_description" type="text" class="form-control"
                                            name="description">
                                 </div>
                                 <div class="form-group">
                                     <label>Целевой SLA</label>
-                                    <input id="mod_ed_project_sla" type="text" class="form-control" name="target_sla">
+                                    <input id="mod_ed_service_sla" type="text" class="form-control" name="target_sla">
                                 </div>
                                 <div class="form-group">
                                     <label>Владелец</label>
-                                    <input id="mod_ed_project_created_by" type="text" class="form-control" name="owner"
+                                    <input id="mod_ed_service_created_by" type="text" class="form-control" name="owner"
                                            required>
                                 </div>
                             </div>
@@ -294,15 +294,15 @@
                     <div class="modal-content">
                         <form id="delServiceForm">
                             <!-- Скрытый инпут для вызова из строки таблицы -->
-                            <input type="hidden" id="projectToDeleteId" name="project_id" value="">
+                            <input type="hidden" id="serviceToDeleteId" name="service_id" value="">
                             <div class="modal-header">
-                                <h4 class="modal-title">Удаление проекта</h4>
+                                <h4 class="modal-title">Удаление сервиса</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>Вы действительно хотите удалить проект(ы)?</p>
+                                <p>Вы действительно хотите удалить сервис(ы)?</p>
                             </div>
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-outline-default" data-bs-dismiss="modal"
@@ -379,23 +379,23 @@
 <script>
     $('#delServiceModal').on('show.bs.modal', function (event) {
         var clicked_button = event.relatedTarget;
-        var project_id = $(clicked_button).attr("data-projectid");
-        console.log(project_id);
+        var service_id = $(clicked_button).attr("data-serviceid");
+        console.log(service_id);
 
-        $('#projectToDeleteId').val(project_id);
-        console.log($('#projectToDeleteId').val());
-        console.log($('#projectToDeleteId').val().length);
+        $('#serviceToDeleteId').val(service_id);
+        console.log($('#serviceToDeleteId').val());
+        console.log($('#serviceToDeleteId').val().length);
 
     });
 
     $('#editServiceModal').on('show.bs.modal', function (event) {
         var clicked_button = event.relatedTarget;
-        var project_id = $(clicked_button).attr("data-projectid");
-        console.log(project_id);
+        var service_id = $(clicked_button).attr("data-serviceid");
+        console.log(service_id);
 
-        $('#projectToEditId').val(project_id);
-        console.log($('#projectToEditId').val());
-        console.log($('#projectToEditId').val().length);
+        $('#serviceToEditId').val(service_id);
+        console.log($('#serviceToEditId').val());
+        console.log($('#serviceToEditId').val().length);
 
 
     });
@@ -424,28 +424,28 @@
     $('#delServiceForm').submit(function(e){
         e.preventDefault();
 
-        var projects_to_del = [];
+        var services_to_del = [];
 
         // Если установлен UUID в скрытый тэг, т.е. модал вызван из таблицы
-        if($('#projectToDeleteId').val().length > 30) {
-            projects_to_del.push({"project_id": $('#projectToDeleteId').val()});
+        if($('#serviceToDeleteId').val().length > 30) {
+            services_to_del.push({"service_id": $('#serviceToDeleteId').val()});
         } else
         // Иначе эту удаление по селектору
         {
             var checked_checkbox = $('table tbody input[type="checkbox"]:checked');
             console.log(checked_checkbox);
 
-            var projects_to_del = [];
+            var services_to_del = [];
 
             checked_checkbox.each(function(checkbox) {
                 var name = checked_checkbox[checkbox].name;
                 var id = checked_checkbox[checkbox].value;
 
-                projects_to_del.push({"project_id": id});
+                services_to_del.push({"service_id": id});
             });
         }
 
-        var {result} = axios.post('/data/projects/delete', projects_to_del, {
+        var {result} = axios.post('/data/services/delete', services_to_del, {
           headers: {
             'Content-Type': 'application/json'
           }
