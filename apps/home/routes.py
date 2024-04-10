@@ -232,6 +232,24 @@ def r_data_projects_delete():
 
     return results
 
+@blueprint.route('/data/services/add', methods=["POST"])
+@login_required
+def r_data_services_add():
+    params = request.json
+    print(f"[DBG][r_data_services_add] params: {params}")
+
+    project_id = params["project"]
+    name = params["name"]
+    description = params["description"]
+    target_sla = params["target_sla"]
+    owner = params["owner"]
+
+    result = Service.add(project_id, name, description, owner)
+
+    print(f"[DBG][r_data_services_add] result: {result}")
+
+    return result
+
 @blueprint.route('/data/services')
 @login_required
 def r_data_services():

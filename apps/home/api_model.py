@@ -412,6 +412,37 @@ class Service(APIBase):
     processes_count: Optional[int] = field(default=None, init=False)
 
     @staticmethod
+    def add(project_id, name, description, created_by):
+        try:
+            url = f'{APIBase.api_endpoint}/services'
+            json_data = {
+                "services": [
+                    {
+                        "processid": project_id,
+                        "name": name,
+                        "description": description,
+                        "createdby": created_by,
+                        "state": "active"
+                    }
+                ]
+            }
+
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            response = requests.post(url, json=json_data, headers=headers)
+            result = response.json()
+
+            print(f"[DBG][Service/add] response: {response}")
+
+            return result
+        except Exception as e:
+            print(f"[ERR] Can't add service: {e}")
+            return None
+
+
+    @staticmethod
     def from_id(service_id):
         try:
             url = f'{APIBase.api_endpoint}/services/{service_id}'

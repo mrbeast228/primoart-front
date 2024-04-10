@@ -202,7 +202,7 @@
             <div id="addServiceModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="addServiceАщкь">
+                        <form id="addServiceForm">
                             <div class="modal-header">
                                 <h4 class="modal-title">Новый сервис</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -212,11 +212,15 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Проект</label>
-                                    <select class="form-select" aria-label="">
+                                    <select class="form-select" aria-label="" name="project">
                                         {% for project in context.projects %}
                                             <option value="{{ project.process_id }}">{{ project.name }}</option>
                                         {% endfor %}
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Сервис</label>
+                                    <input type="text" class="form-control" name="name">
                                 </div>
                                 <div class="form-group">
                                     <label>Описание</label>
@@ -224,7 +228,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Целевой SLA</label>
-                                    <input type="text" class="form-control" name="target_sla">
+                                    <input type="text" class="form-control" name="target_sla" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Владелец</label>
@@ -245,7 +249,7 @@
             <div id="editServiceModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="editServiceАщкь">
+                        <form id="editServiceForm">
                             <!-- Скрытый инпут для вызова из строки таблицы -->
                             <input type="hidden" id="projectToEditId" name="project_id" value="">
                             <div class="modal-header">
@@ -288,7 +292,7 @@
             <div id="delServiceModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="delServiceАщкь">
+                        <form id="delServiceForm">
                             <!-- Скрытый инпут для вызова из строки таблицы -->
                             <input type="hidden" id="projectToDeleteId" name="project_id" value="">
                             <div class="modal-header">
@@ -398,14 +402,14 @@
 </script>
 
 
-<!-- Кастомный сабмит добавления проекта -->
+<!-- Кастомный сабмит добавления сервиса -->
 <script>
-    $('#addServiceАщкь').submit(function(e){
+    $('#addServiceForm').submit(function(e){
         e.preventDefault();
 
-        var data = getFormData($('#addServiceАщкь'));
+        var data = getFormData($('#addServiceForm'));
 
-        var {result} = axios.post('/data/projects/add', data, {
+        var {result} = axios.post('/data/services/add', data, {
           headers: {
             'Content-Type': 'application/json'
           }
@@ -417,7 +421,7 @@
 
 <!-- Кастомный сабмит удаления проекта(ов) -->
 <script>
-    $('#delServiceАщкь').submit(function(e){
+    $('#delServiceForm').submit(function(e){
         e.preventDefault();
 
         var projects_to_del = [];
@@ -454,10 +458,10 @@
 
 <!-- Кастомный сабмит изменения проекта(ов) -->
 <script>
-    $('#editServiceАщкь').submit(function(e){
+    $('#editServiceForm').submit(function(e){
         e.preventDefault();
 
-        var data = getFormData($('#editServiceАщкь'));
+        var data = getFormData($('#editServiceForm'));
 
         var {result} = axios.post('/data/projects/edit', data, {
           headers: {
