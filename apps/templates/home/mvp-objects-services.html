@@ -260,28 +260,33 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Проект</label>
-                                    <input id="mod_ed_service_name" type="text" class="form-control" name="name"
-                                           required>
+                                    <select class="form-select" aria-label="" name="project">
+                                        {% for project in context.projects %}
+                                            <option value="{{ project.process_id }}">{{ project.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Сервис</label>
+                                    <input type="text" class="form-control" name="name">
                                 </div>
                                 <div class="form-group">
                                     <label>Описание</label>
-                                    <input id="mod_ed_service_description" type="text" class="form-control"
-                                           name="description">
+                                    <input type="text" class="form-control" name="description">
                                 </div>
                                 <div class="form-group">
                                     <label>Целевой SLA</label>
-                                    <input id="mod_ed_service_sla" type="text" class="form-control" name="target_sla">
+                                    <input type="text" class="form-control" name="target_sla" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Владелец</label>
-                                    <input id="mod_ed_service_created_by" type="text" class="form-control" name="owner"
-                                           required>
+                                    <input type="text" class="form-control" name="owner" required>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-outline-default" data-bs-dismiss="modal"
                                        value="Отмена">
-                                <input type="submit" class="btn btn-outline-success" value="Добавить">
+                                <input type="submit" class="btn btn-outline-success" value="Обновить">
                             </div>
                         </form>
                     </div>
@@ -419,7 +424,7 @@
     });
 </script>
 
-<!-- Кастомный сабмит удаления проекта(ов) -->
+<!-- Кастомный сабмит удаления сервиса(ов) -->
 <script>
     $('#delServiceForm').submit(function(e){
         e.preventDefault();
@@ -456,14 +461,14 @@
 </script>
 
 
-<!-- Кастомный сабмит изменения проекта(ов) -->
+<!-- Кастомный сабмит изменения сервиса(ов) -->
 <script>
     $('#editServiceForm').submit(function(e){
         e.preventDefault();
 
         var data = getFormData($('#editServiceForm'));
 
-        var {result} = axios.post('/data/projects/edit', data, {
+        var {result} = axios.post('/data/services/edit', data, {
           headers: {
             'Content-Type': 'application/json'
           }

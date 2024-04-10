@@ -442,6 +442,38 @@ class Service(APIBase):
             return None
 
     @staticmethod
+    def edit(service_id, project_id, name, description, created_by):
+        try:
+            url = f'{APIBase.api_endpoint}/services/{service_id}'
+            json_data = {
+                "service_patch":
+                    {
+                        "processid": project_id,
+                        "name": name,
+                        "description": description,
+                        "createdby": created_by,
+                        "state": "active"
+                    }
+            }
+
+            headers = {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+
+            print(f"[DBG][Service/edit] json_data: {json_data}")
+
+            response = requests.put(url, json=json_data, headers=headers)
+            result = response.json()
+
+            print(f"[DBG][Service/edit] response: {response}")
+
+            return result
+        except Exception as e:
+            print(f"[ERR] Can't edit service: {e}")
+            return None
+
+    @staticmethod
     def delete(service_id):
         try:
             url = f'{APIBase.api_endpoint}/services/{service_id}'

@@ -250,6 +250,25 @@ def r_data_services_add():
 
     return result
 
+@blueprint.route('/data/services/edit', methods=["POST"])
+@login_required
+def r_data_services_edit():
+
+    params = request.json
+    print(f"[DBG][r_data_services_edit] params: {params}")
+
+    service_id = params["service_id"]
+    project_id = params["project"]
+    name = params["name"]
+    description = params["description"]
+    target_sla = params["target_sla"]
+    owner = params["owner"]
+
+    result = Service.edit(service_id, project_id, name, description, owner)
+
+    print(f"[DBG][r_data_services_edit] result: {result}")
+
+    return result
 
 @blueprint.route('/data/services/delete', methods=["POST"])
 @login_required
