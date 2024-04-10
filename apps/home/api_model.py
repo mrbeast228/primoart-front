@@ -3,6 +3,7 @@ import datetime
 import uuid
 from dataclasses import dataclass, field
 from typing import Optional
+import json
 
 import apps.config
 
@@ -149,6 +150,20 @@ class TransactionRun(APIBase):
             error_code=json['errorcode']
         )
 
+    @staticmethod
+    def list_all(params=None):
+        if params is None:
+            params = {}
+        try:
+            url = f'{APIBase.api_endpoint}/runs/'
+            response = requests.get(url=url, data=json.dumps(params))
+            subresult = response.json()['runs']
+
+            return subresult
+        except Exception as e:
+            print(f"[ERR] Can't list transactions runs: {e}")
+            return None
+
     def get_steps(self):
         try:
             url = f'{self.api_endpoint}/runs/{self.transaction_run_id}/steps'
@@ -213,10 +228,12 @@ class Transaction(APIBase):
         )
 
     @staticmethod
-    def list_all():
+    def list_all(params=None):
+        if params is None:
+            params = {}
         try:
             url = f'{APIBase.api_endpoint}/transactions/'
-            response = requests.get(url)
+            response = requests.get(url=url, data=json.dumps(params))
             subresult = response.json()['transactions']
 
             return subresult
@@ -628,4 +645,25 @@ class Charts(APIBase):
             return response.json()['heatmap']
         except Exception as e:
             print(f"[ERR] Can't get heatmap data: {e}")
+            return None
+
+    @staticmethod
+    def get_transaction_runs(service_id, time_start="", time_end=""):
+        try:
+            # config = {
+            #     "serviceid":    service_id,
+            #     "start":        "2024-02-01 00:00:00.000000",
+            #     "end":          "2024-03-01 00:00:00.000000"
+            # }
+            config = {
+                "serviceid": service_id
+            }
+            transactions = Transaction.list_all(params=config)
+            transactions_id = [tr["transactionid"] for tr in transactions]
+
+            runs = TransactionRun.list_all(params={"transactionid": transactions_id})
+
+            return runs
+        except Exception as e:
+            print(f"[ERR] Can't get transaction runs data: {e}")
             return None

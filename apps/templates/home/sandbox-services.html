@@ -520,6 +520,17 @@
         });
 
         servicetimevserrchart.init();
+
+        axios.get("/data/services").then((response) => {
+            const serviceId = response.data[0].serviceid;
+
+            axios.get("/charts/runs", {params: {"service_id": serviceId}}).then((response) => {
+                const data = response.data;
+
+                scatterstatuschart.init(data);
+            });
+        });
+
         scatterstatuschart.init();
     });
 </script>

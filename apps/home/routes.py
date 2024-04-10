@@ -11,6 +11,8 @@ from jinja2 import TemplateNotFound
 from apps.home.api_connector import APIConnector
 from apps.home.api_model import *
 
+from datetime import datetime
+
 class RouterHelper:
     @staticmethod
     def get_segment(request):
@@ -318,5 +320,23 @@ def r_data_runs():
 
 @blueprint.route('/charts/heatmap')
 @login_required
-def r_data_heatmap():
+def r_charts_heatmap():
     return Charts.get_heatmap(request.args["service_id"])
+
+@blueprint.route('/charts/runs')
+@login_required
+def r_charts_runs():
+    service_id = request.args["service_id"]
+    runs = Charts.get_transaction_runs(service_id=service_id)
+
+    res = {"OK": [], "Failed": []}
+
+    for run in runs:
+        cur = {
+            "x": (datetime.strptime(run["runstart"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime("2024-01-01 00:00:00.000000", "%Y-%m-%d %H:%M:%S.%f")).days,
+            "y": (datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"], "%Y-%m-%d %H:%M:%S.%f")).seconds
+        }
+        res["OK" if run["runresult"] == "OK" else "Failed"].append(cur)
+
+    return res
+

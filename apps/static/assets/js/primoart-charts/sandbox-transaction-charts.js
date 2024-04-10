@@ -577,58 +577,44 @@ transactionrunhorizontalchart = {
 }
 
 scatterstatuschart = {
-    init: function() {
+    init: function(transaction_data) {
 
         const data = {
           datasets: [
           {
             label: 'OK',
-            data: [{
-              x: -10,
-              y: 0
-            }, {
-              x: 0,
-              y: 10
-            }, {
-              x: 10,
-              y: 5
-            }, {
-              x: 0.5,
-              y: 5.5
-            }],
-            backgroundColor: 'rgb(255, 99, 132)'
+            data: transaction_data["OK"],
+            backgroundColor: 'rgb(75, 140, 60)'
           },
           {
             label: 'Failed',
-            data: [{
-              x: -15,
-              y: 2
-            }, {
-              x: 3,
-              y: 17
-            }, {
-              x: 27,
-              y: 1
-            }, {
-              x: 16,
-              y: 4
-            }],
-            backgroundColor: 'rgb(75, 140, 60)'
+            data: transaction_data["Failed"],
+            backgroundColor: 'rgb(255, 99, 132)'
           }
         ],
         };
 
+        const options = {
+          scales: {
+              x: {
+                type: 'linear',
+                title: {
+                    text: "Timestamp",
+                    display: true,
+                },
+                position: 'bottom'
+              },
+              y: {
+                type: 'linear',
+                position: "left"
+              }
+            }
+        }
+
         const config = {
           type: 'scatter',
           data: data,
-          options: {
-            scales: {
-              x: {
-                type: 'linear',
-                position: 'bottom'
-              }
-            }
-          }
+          options: options
         };
 
         var ctx = document.getElementById("transactionScatterChart01").getContext("2d");
