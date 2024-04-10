@@ -340,14 +340,20 @@ class BusinessProcess(APIBase):
 
     @staticmethod
     def from_id(process_id):
-        try:
-            url = f'{APIBase.api_endpoint}/business_processes/{process_id}'
-            response = requests.get(url)
-            subresult = response.json()['business_processes'][0]
 
-            result = BusinessProcess.from_json(subresult)
-            service = Service.from_id(result.service_id)
-            result.service = service.name
+        print(f"[DBG][BusinessProcess/from_id] process_id: {process_id}")
+
+        try:
+            url = f'{APIBase.api_endpoint}/processes/{process_id}'
+            print(f"[DBG][BusinessProcess/from_id] url: {url}")
+
+            response = requests.get(url)
+
+            subresult = response.json()
+            print(f"[DBG][BusinessProcess/from_id] subresult: {subresult}")
+
+            result = BusinessProcess.from_json(subresult["process"])
+            print(f"[DBG][BusinessProcess/from_id] result: {result}")
 
             return result
 
@@ -357,11 +363,13 @@ class BusinessProcess(APIBase):
 
     @staticmethod
     def from_json(json):
+        print(f"[DBG][BusinessProcess/from_json] json: {json}")
+
         return BusinessProcess(
-            process_id=uuid.UUID(json['processid']),
+            process_id=json['processid'],
             name=json['name'],
             description=json['description'],
-            created_datetime=APIBase.datetime_from_str(json['createddatetime']),
+            created_datetime=json['createddatetime'],
             created_by=json['createdby'],
         )
 
@@ -395,6 +403,7 @@ class BusinessProcess(APIBase):
 class Service(APIBase):
     service_id: uuid.UUID
     name: str
+    project_name: str
     description: str
     created_datetime: datetime.datetime
     created_by: str
@@ -418,8 +427,11 @@ class Service(APIBase):
 
     @staticmethod
     def from_json(json):
+        print(f"[DBG][Service/from_json] json: {json}")
+
         return Service(
             service_id=uuid.UUID(json['serviceid']),
+            project_name=BusinessProcess.from_id(json['processid']).name,
             name=json['name'],
             description=json['description'],
             created_datetime=APIBase.datetime_from_str(json['createddatetime']),

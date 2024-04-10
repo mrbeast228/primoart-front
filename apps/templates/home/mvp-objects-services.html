@@ -145,7 +145,7 @@
                                 </div>
                             </div>
                         </div>
-                        <table id="services-table" class="table table-centered table-nowrap mb-0 rounded table-hover">
+                        <table id="services-table" class="table table-nowrap mb-0 rounded table-hover">
                             <thead>
                             <tr>
                                 <th>
@@ -155,38 +155,38 @@
                                         </span>
                                 </th>
                                 <th>Проект</th>
+                                <th>Сервис</th>
                                 <th>Описание</th>
                                 <th>Целевой SLA</th>
                                 <th>Владелец</th>
-                                <th>Последняя модификация</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for project in context.projects %}
+                            {% for service in context.services %}
                             <tr>
                                 <td>
                                     <span class="custom-checkbox">
                                         <input type="checkbox" class="checkbox" name="project_id"
-                                               value="{{ project.process_id }}">
+                                               value="{{ service.service_id }}">
                                         <label></label>
                                     </span>
                                 </td>
-                                <td>{{ project.name }}</td>
-                                <td>{{ project.description }}</td>
+                                <td>{{ service.service_id }}</td>
+                                <td>{{ service.name }}</td>
+                                <td>{{ service.description }}</td>
                                 <td>99.5%</td>
-                                <td>{{ project.created_by }}</td>
-                                <td>{{ project.created_datetime }}</td>
+                                <td>{{ service.created_by }}</td>
                                 <td>
                                     <a href="#editProjectModal" class="edit ms-1 me-1 text-tertiary"
                                        data-bs-toggle="modal"
-                                       data-projectid="{{ project.process_id }}"
+                                       data-serviceid="{{ service.service_id }}"
                                     >
                                         <i>{{font_awesome.render_icon("fas fa-pencil")}}</i>
                                     </a>
                                     <a href="#delProjectModal" class="delete ms-1 me-1 text-danger"
                                        data-bs-toggle="modal" data-bs-target="#delProjectModal"
-                                       data-projectid="{{ project.process_id }}"
+                                       data-serviceid="{{ service.service_id }}"
                                     ><i>{{font_awesome.render_icon("fas fa-trash")}}</i>
                                     </a>
                                 </td>

@@ -61,6 +61,9 @@ class APIConnector(api_model.APIBase):
             result = []
             for service in subresult:
                 service_obj = api_model.Service.from_json(service)
+
+                print(f"[DBG][get_services_list] service_obj = '{service_obj}'")
+
                 # Пока прикомментил, но вероятно нам это не понадобится в будущем
                 #if full:
                 #    service_obj.get_business_processes()
