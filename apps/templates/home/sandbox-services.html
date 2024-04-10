@@ -509,14 +509,15 @@
         performancechart.init();
         heatmapchart.init("chartHeatmap01");
 
-        // TODO:
-        // axios.get("/data/services")
-        //     .then((r) => {
-        //         const data = ...;
-        //
-        //         heatmapchart.init("chartHeatmap02", data);
-        //     });
-        heatmapchart.init("chartHeatmap02");
+        axios.get("/data/services").then((r) => {
+            const serviceId = r.data[0].serviceid;
+
+            axios.get("/charts/heatmap", {params: {"service_id": serviceId}}).then((r) => {
+                const data = r.data;
+
+                heatmapchart.init("chartHeatmap02", data);
+            });
+        });
 
         servicetimevserrchart.init();
         scatterstatuschart.init();

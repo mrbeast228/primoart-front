@@ -6,7 +6,7 @@ for (let i = 0; i < 7 * 24; i++) {
     heatmapTestData.push({
         time: start + 1000 * 60 * 60 * i,
         value: 0.1 + Math.random() * 99.9,
-        trxId: i,
+        // trxId: i,
     });
 }
 
@@ -22,14 +22,14 @@ function convertData(raw) {
             y: dayNames[(dt.getDay() + 6) % 7],
             d: dt,
             v: value,
-            trxId: trxId,
+            // trxId: trxId,
         };
     });
 }
 
 heatmapchart = {
     init: function(canvasId, dataset) {
-        if (!dataset) {
+        if (dataset === undefined) {
             dataset = heatmapTestData;
         }
 
@@ -58,7 +58,7 @@ heatmapchart = {
 
         const data = {
             datasets: [{
-                data: convertData(heatmapTestData),
+                data: convertData(dataset),
                 backgroundColor(c) {
                     const value = c.dataset.data[c.dataIndex].v;
                     const alpha = value / 100;
@@ -120,12 +120,12 @@ heatmapchart = {
         var ctx = canvas.getContext("2d");
         var heatmapChart = new Chart(ctx, config);
 
-        canvas.onclick = function(e) {
-            var block = heatmapChart.getElementsAtEventForMode(e, 'nearest', {intersect: true}, true);
-            if (!block.length) return;
-            var blockData = data.datasets[block[0].datasetIndex].data[block[0].index];
-            window.open("/mvp-transaction.html?transaction_id=" + blockData.trxId);
-        }
+        // canvas.onclick = function(e) {
+        //     var block = heatmapChart.getElementsAtEventForMode(e, 'nearest', {intersect: true}, true);
+        //     if (!block.length) return;
+        //     var blockData = data.datasets[block[0].datasetIndex].data[block[0].index];
+        //     window.open("/mvp-transaction.html?transaction_id=" + blockData.trxId);
+        // }
 
         return heatmapChart;
     }

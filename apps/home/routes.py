@@ -294,7 +294,7 @@ def r_data_services_delete():
 @blueprint.route('/data/services')
 @login_required
 def r_data_services():
-    return [{"a": 1}, {"b": 2}, {"c": 3}]
+    return Service.list_all()
 
 @blueprint.route('/data/robots')
 @login_required
@@ -304,7 +304,7 @@ def r_data_robots():
 @blueprint.route('/data/transactions')
 @login_required
 def r_data_transactions():
-    return [{"a": 1}, {"b": 2}, {"c": 3}]
+    return Transaction.list_all()
 
 @blueprint.route('/data/steps')
 @login_required
@@ -315,3 +315,8 @@ def r_data_steps():
 @login_required
 def r_data_runs():
     return [{"a": 1}, {"b": 2}, {"c": 3}]
+
+@blueprint.route('/charts/heatmap')
+@login_required
+def r_data_heatmap():
+    return Charts.get_heatmap(request.args["service_id"])

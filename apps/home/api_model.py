@@ -212,6 +212,18 @@ class Transaction(APIBase):
             cron=json['cron']
         )
 
+    @staticmethod
+    def list_all():
+        try:
+            url = f'{APIBase.api_endpoint}/transactions/'
+            response = requests.get(url)
+            subresult = response.json()['transactions']
+
+            return subresult
+        except Exception as e:
+            print(f"[ERR] Can't list transactions: {e}")
+            return None
+
     def get_steps(self):
         try:
             url = f'{self.api_endpoint}/transactions/{self.transaction_id}/steps'
@@ -520,6 +532,18 @@ class Service(APIBase):
             created_by=json['createdby']
         )
 
+    @staticmethod
+    def list_all():
+        try:
+            url = f'{APIBase.api_endpoint}/services/'
+            response = requests.get(url)
+            subresult = response.json()['services']
+
+            return subresult
+        except Exception as e:
+            print(f"[ERR] Can't list services: {e}")
+            return None
+
     def get_processes(self):
         try:
             url = f'{self.api_endpoint}/services/{self.service_id}/business_processes'
@@ -591,3 +615,17 @@ class Robot(APIBase):
         except Exception as e:
             print(f"[ERR] Can't get runs for robot {self.robot_id}: {e}")
             return []
+
+
+class Charts(APIBase):
+    @staticmethod
+    def get_heatmap(service_id):
+        try:
+            url = f'{APIBase.api_endpoint}/runs/heatmap'
+            response = requests.get(url, json={
+                "serviceid": service_id
+            })
+            return response.json()['heatmap']
+
+            print(f"[ERR] Can't get heatmap data: {e}")
+            return None
