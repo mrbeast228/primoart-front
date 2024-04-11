@@ -312,7 +312,7 @@
                 <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
                 <div class="card-mid-buffer"></div>
                 <div>
-                    <canvas width="100%" height="75%" id="chartheatmap01"></canvas>
+                    <canvas width="100%" height="75%" id="chartHeatmap01"></canvas>
                 </div>
             </div>
         </div>
@@ -369,16 +369,21 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-heatmap-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
-
-
 <script>
     $(function() {
         console.log("Page loaded!");
 
         performancechart.init();
-        heatmapchart.init();
+
+        axios.get("/data/services").then((r) => {
+            const serviceId = r.data[0].serviceid;
+
+            heatmapchart.initFromApiByService("chartHeatmap01", serviceId);
+        });
 
         servicetimevserrchart.init();
         scatterstatuschart.init();

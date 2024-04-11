@@ -512,17 +512,7 @@
         axios.get("/data/services").then((r) => {
             const serviceId = r.data[0].serviceid;
 
-            axios.get("/charts/heatmap", {params: {"service_id": serviceId}}).then((r) => {
-                const data = r.data;
-
-                heatmapchart.init("chartHeatmap02", data);
-            });
-        });
-
-        servicetimevserrchart.init();
-
-        axios.get("/data/services").then((response) => {
-            const serviceId = response.data[0].serviceid;
+            heatmapchart.initFromApiByService("chartHeatmap02", serviceId);
 
             axios.get("/charts/runs", {params: {"service_id": serviceId}}).then((response) => {
                 const data = response.data;
@@ -530,6 +520,8 @@
                 scatterstatuschart.init(data);
             });
         });
+
+        servicetimevserrchart.init();
     });
 </script>
 {% endblock javascripts %}
