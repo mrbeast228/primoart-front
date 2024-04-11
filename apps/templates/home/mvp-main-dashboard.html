@@ -414,8 +414,11 @@
 
         servicetimevserrchart.init();
 
-        heatmapchart.init("chartHeatmap01");
+        axios.get("/data/services").then((r) => {
+            const serviceId = r.data[0].serviceid;
 
+            heatmapchart.initFromApiByService("chartHeatmap01", serviceId);
+        });
     });
 </script>
 <script>

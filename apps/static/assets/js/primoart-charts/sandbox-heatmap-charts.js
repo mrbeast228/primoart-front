@@ -128,5 +128,12 @@ heatmapchart = {
         // }
 
         return heatmapChart;
+    },
+    initFromApiByService: function(canvasId, serviceId) {
+        axios.get("/charts/heatmap", {params: {"service_id": serviceId}}).then((r) => {
+            const data = r.data;
+
+            heatmapchart.init(canvasId, data);
+        });
     }
 }
