@@ -1,0 +1,481 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Buttons {% endblock %}
+
+{% block stylesheets %}
+<style>
+    .table-responsive {
+        margin: 30px 0;
+    }
+    .table-wrapper {
+        padding: 20px 25px;
+        border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+    .table-title .btn-group {
+        float: right;
+    }
+    .table-title .btn {
+        float: right;
+    }
+
+    .hint-text {
+        float: left;
+        margin-top: 10px;
+        font-size: 13px;
+    }
+    /* Custom checkbox */
+    .custom-checkbox {
+        position: relative;
+    }
+    .custom-checkbox input[type="checkbox"] {
+        opacity: 0;
+        position: absolute;
+        margin: 5px 0 0 3px;
+        z-index: 9;
+    }
+    .custom-checkbox label:before{
+        width: 18px;
+        height: 18px;
+    }
+    .custom-checkbox label:before {
+        content: '';
+        margin-right: 10px;
+        display: inline-block;
+        vertical-align: text-top;
+        background: white;
+        border: 1px solid #bbb;
+        border-radius: 2px;
+        box-sizing: border-box;
+        z-index: 2;
+    }
+    .custom-checkbox input[type="checkbox"]:checked + label:after {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: 3px;
+        width: 6px;
+        height: 11px;
+        border: solid #000;
+        border-width: 0 3px 3px 0;
+        transform: inherit;
+        z-index: 3;
+        transform: rotateZ(45deg);
+    }
+    .custom-checkbox input[type="checkbox"]:checked + label:before {
+        border-color: #03A9F4;
+        background: #03A9F4;
+    }
+    .custom-checkbox input[type="checkbox"]:checked + label:after {
+        border-color: #fff;
+    }
+    .custom-checkbox input[type="checkbox"]:disabled + label:before {
+        color: #b8b8b8;
+        cursor: auto;
+        box-shadow: none;
+        background: #ddd;
+    }
+
+
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="py-4">
+    <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+        <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+            <li class="breadcrumb-item">
+                <a href="./mvp-main-dashboard.html">
+                    <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                        ></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="breadcrumb-item"><a href="">Управление проектами</a></li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12 col-sm-12 col-xl-12">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./mvp-objects-projects.html">Проекты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./mvp-objects-services.html">Сервисы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./mvp-objects-robots.html">Роботы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./mvp-objects-transactions.html">Транзакции</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./mvp-objects-steps.html">Этапы</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div class="table-wrapper">
+                        <div class="table-title">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="d-none d-sm-block">
+                                        <button class="btn btn-outline-danger ms-1 me-1"
+                                                data-bs-toggle="modal" data-bs-target="#delServiceModal">
+                                            <i>{{font_awesome.render_icon("fas fa-trash")}}</i>
+                                            <span>Удалить</span></button>
+                                        <button class="btn btn-outline-success ms-1 me-1"
+                                                data-bs-toggle="modal" data-bs-target="#addServiceModal">
+                                            <i>{{font_awesome.render_icon("fas fa-plus")}}</i>
+                                            <span>Новый сервис</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table id="services-table" class="table table-nowrap mb-0 rounded table-hover">
+                            <thead>
+                            <tr>
+                                <th>
+                                        <span class="custom-checkbox">
+                                            <input type="checkbox" id="selectAll">
+                                            <label for="selectAll"></label>
+                                        </span>
+                                </th>
+                                <th>Проект</th>
+                                <th>Сервис</th>
+                                <th>Описание</th>
+                                <th>Целевой SLA</th>
+                                <th>Владелец</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for service in context.services %}
+                            <tr>
+                                <td>
+                                    <span class="custom-checkbox">
+                                        <input type="checkbox" class="checkbox" name="service_id"
+                                               value="{{ service.service_id }}">
+                                        <label></label>
+                                    </span>
+                                </td>
+                                <td>{{ service.project_name }}</td>
+                                <td>{{ service.name }}</td>
+                                <td>{{ service.description }}</td>
+                                <td>99.5%</td>
+                                <td>{{ service.created_by }}</td>
+                                <td>
+                                    <a href="#editServiceModal" class="edit ms-1 me-1 text-tertiary"
+                                       data-bs-toggle="modal"
+                                       data-serviceid="{{ service.service_id }}"
+                                    >
+                                        <i>{{font_awesome.render_icon("fas fa-pencil")}}</i>
+                                    </a>
+                                    <a href="#delServiceModal" class="delete ms-1 me-1 text-danger"
+                                       data-bs-toggle="modal" data-bs-target="#delServiceModal"
+                                       data-serviceid="{{ service.service_id }}"
+                                    ><i>{{font_awesome.render_icon("fas fa-trash")}}</i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Modal HTML -->
+            <div id="addServiceModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="addServiceForm">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Новый сервис</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Проект</label>
+                                    <select class="form-select" aria-label="" name="project">
+                                        {% for project in context.projects %}
+                                            <option value="{{ project.process_id }}">{{ project.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Сервис</label>
+                                    <input type="text" class="form-control" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Описание</label>
+                                    <input type="text" class="form-control" name="description">
+                                </div>
+                                <div class="form-group">
+                                    <label>Целевой SLA</label>
+                                    <input type="text" class="form-control" name="target_sla" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Владелец</label>
+                                    <input type="text" class="form-control" name="owner" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-outline-default" data-bs-dismiss="modal"
+                                       value="Отмена">
+                                <input type="submit" class="btn btn-outline-success" value="Добавить">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Modal HTML -->
+            <div id="editServiceModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="editServiceForm">
+                            <!-- Скрытый инпут для вызова из строки таблицы -->
+                            <input type="hidden" id="serviceToEditId" name="service_id" value="">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Изменение проекта</h4>
+                                <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Проект</label>
+                                    <select class="form-select" aria-label="" name="project">
+                                        {% for project in context.projects %}
+                                            <option value="{{ project.process_id }}">{{ project.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Сервис</label>
+                                    <input type="text" class="form-control" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Описание</label>
+                                    <input type="text" class="form-control" name="description">
+                                </div>
+                                <div class="form-group">
+                                    <label>Целевой SLA</label>
+                                    <input type="text" class="form-control" name="target_sla" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Владелец</label>
+                                    <input type="text" class="form-control" name="owner" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-outline-default" data-bs-dismiss="modal"
+                                       value="Отмена">
+                                <input type="submit" class="btn btn-outline-success" value="Обновить">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Modal HTML -->
+            <div id="delServiceModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="delServiceForm">
+                            <!-- Скрытый инпут для вызова из строки таблицы -->
+                            <input type="hidden" id="serviceToDeleteId" name="service_id" value="">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Удаление сервиса</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Вы действительно хотите удалить сервис(ы)?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-outline-default" data-bs-dismiss="modal"
+                                       value="Отмена">
+                                <input type="submit" class="btn btn-outline-danger" value="Удалить">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-datatables/primoart-datatables.js"></script>
+
+<!-- Пример реализации CRUD на jquery -->
+<!-- https://www.tutorialrepublic.com/snippets/preview.php?topic=bootstrap&file=crud-data-table-for-database-with-modal-form -->
+
+<!-- Хелпер для конвертации данных формы в JSON -->
+<script>
+    function getFormData($form){
+        var unindexed_array = $form.serializeArray();
+        var indexed_array = {};
+
+        $.map(unindexed_array, function(n, i){
+            indexed_array[n['name']] = n['value'];
+        });
+
+        return indexed_array;
+    }
+</script>
+
+<!-- Инициализация DataTable -->
+<script>
+    objectsServicesTable.init("services-table");
+</script>
+
+<!-- Скрипт для чекбоксов -->
+<script>
+    $(document).ready(function(){
+        // Activate tooltip
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Select/Deselect checkboxes
+        var checkbox = $('table tbody input[type="checkbox"]');
+        $("#selectAll").click(function(){
+            if(this.checked){
+                checkbox.each(function(){
+                    this.checked = true;
+                });
+            } else{
+                checkbox.each(function(){
+                    this.checked = false;
+                });
+            }
+        });
+        checkbox.click(function(){
+            if(!this.checked){
+                $("#selectAll").prop("checked", false);
+            }
+        });
+    });
+
+</script>
+
+<!-- Скрипты модалов -->
+<script>
+    $('#delServiceModal').on('show.bs.modal', function (event) {
+        var clicked_button = event.relatedTarget;
+        var service_id = $(clicked_button).attr("data-serviceid");
+        console.log(service_id);
+
+        $('#serviceToDeleteId').val(service_id);
+        console.log($('#serviceToDeleteId').val());
+        console.log($('#serviceToDeleteId').val().length);
+
+    });
+
+    $('#editServiceModal').on('show.bs.modal', function (event) {
+        var clicked_button = event.relatedTarget;
+        var service_id = $(clicked_button).attr("data-serviceid");
+        console.log(service_id);
+
+        $('#serviceToEditId').val(service_id);
+        console.log($('#serviceToEditId').val());
+        console.log($('#serviceToEditId').val().length);
+
+
+    });
+</script>
+
+
+<!-- Кастомный сабмит добавления сервиса -->
+<script>
+    $('#addServiceForm').submit(function(e){
+        e.preventDefault();
+
+        var data = getFormData($('#addServiceForm'));
+
+        var {result} = axios.post('/data/services/add', data, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          location.reload();
+        })
+    });
+</script>
+
+<!-- Кастомный сабмит удаления сервиса(ов) -->
+<script>
+    $('#delServiceForm').submit(function(e){
+        e.preventDefault();
+
+        var services_to_del = [];
+
+        // Если установлен UUID в скрытый тэг, т.е. модал вызван из таблицы
+        if($('#serviceToDeleteId').val().length > 30) {
+            services_to_del.push({"service_id": $('#serviceToDeleteId').val()});
+        } else
+        // Иначе эту удаление по селектору
+        {
+            var checked_checkbox = $('table tbody input[type="checkbox"]:checked');
+            console.log(checked_checkbox);
+
+            var services_to_del = [];
+
+            checked_checkbox.each(function(checkbox) {
+                var name = checked_checkbox[checkbox].name;
+                var id = checked_checkbox[checkbox].value;
+
+                services_to_del.push({"service_id": id});
+            });
+        }
+
+        var {result} = axios.post('/data/services/delete', services_to_del, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          location.reload();
+        })
+    });
+</script>
+
+
+<!-- Кастомный сабмит изменения сервиса(ов) -->
+<script>
+    $('#editServiceForm').submit(function(e){
+        e.preventDefault();
+
+        var data = getFormData($('#editServiceForm'));
+
+        var {result} = axios.post('/data/services/edit', data, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          location.reload();
+        })
+    });
+</script>
+
+{% endblock javascripts %}
