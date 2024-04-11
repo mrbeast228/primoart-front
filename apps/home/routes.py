@@ -332,9 +332,11 @@ def r_charts_runs():
     res = {"OK": [], "Failed": []}
 
     for run in runs:
+        response_time = (datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"],"%Y-%m-%d %H:%M:%S.%f")).microseconds
+        response_time = round(response_time/1000, 2)
         cur = {
             "x": run["runstart"],
-            "y": (datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"], "%Y-%m-%d %H:%M:%S.%f")).microseconds
+            "y": response_time
         }
         res["OK" if run["runresult"] == "OK" else "Failed"].append(cur)
 

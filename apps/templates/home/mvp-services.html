@@ -383,10 +383,11 @@
             const serviceId = r.data[0].serviceid;
 
             heatmapchart.initFromApiByService("chartHeatmap01", serviceId);
+
+            scatterstatuschart.initFromApiByService("transactionScatterChart01", serviceId)
         });
 
         servicetimevserrchart.init();
-        scatterstatuschart.init();
     });
 </script>
 {% endblock javascripts %}

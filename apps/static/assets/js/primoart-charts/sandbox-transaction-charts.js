@@ -576,9 +576,50 @@ transactionrunhorizontalchart = {
     }
 }
 
-scatterstatuschart = {
-    init: function(transaction_data) {
+const defaultScatterData = {
+  "OK": [
+    {
+      x: "2024-01-01",
+      y: 0
+    },
+    {
+      x: "2024-01-02",
+      y: 10
+    },
+    {
+      x: "2024-01-03",
+      y: 5
+    },
+    {
+      x: "2024-01-04",
+      y: 5.5
+    }
+  ],
+  "Failed": [
+    {
+      x: "2024-02-01",
+      y: 2
+    },
+    {
+      x: "2024-02-02",
+      y: 17
+    },
+    {
+      x: "2024-02-03",
+      y: 1
+    },
+    {
+      x: "2024-02-04",
+      y: 4
+    }
+  ]
+}
 
+scatterstatuschart = {
+    init: function(element_id, transaction_data) {
+        if (transaction_data === undefined) {
+          transaction_data = defaultScatterData
+        }
         const data = {
           datasets: [
           {
@@ -622,7 +663,14 @@ scatterstatuschart = {
           options: options
         };
 
-        var ctx = document.getElementById("transactionScatterChart02").getContext("2d");
+        var ctx = document.getElementById(element_id).getContext("2d");
         var scatterChart = new Chart(ctx, config);
+    },
+    initFromApiByService(element_id, service_id) {
+        axios.get("/charts/runs", {params: {"service_id": service_id}}).then((response) => {
+            const data = response.data;
+
+            scatterstatuschart.init(element_id, data);
+        });
     }
 }

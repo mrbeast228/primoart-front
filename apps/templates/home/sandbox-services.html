@@ -514,12 +514,10 @@
 
             heatmapchart.initFromApiByService("chartHeatmap02", serviceId);
 
-            axios.get("/charts/runs", {params: {"service_id": serviceId}}).then((response) => {
-                const data = response.data;
-
-                scatterstatuschart.init(data);
-            });
+            scatterstatuschart.initFromApiByService("transactionScatterChart02", serviceId)
         });
+
+        scatterstatuschart.init("transactionScatterChart01")
 
         servicetimevserrchart.init();
     });
