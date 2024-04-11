@@ -59,6 +59,13 @@ class RouterHelper:
             ctx['robots'] = APIConnector.get_robots_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['robots'] = '{ctx['robots']}'")
 
+        elif template == 'mvp-objects-transactions.html':
+            ctx['services'] = APIConnector.get_services_list(page=page_number, per_page=per_page)
+            print(f"[DBG][create_context] ctx['services'] = '{ctx['services']}'")
+
+            ctx['transactions'] = APIConnector.get_transaction_list(page=page_number, per_page=per_page)
+            print(f"[DBG][create_context] ctx['transactions'] = '{ctx['transactions']}'")
+
         elif template == 'mvp-services.html':
             ctx['services'] = APIConnector.get_services_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['services'] = '{ctx['services']}'")

@@ -186,7 +186,7 @@ class TransactionRun(APIBase):
 class Transaction(APIBase):
     transaction_id: uuid.UUID
     name: str
-    process_id: Optional[uuid.UUID]
+    service_id: Optional[uuid.UUID]
     description: str
     created_datetime: datetime.datetime
     created_by: str
@@ -206,8 +206,8 @@ class Transaction(APIBase):
             subresult = response.json()['transactions'][0]
 
             result = Transaction.from_json(subresult)
-            process = BusinessProcess.from_id(result.process_id)
-            result.process = process.name
+            service = Service.from_id(result.service_id)
+            result.service = service.name
 
             return result
         except Exception as e:
@@ -219,7 +219,7 @@ class Transaction(APIBase):
         return Transaction(
             transaction_id=uuid.UUID(json['transactionid']),
             name=json['name'],
-            process_id=uuid.UUID(json['processid']) if json['processid'] else None,
+            service_id=json['serviceid'],
             description=json['description'],
             created_datetime=APIBase.datetime_from_str(json['createddatetime']),
             created_by=json['createdby'],

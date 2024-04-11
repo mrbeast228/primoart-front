@@ -126,6 +126,9 @@ class APIConnector(api_model.APIBase):
             url = f'{cls.api_endpoint}/transactions'
 
             response = requests.get(url)
+
+            print(f"[DBG][get_transaction_list] response: {response.json()}")
+
             subresult = cls.get_page(response.json()['transactions'], page, per_page)
 
             result = []
