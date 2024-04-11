@@ -10,7 +10,7 @@ import apps.config
 
 class APIBase:
     max_runs: int = 5
-    api_endpoint: str = f'http://{apps.config.Config.API_ENDPOINT}:{apps.config.Config.API_PORT}'
+    api_endpoint: str = f'{apps.config.Config.API_ENDPOINT}'
 
     @staticmethod
     def datetime_from_str(datetime_str):
