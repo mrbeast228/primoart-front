@@ -111,7 +111,7 @@
                         <a class="nav-link" href="./mvp-objects-projects.html">Проекты</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./mvp-objects-services.html">Сервисы</a>
+                        <a class="nav-link" href="./mvp-objects-services.html">Транзакцияы</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="./mvp-objects-robots.html">Роботы</a>
@@ -140,7 +140,7 @@
                                         <button class="btn btn-outline-success ms-1 me-1"
                                                 data-bs-toggle="modal" data-bs-target="#addServiceModal">
                                             <i>{{font_awesome.render_icon("fas fa-plus")}}</i>
-                                            <span>Новый сервис</span></button>
+                                            <span>Новый транзакция</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -155,7 +155,7 @@
                                         </span>
                                 </th>
                                 <th>Проект</th>
-                                <th>Сервис</th>
+                                <th>Транзакция</th>
                                 <th>Описание</th>
                                 <th>Целевой SLA</th>
                                 <th>Владелец</th>
@@ -204,7 +204,7 @@
                     <div class="modal-content">
                         <form id="addServiceForm">
                             <div class="modal-header">
-                                <h4 class="modal-title">Новый сервис</h4>
+                                <h4 class="modal-title">Новый транзакция</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </button>
@@ -219,7 +219,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Сервис</label>
+                                    <label>Транзакция</label>
                                     <input type="text" class="form-control" name="name">
                                 </div>
                                 <div class="form-group">
@@ -267,7 +267,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Сервис</label>
+                                    <label>Транзакция</label>
                                     <input type="text" class="form-control" name="name">
                                 </div>
                                 <div class="form-group">
@@ -301,13 +301,13 @@
                             <!-- Скрытый инпут для вызова из строки таблицы -->
                             <input type="hidden" id="serviceToDeleteId" name="service_id" value="">
                             <div class="modal-header">
-                                <h4 class="modal-title">Удаление сервиса</h4>
+                                <h4 class="modal-title">Удаление транзакцияа</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>Вы действительно хотите удалить сервис(ы)?</p>
+                                <p>Вы действительно хотите удалить транзакция(ы)?</p>
                             </div>
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-outline-default" data-bs-dismiss="modal"
@@ -349,7 +349,7 @@
 
 <!-- Инициализация DataTable -->
 <script>
-    objectsServicesTable.init("services-table");
+    objectsTransactionsTable.init("services-table");
 </script>
 
 <!-- Скрипт для чекбоксов -->
@@ -407,7 +407,7 @@
 </script>
 
 
-<!-- Кастомный сабмит добавления сервиса -->
+<!-- Кастомный сабмит добавления транзакцияа -->
 <script>
     $('#addServiceForm').submit(function(e){
         e.preventDefault();
@@ -424,7 +424,7 @@
     });
 </script>
 
-<!-- Кастомный сабмит удаления сервиса(ов) -->
+<!-- Кастомный сабмит удаления транзакцияа(ов) -->
 <script>
     $('#delServiceForm').submit(function(e){
         e.preventDefault();
@@ -461,7 +461,7 @@
 </script>
 
 
-<!-- Кастомный сабмит изменения сервиса(ов) -->
+<!-- Кастомный сабмит изменения транзакцияа(ов) -->
 <script>
     $('#editServiceForm').submit(function(e){
         e.preventDefault();
