@@ -409,10 +409,13 @@
         console.log("Page loaded!");
 
         sandboxMainDashTable.init();
-
         performancechart.init();
 
-        servicetimevserrchart.init();
+        axios.get("/charts/timevserr").then((r) => {
+            const data = r.data;
+
+            servicetimevserrchart.init("transactionTimeVsErrsChart01", data);
+        });
 
         axios.get("/data/services").then((r) => {
             const serviceId = r.data[0].serviceid;

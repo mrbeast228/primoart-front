@@ -387,7 +387,11 @@
             scatterstatuschart.initFromApiByService("transactionScatterChart01", serviceId)
         });
 
-        servicetimevserrchart.init();
+        axios.get("/charts/timevserr").then((r) => {
+            const data = r.data;
+
+            servicetimevserrchart.init("transactionTimeVsErrsChart01", data);
+        });
     });
 </script>
 {% endblock javascripts %}

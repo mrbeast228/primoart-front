@@ -347,6 +347,25 @@ def r_charts_runs():
         }
         res["OK" if run["runresult"] == "OK" else "Failed"].append(cur)
 
+    return res
+
+@blueprint.route('/charts/timevserr')
+@login_required
+def r_charts_timevserr():
+    # service_id = request.args["service_id"]
+
+    result = []
+
+    services = Service.list_all()
+
+    for service in services:
+        runs = Charts.get_transaction_runs(service_id=service["serviceid"])
+        err_percentage = round((len(list(filter(lambda x: x["runresult"] == "FAIL", runs)))) / (len(runs)),4)*100
+        all_time = sum([(datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"],"%Y-%m-%d %H:%M:%S.%f")).microseconds/1000 for run in runs])
+        average_time = round(all_time / len(runs), 2)
+        result.append({"service_name": service["name"], "err_percentage": err_percentage, "average_time": average_time})
+
+    return result
 
 @blueprint.route('/charts/step_run')
 @login_required

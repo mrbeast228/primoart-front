@@ -354,16 +354,18 @@ heatmapchart2 = {
 }
 
 servicetimevserrchart = {
-    init: function() {
+    init: function(element_id, services_data) {
 
-        const labels = ["meaty", "lamentable", "tested", "clammy", "jolly"]
+        const labels = services_data.map(service => service.service_name);
+        const data_average_time = services_data.map(service => service.average_time);
+        const data_err_percentage = services_data.map(service => service.err_percentage);
 
         const data = {
           labels: labels,
           datasets: [
             {
               label: 'Среднее время выполнения транзакций, с',
-              data: [150, 400, 320, 840, 500],
+              data: data_average_time,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 order: 1,
@@ -371,7 +373,7 @@ servicetimevserrchart = {
             },
             {
               label: 'Процент ошибок выполнения',
-              data: [12, 24, 37, 5, 30],
+              data: data_err_percentage,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 type: 'line',
@@ -419,7 +421,7 @@ servicetimevserrchart = {
           }
         };
 
-        var ctx = document.getElementById("transactionTimeVsErrsChart01").getContext("2d");
+        var ctx = document.getElementById(element_id).getContext("2d");
         var floatingChart = new Chart(ctx, config);
     }
 }
