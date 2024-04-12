@@ -25,7 +25,7 @@ class StepRun(APIBase):
     run_start: datetime.datetime
     run_end: datetime.datetime
     run_result: str
-    log_id: uuid.UUID
+    log_id: uuid.UUID | None
     screenshot_id: uuid.UUID
     error_code: Optional[int]
 
@@ -42,8 +42,8 @@ class StepRun(APIBase):
             run_start=APIBase.datetime_from_str(json['runstart']),
             run_end=APIBase.datetime_from_str(json['runend']),
             run_result=json['runresult'],
-            log_id=uuid.UUID(json['logid']),
-            screenshot_id=uuid.UUID(json['screenshotid']),
+            log_id=uuid.UUID(json['logid']) if 'logid' in json else None,
+            screenshot_id=uuid.UUID(json['screenshotid']) if 'screenshotid' in json else None,
             error_code=json['errorcode']
         )
 
@@ -65,7 +65,7 @@ class Step(APIBase):
         try:
             url = f'{APIBase.api_endpoint}/steps/{step_id}'
             response = requests.get(url)
-            subresult = response.json()['steps'][0]
+            subresult = response.json()['step'][0]
 
             result = Step.from_json(subresult)
             transaction = Transaction.from_id(result.transaction_id)
@@ -126,7 +126,7 @@ class TransactionRun(APIBase):
         try:
             url = f'{APIBase.api_endpoint}/runs/{transaction_run_id}'
             response = requests.get(url)
-            subresult = response.json()['runs'][0]
+            subresult = response.json()['run']
 
             result = TransactionRun.from_json(subresult)
             transaction = Transaction.from_id(result.transaction_id)
@@ -146,7 +146,7 @@ class TransactionRun(APIBase):
             run_start=APIBase.datetime_from_str(json['runstart']),
             run_end=APIBase.datetime_from_str(json['runend']),
             run_result=json['runresult'],
-            log_id=uuid.UUID(json['logid']) if json['logid'] else None,
+            log_id=uuid.UUID(json['logid']) if 'logid' in json else None,
             error_code=json['errorcode']
         )
 
@@ -166,8 +166,10 @@ class TransactionRun(APIBase):
 
     def get_steps(self):
         try:
-            url = f'{self.api_endpoint}/runs/{self.transaction_run_id}/steps'
-            response = requests.get(url)
+            url = f'{self.api_endpoint}/step_runs'
+            response = requests.get(url, json={
+                "transactionrunid": str(self.transaction_run_id),
+            })
             self.steps = []
             for run in response.json()['step_runs']:
                 step_run = StepRun.from_json(run)
@@ -204,7 +206,7 @@ class Transaction(APIBase):
         try:
             url = f'{APIBase.api_endpoint}/transactions/{transaction_id}'
             response = requests.get(url)
-            subresult = response.json()['transactions'][0]
+            subresult = response.json()['transaction']
 
             result = Transaction.from_json(subresult)
             service = Service.from_id(result.service_id)
@@ -598,7 +600,7 @@ class Robot(APIBase):
         try:
             url = f'{APIBase.api_endpoint}/robots/{robot_id}'
             response = requests.get(url)
-            subresult = response.json()['robots'][0]
+            subresult = response.json()['robot']
 
             result = Robot.from_json(subresult)
 
