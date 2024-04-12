@@ -200,9 +200,15 @@ class Transaction(APIBase):
     steps: Optional[list] = field(default=None, init=False)
     steps_count: Optional[int] = field(default=None, init=False)
     process: Optional[str] = field(default=None, init=False)
+    robots: Optional['Robot'] = field(default=None, init=False)
 
+    # TODO: robots parameters exists for the sole purpose of speeding up
+    # requests when robots are not needed.
+    # After (if) the API is updated so that this data can be acquired without
+    # making additional requests, this parameter probably won't be needed.
+    # ...As for now:
     @staticmethod
-    def from_id(transaction_id):
+    def from_id(transaction_id, robots=False):
         try:
             url = f'{APIBase.api_endpoint}/transactions/{transaction_id}'
             response = requests.get(url)
@@ -211,6 +217,13 @@ class Transaction(APIBase):
             result = Transaction.from_json(subresult)
             service = Service.from_id(result.service_id)
             result.service = service.name
+
+            if robots:
+                result.robots = []
+                for robot_id, stats in subresult["robots"].items():
+                    robot = Robot.from_id(robot_id)
+                    robot.stats = stats
+                    result.robots.append(robot)
 
             return result
         except Exception as e:
@@ -594,6 +607,7 @@ class Robot(APIBase):
     created_by: str
 
     runs: Optional[list] = field(default=None, init=False)
+    stats: Optional[dict[str, float]] = field(default=None, init=False)
 
     @staticmethod
     def from_id(robot_id):

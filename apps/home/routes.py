@@ -323,7 +323,7 @@ def r_data_steps():
 @blueprint.route('/data/runs')
 @login_required
 def r_data_runs():
-    return [{"a": 1}, {"b": 2}, {"c": 3}]
+    return TransactionRun.list_all()
 
 @blueprint.route('/charts/heatmap')
 @login_required
@@ -347,5 +347,36 @@ def r_charts_runs():
         }
         res["OK" if run["runresult"] == "OK" else "Failed"].append(cur)
 
+
+@blueprint.route('/charts/step_run')
+@login_required
+def r_charts_step_run():
+    trx_run_id = request.args["transaction_run_id"]
+    trx_run = TransactionRun.from_id(trx_run_id)
+
+    res = []
+    for step_run in trx_run.get_steps():
+        res.append({
+            "step_name": step_run.step_name,
+            "time": (step_run.run_end - step_run.run_start).total_seconds(),
+            "status": step_run.run_result,
+        })
+    res.sort(key=lambda x: x["time"])
+
     return res
 
+@blueprint.route('/charts/transaction_robots')
+# @login_required
+def r_charts_transaction_robots():
+    trx_id = request.args["transaction_id"]
+    trx = Transaction.from_id(trx_id, robots=True)
+
+    res = []
+
+    for robot in trx.robots:
+        res.append({
+            "name": robot.name,
+            "stats": robot.stats,
+        })
+
+    return res
