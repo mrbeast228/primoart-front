@@ -666,20 +666,20 @@ class Charts(APIBase):
             return None
 
     @staticmethod
-    def get_transaction_runs(service_id, time_start="", time_end=""):
+    def get_transaction_runs(service_id, start_time="", end_time=""):
         try:
-            # config = {
-            #     "serviceid":    service_id,
-            #     "start":        "2024-02-01 00:00:00.000000",
-            #     "end":          "2024-03-01 00:00:00.000000"
-            # }
             config = {
                 "serviceid": service_id
             }
             transactions = Transaction.list_all(params=config)
             transactions_id = [tr["transactionid"] for tr in transactions]
 
-            runs = TransactionRun.list_all(params={"transactionid": transactions_id})
+            config = {
+                "transactionid": transactions_id,
+                "start": start_time,
+                "end": end_time
+            }
+            runs = TransactionRun.list_all(params=config)
 
             return runs
         except Exception as e:
