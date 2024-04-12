@@ -187,6 +187,7 @@ class Transaction(APIBase):
     transaction_id: uuid.UUID
     name: str
     service_id: Optional[uuid.UUID]
+    service_name: str
     description: str
     created_datetime: datetime.datetime
     created_by: str
@@ -220,6 +221,7 @@ class Transaction(APIBase):
             transaction_id=uuid.UUID(json['transactionid']),
             name=json['name'],
             service_id=json['serviceid'],
+            service_name=Service.from_id(json['serviceid']).name,
             description=json['description'],
             created_datetime=APIBase.datetime_from_str(json['createddatetime']),
             created_by=json['createdby'],
@@ -527,7 +529,7 @@ class Service(APIBase):
         try:
             url = f'{APIBase.api_endpoint}/services/{service_id}'
             response = requests.get(url)
-            subresult = response.json()['services'][0]
+            subresult = response.json()['service']
 
             result = Service.from_json(subresult)
 
