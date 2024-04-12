@@ -11,7 +11,7 @@ from jinja2 import TemplateNotFound
 from apps.home.api_connector import APIConnector
 from apps.home.api_model import *
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class RouterHelper:
     @staticmethod
@@ -352,9 +352,7 @@ def r_charts_runs():
 @blueprint.route('/charts/timevserr')
 @login_required
 def r_charts_timevserr():
-    # service_id = request.args["service_id"]
-
-    result = []
+    res = []
 
     services = Service.list_all()
 
@@ -363,9 +361,44 @@ def r_charts_timevserr():
         err_percentage = round((len(list(filter(lambda x: x["runresult"] == "FAIL", runs)))) / (len(runs)),4)*100
         all_time = sum([(datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"],"%Y-%m-%d %H:%M:%S.%f")).microseconds/1000 for run in runs])
         average_time = round(all_time / len(runs), 2)
-        result.append({"service_name": service["name"], "err_percentage": err_percentage, "average_time": average_time})
+        res.append({"service_name": service["name"], "err_percentage": err_percentage, "average_time": average_time})
+
+    return res
+
+def get_daily_runs(start_time, end_time):
+    start_date = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S.%f").date()
+    end_date = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S.%f").date()
+    period_len = (end_date - start_date).days + 1
+
+    result = [{"date": start_date + timedelta(days=i), "runs": []} for i in range(period_len)]
+
+    services_id = [service["serviceid"] for service in Service.list_all()]
+
+    all_runs = Charts.get_transaction_runs(service_id=services_id, start_time=start_time, end_time=end_time)
+
+    for run in all_runs:
+        run_date = datetime.strptime(run["runstart"], "%Y-%m-%d %H:%M:%S.%f").date()
+        result[(run_date - start_date).days]["runs"].append(run)
 
     return result
+
+@blueprint.route('/charts/perfomance')
+@login_required
+def r_charts_perfomance():
+    start_time = request.args["start_time"]
+    end_time = request.args["end_time"]
+
+    daily_runs = get_daily_runs(start_time=start_time, end_time=end_time)
+
+    res = []
+
+    for day in daily_runs:
+        date = day["date"]
+        num_all_runs = len(day["runs"])
+        num_err_runs = len(list(filter(lambda run: run["runresult"] == "FAIL", day["runs"])))
+        res.append({"date": date.strftime("%Y-%m-%d"), "all_num": num_all_runs, "err_num": num_err_runs})
+
+    return res
 
 @blueprint.route('/charts/step_run')
 @login_required

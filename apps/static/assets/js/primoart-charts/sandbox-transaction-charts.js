@@ -249,23 +249,25 @@ steprunfailchart = {
 
 performancechart = {
 
-    init: function() {
+    init: function(element_id, perf_data) {
 
-        const labels = ["18.03.2024", "19.03.2024", "20.03.2024", "21.03.2024", "22.03.2024", "23.03.2024", "24.03.2024", "25.03.2024"];
+        const labels = perf_data.map(day => day["date"]);
+        const all_num = perf_data.map(day => day["all_num"]);
+        const err_num = perf_data.map(day => day["err_num"]);
 
         const data = {
           labels: labels,
           datasets: [
             {
               label: 'Количество транзакций за сутки',
-              data: [1285, 1175, 2357, 1245, 1624, 476, 328, 1134],
+              data: all_num,
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 borderColor: 'rgb(255, 159, 64)',
                 yAxisID: 'y'
             },
             {
               label: 'Количество ошибок выполнения',
-              data: [125, 208, 56, 178, 73, 12, 43, 250],
+              data: err_num,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 yAxisID: 'y1'
@@ -311,7 +313,7 @@ performancechart = {
           },
         };
 
-        var ctx = document.getElementById("chartTransactionPerf01").getContext("2d");
+        var ctx = document.getElementById(element_id).getContext("2d");
         var floatingChart = new Chart(ctx, config);
     }
 }

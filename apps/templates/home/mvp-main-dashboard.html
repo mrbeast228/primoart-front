@@ -409,12 +409,20 @@
         console.log("Page loaded!");
 
         sandboxMainDashTable.init();
-        performancechart.init();
+
+        const start_time = "2024-03-20 00:00:00.000000";
+        const end_time = "2024-03-31 23:59:59.999999";
 
         axios.get("/charts/timevserr").then((r) => {
             const data = r.data;
 
             servicetimevserrchart.init("transactionTimeVsErrsChart01", data);
+        });
+
+        axios.get("/charts/perfomance", {params: {"start_time": start_time, "end_time": end_time}}).then((r) => {
+            const data = r.data;
+
+            performancechart.init("chartTransactionPerf01", data);
         });
 
         axios.get("/data/services").then((r) => {
