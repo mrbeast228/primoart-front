@@ -134,11 +134,11 @@
                                 <div class="col-sm-6">
                                     <div class="d-none d-sm-block">
                                         <button class="btn btn-outline-danger ms-1 me-1"
-                                                data-bs-toggle="modal" data-bs-target="#delServiceModal">
+                                                data-bs-toggle="modal" data-bs-target="#delTransactionModal">
                                             <i>{{font_awesome.render_icon("fas fa-trash")}}</i>
                                             <span>Удалить</span></button>
                                         <button class="btn btn-outline-success ms-1 me-1"
-                                                data-bs-toggle="modal" data-bs-target="#addServiceModal">
+                                                data-bs-toggle="modal" data-bs-target="#addTransactionModal">
                                             <i>{{font_awesome.render_icon("fas fa-plus")}}</i>
                                             <span>Новый транзакция</span></button>
                                     </div>
@@ -154,39 +154,39 @@
                                             <label for="selectAll"></label>
                                         </span>
                                 </th>
-                                <th>Проект</th>
+                                <th>Сервис</th>
                                 <th>Транзакция</th>
                                 <th>Описание</th>
                                 <th>Целевой SLA</th>
-                                <th>Владелец</th>
+                                <th>Количество шагов</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for service in context.services %}
+                            {% for transaction in context.transactions %}
                             <tr>
                                 <td>
                                     <span class="custom-checkbox">
-                                        <input type="checkbox" class="checkbox" name="service_id"
-                                               value="{{ service.service_id }}">
+                                        <input type="checkbox" class="checkbox" name="transaction_id"
+                                               value="{{ transaction.transaction_id }}">
                                         <label></label>
                                     </span>
                                 </td>
-                                <td>{{ service.project_name }}</td>
-                                <td>{{ service.name }}</td>
-                                <td>{{ service.description }}</td>
+                                <td>{{ transaction.service_name }}</td>
+                                <td>{{ transaction.name }}</td>
+                                <td>{{ transaction.description }}</td>
                                 <td>99.5%</td>
-                                <td>{{ service.created_by }}</td>
+                                <td>5</td>
                                 <td>
-                                    <a href="#editServiceModal" class="edit ms-1 me-1 text-tertiary"
+                                    <a href="#editTransactionModal" class="edit ms-1 me-1 text-tertiary"
                                        data-bs-toggle="modal"
-                                       data-serviceid="{{ service.service_id }}"
+                                       data-serviceid="{{ transaction.transaction_id }}"
                                     >
                                         <i>{{font_awesome.render_icon("fas fa-pencil")}}</i>
                                     </a>
-                                    <a href="#delServiceModal" class="delete ms-1 me-1 text-danger"
-                                       data-bs-toggle="modal" data-bs-target="#delServiceModal"
-                                       data-serviceid="{{ service.service_id }}"
+                                    <a href="#delTransactionModal" class="delete ms-1 me-1 text-danger"
+                                       data-bs-toggle="modal" data-bs-target="#delTransactionModal"
+                                       data-serviceid="{{ transaction.transaction_id }}"
                                     ><i>{{font_awesome.render_icon("fas fa-trash")}}</i>
                                     </a>
                                 </td>
@@ -199,7 +199,7 @@
             </div>
 
             <!-- Add Modal HTML -->
-            <div id="addServiceModal" class="modal fade">
+            <div id="addTransactionModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form id="addServiceForm">
@@ -246,12 +246,12 @@
             </div>
 
             <!-- Edit Modal HTML -->
-            <div id="editServiceModal" class="modal fade">
+            <div id="editTransactionModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form id="editServiceForm">
                             <!-- Скрытый инпут для вызова из строки таблицы -->
-                            <input type="hidden" id="serviceToEditId" name="service_id" value="">
+                            <input type="hidden" id="serviceToEditId" name="transaction_id" value="">
                             <div class="modal-header">
                                 <h4 class="modal-title">Изменение проекта</h4>
                                 <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true">&times;
@@ -294,12 +294,12 @@
             </div>
 
             <!-- Delete Modal HTML -->
-            <div id="delServiceModal" class="modal fade">
+            <div id="delTransactionModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form id="delServiceForm">
                             <!-- Скрытый инпут для вызова из строки таблицы -->
-                            <input type="hidden" id="serviceToDeleteId" name="service_id" value="">
+                            <input type="hidden" id="serviceToDeleteId" name="transaction_id" value="">
                             <div class="modal-header">
                                 <h4 class="modal-title">Удаление транзакцияа</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -382,23 +382,23 @@
 
 <!-- Скрипты модалов -->
 <script>
-    $('#delServiceModal').on('show.bs.modal', function (event) {
+    $('#delTransactionModal').on('show.bs.modal', function (event) {
         var clicked_button = event.relatedTarget;
-        var service_id = $(clicked_button).attr("data-serviceid");
-        console.log(service_id);
+        var transaction_id = $(clicked_button).attr("data-serviceid");
+        console.log(transaction_id);
 
-        $('#serviceToDeleteId').val(service_id);
+        $('#serviceToDeleteId').val(transaction_id);
         console.log($('#serviceToDeleteId').val());
         console.log($('#serviceToDeleteId').val().length);
 
     });
 
-    $('#editServiceModal').on('show.bs.modal', function (event) {
+    $('#editTransactionModal').on('show.bs.modal', function (event) {
         var clicked_button = event.relatedTarget;
-        var service_id = $(clicked_button).attr("data-serviceid");
-        console.log(service_id);
+        var transaction_id = $(clicked_button).attr("data-serviceid");
+        console.log(transaction_id);
 
-        $('#serviceToEditId').val(service_id);
+        $('#serviceToEditId').val(transaction_id);
         console.log($('#serviceToEditId').val());
         console.log($('#serviceToEditId').val().length);
 
@@ -424,7 +424,7 @@
     });
 </script>
 
-<!-- Кастомный сабмит удаления транзакцияа(ов) -->
+<!-- Кастомный сабмит удаления транзакций -->
 <script>
     $('#delServiceForm').submit(function(e){
         e.preventDefault();
@@ -433,7 +433,7 @@
 
         // Если установлен UUID в скрытый тэг, т.е. модал вызван из таблицы
         if($('#serviceToDeleteId').val().length > 30) {
-            services_to_del.push({"service_id": $('#serviceToDeleteId').val()});
+            services_to_del.push({"transaction_id": $('#serviceToDeleteId').val()});
         } else
         // Иначе эту удаление по селектору
         {
@@ -446,7 +446,7 @@
                 var name = checked_checkbox[checkbox].name;
                 var id = checked_checkbox[checkbox].value;
 
-                services_to_del.push({"service_id": id});
+                services_to_del.push({"transaction_id": id});
             });
         }
 
