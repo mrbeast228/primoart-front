@@ -377,24 +377,37 @@
     $(function() {
         console.log("Page loaded!");
 
-        const start_time = "2024-03-20 00:00:00.000000";
-        const end_time = "2024-03-31 23:59:59.999999";
+        // too many code just to get current time and time 2 weeks ago...
+        // sry, couldn't find shorter way
+        function convertTime(time){
+            const nowMsk = new Date(time.toLocaleString('en-US', { timeZone: "Indian/Chagos" }));
+            const nowStr = nowMsk.toJSON();
+            const parts = nowStr.split('T');
+            return parts[0] + ' ' + parts[1].slice(0, 8) + '.' + parts[1].slice(9,12) + '000';
+        }
 
-        axios.get("/charts/perfomance", {params: {"start_time": start_time, "end_time": end_time}}).then((r) => {
-            const data = r.data;
-
-            performancechart.init("chartTransactionPerf01", data);
-        });
+        const end = new Date()
+        const start = new Date();
+        start.setDate(start.getDate() - 14);
+        // these variables will get their values from filters
+        const startTime = convertTime(start);
+        const endTime = convertTime(end);
 
         axios.get("/data/services").then((r) => {
             const serviceId = r.data[0].serviceid;
 
             heatmapchart.initFromApiByService("chartHeatmap01", serviceId);
 
-            scatterstatuschart.initFromApiByService("transactionScatterChart01", serviceId)
+            scatterstatuschart.initFromApiByService("transactionScatterChart01", serviceId, startTime, endTime)
         });
 
-        axios.get("/charts/timevserr").then((r) => {
+        axios.get("/charts/perfomance", {params: {"start_time": startTime, "end_time": endTime}}).then((r) => {
+            const data = r.data;
+
+            performancechart.init("chartTransactionPerf01", data);
+        });
+
+        axios.get("/charts/timevserr", {params: {"start_time": startTime, "end_time": endTime}}).then((r) => {
             const data = r.data;
 
             servicetimevserrchart.init("transactionTimeVsErrsChart01", data);

@@ -334,7 +334,10 @@ def r_charts_heatmap():
 @login_required
 def r_charts_runs():
     service_id = request.args["service_id"]
-    runs = Charts.get_transaction_runs(service_id=service_id)
+    start_time = request.args["start_time"]
+    end_time = request.args["end_time"]
+
+    runs = Charts.get_transaction_runs(service_id=service_id, start_time=start_time, end_time=end_time)
 
     res = {"OK": [], "Failed": []}
 
@@ -352,16 +355,21 @@ def r_charts_runs():
 @blueprint.route('/charts/timevserr')
 @login_required
 def r_charts_timevserr():
+    start_time = request.args["start_time"]
+    end_time = request.args["end_time"]
+
     res = []
 
     services = Service.list_all()
 
     for service in services:
-        runs = Charts.get_transaction_runs(service_id=service["serviceid"])
+        runs = Charts.get_transaction_runs(service_id=service["serviceid"], start_time=start_time, end_time=end_time)
         err_percentage = round((len(list(filter(lambda x: x["runresult"] == "FAIL", runs)))) / (len(runs)),4)*100
         all_time = sum([(datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"],"%Y-%m-%d %H:%M:%S.%f")).microseconds/1000 for run in runs])
         average_time = round(all_time / len(runs), 2)
         res.append({"service_name": service["name"], "err_percentage": err_percentage, "average_time": average_time})
+
+    res.sort(key=lambda x: x["err_percentage"])
 
     return res
 

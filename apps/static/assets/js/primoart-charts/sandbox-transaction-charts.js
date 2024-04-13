@@ -277,25 +277,25 @@ steprunfailchart = {
 
 performancechart = {
 
-    init: function(element_id, perf_data) {
+    init: function(elementId, perfData) {
 
-        const labels = perf_data.map(day => day["date"]);
-        const all_num = perf_data.map(day => day["all_num"]);
-        const err_num = perf_data.map(day => day["err_num"]);
+        const labels = perfData.map(day => day["date"]);
+        const allNum = perfData.map(day => day["all_num"]);
+        const errNum = perfData.map(day => day["err_num"]);
 
         const data = {
           labels: labels,
           datasets: [
             {
               label: 'Количество транзакций за сутки',
-              data: all_num,
+              data: allNum,
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 borderColor: 'rgb(255, 159, 64)',
                 yAxisID: 'y'
             },
             {
               label: 'Количество ошибок выполнения',
-              data: err_num,
+              data: errNum,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 yAxisID: 'y1'
@@ -341,7 +341,7 @@ performancechart = {
           },
         };
 
-        var ctx = document.getElementById(element_id).getContext("2d");
+        var ctx = document.getElementById(elementId).getContext("2d");
         var floatingChart = new Chart(ctx, config);
     }
 }
@@ -384,18 +384,18 @@ heatmapchart2 = {
 }
 
 servicetimevserrchart = {
-    init: function(element_id, services_data) {
+    init: function(elementId, servicesData) {
 
-        const labels = services_data.map(service => service.service_name);
-        const data_average_time = services_data.map(service => service.average_time);
-        const data_err_percentage = services_data.map(service => service.err_percentage);
+        const labels = servicesData.map(service => service.service_name);
+        const dataAverageTime = servicesData.map(service => service.average_time);
+        const dataErrPercentage = servicesData.map(service => service.err_percentage);
 
         const data = {
           labels: labels,
           datasets: [
             {
               label: 'Среднее время выполнения транзакций, с',
-              data: data_average_time,
+              data: dataAverageTime,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 order: 1,
@@ -403,7 +403,7 @@ servicetimevserrchart = {
             },
             {
               label: 'Процент ошибок выполнения',
-              data: data_err_percentage,
+              data: dataErrPercentage,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 type: 'line',
@@ -451,7 +451,7 @@ servicetimevserrchart = {
           }
         };
 
-        var ctx = document.getElementById(element_id).getContext("2d");
+        var ctx = document.getElementById(elementId).getContext("2d");
         var floatingChart = new Chart(ctx, config);
     }
 }
@@ -686,20 +686,20 @@ const defaultScatterData = {
 }
 
 scatterstatuschart = {
-    init: function(element_id, transaction_data) {
-        if (transaction_data === undefined) {
-          transaction_data = defaultScatterData
+    init: function(elementId, transactionData) {
+        if (transactionData === undefined) {
+          transactionData = defaultScatterData
         }
         const data = {
           datasets: [
           {
             label: 'OK',
-            data: transaction_data["OK"],
+            data: transactionData["OK"],
             backgroundColor: 'rgb(75, 140, 60)'
           },
           {
             label: 'Failed',
-            data: transaction_data["Failed"],
+            data: transactionData["Failed"],
             backgroundColor: 'rgb(255, 99, 132)'
           }
         ],
@@ -733,14 +733,14 @@ scatterstatuschart = {
           options: options
         };
 
-        var ctx = document.getElementById(element_id).getContext("2d");
+        var ctx = document.getElementById(elementId).getContext("2d");
         var scatterChart = new Chart(ctx, config);
     },
-    initFromApiByService(element_id, service_id) {
-        axios.get("/charts/runs", {params: {"service_id": service_id}}).then((response) => {
+    initFromApiByService(elementId, serviceId, startTime, endTime) {
+        axios.get("/charts/runs", {params: {"service_id": serviceId, "start_time": startTime, "end_time": endTime}}).then((response) => {
             const data = response.data;
 
-            scatterstatuschart.init(element_id, data);
+            scatterstatuschart.init(elementId, data);
         });
     }
 }
