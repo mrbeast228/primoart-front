@@ -274,13 +274,7 @@
 
         //steprunfloatchart.init();
 
-        // TODO: get trx_run_id from page params
-        // const tranactionRunId = ...;
-        axios.get("/data/runs").then((r) => {
-            const transactionRunId = r.data[0]["transactionrunid"];
-
-            steprunbarchart.initFromApiByTransactionRunId("stepRunBarChart01", transactionRunId);
-        });
+        steprunbarchart.init("stepRunBarChart01");
     });
 </script>
 {% endblock javascripts %}

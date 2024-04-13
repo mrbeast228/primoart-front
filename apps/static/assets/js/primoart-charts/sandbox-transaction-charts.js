@@ -122,8 +122,36 @@ steprunfloatchart = {
 }
 
 steprunbarchart = {
+    mockData: [
+        {
+            step_name: "DNS Lookup",
+            time: 0.45,
+            status: 'OK',
+        }, {
+            step_name: "Connection",
+            time: 0.59,
+            status: 'OK',
+        }, {
+            step_name: "SSL Handshake",
+            time: 0.31,
+            status: 'OK',
+        }, {
+            step_name: "First Byte",
+            time: 1.07,
+            status: 'OK',
+        }, {
+            step_name: "Content Transfer",
+            time: 1.18,
+            status: 'ERR',
+        },
+    ],
     init: function(canvasId, dataset) {
         console.log(dataset);
+
+        if (dataset === undefined) {
+            dataset = steprunbarchart.mockData;
+        }
+
         const labels = dataset.map(({step_name}) => step_name);
 
         const data = {
@@ -429,7 +457,31 @@ servicetimevserrchart = {
 }
 
 transactionrunbarchart = {
+    mockData: [
+        {
+            name: 'Робот "Москва"',
+            stats: {
+                "0-30": 150,
+                "30-60": 400,
+                "60-120": 320,
+                "120-300": 840,
+                "300+": 30,
+            },
+        }, {
+            name: 'Робот "Волгоград"',
+            stats: {
+                "0-30": 50,
+                "30-60": 120,
+                "60-120": 40,
+                "120-300": 310,
+                "300+": 50,
+            },
+        }
+    ],
     init: function(canvasId, dataset) {
+        if (dataset === undefined) {
+            dataset = transactionrunbarchart.mockData;
+        }
 
         const labels = ["< 30 c", "30-60 c", "60-120 c", "120-300 c", "> 300 c"]
 
@@ -528,7 +580,26 @@ transactionrundonutchart = {
 }
 
 transactionrunhorizontalchart = {
+    mockData: [
+        {
+            name: 'Робот "Москва"',
+            stats: {
+                ok: 1578,
+                failed: 315
+            },
+        }, {
+            name: 'Робот "Волгоград"',
+            stats: {
+                ok: 215,
+                failed: 56
+            },
+        }
+    ],
     init: function(canvasId, dataset) {
+        if (dataset === undefined) {
+            dataset = transactionrunhorizontalchart.mockData;
+        }
+
         const labels = ["OK", "Failed"]
 
         const data = {

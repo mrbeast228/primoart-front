@@ -391,20 +391,10 @@
     $(function() {
         console.log("Page loaded!");
 
-        // TODO: get trxid from page params
-        // const tranactionId = ...;
-        axios.get("/data/transactions").then((r) => {
-            const transactionId = r.data[0]["transactionid"];
+        transactionrunbarchart.init("transactionRunBarChart01");
+        transactionrunhorizontalchart.init("transactionRunHorizontalChart01");
 
-            axios.get("/charts/transaction_robots", {params: {"transaction_id": transactionId}}).then((r) => {
-                const data = r.data;
-
-                transactionrunbarchart.init("transactionRunBarChart01", data);
-                transactionrunhorizontalchart.init("transactionRunHorizontalChart01", data);
-            });
-        });
-
-        scatterstatuschart.init();
+        scatterstatuschart.init("transactionScatterChart01");
 
         steprunfailchart.init();
     });
