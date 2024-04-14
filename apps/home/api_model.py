@@ -185,8 +185,8 @@ class TransactionRun(APIBase):
         if params is None:
             params = {}
         try:
-            url = f'{APIBase.api_endpoint}/runs/'
-            response = requests.get(url=url, data=json.dumps(params))
+            url = f'{APIBase.api_endpoint}/runs'
+            response = requests.get(url=url, json=params)
             subresult = response.json()['runs']
 
             return subresult

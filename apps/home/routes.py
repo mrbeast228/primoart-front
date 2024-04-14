@@ -70,16 +70,23 @@ class RouterHelper:
             print(f"[DBG][create_context] ctx['transactions'] = '{ctx['transactions']}'")
 
         elif template == 'mvp-services.html':
+            current_service_id = request.args.get('service_id', None, type=str)
+
             ctx['services'] = APIConnector.get_services_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['services'] = '{ctx['services']}'")
-            ctx['projects'] = APIConnector.get_business_processes_list(page=page_number, per_page=per_page)
-            print(f"[DBG][create_context] ctx['projects'] = '{ctx['projects']}'")
+            ctx['transactions'] = APIConnector.get_transaction_list(page=page_number, per_page=per_page, service_id=current_service_id)
+            print(f"[DBG][create_context] ctx['transactions'] = '{ctx['transactions']}'")
             ctx['robots'] = APIConnector.get_robots_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['robots'] = '{ctx['robots']}'")
 
-            # TODO: реализовать возможность передачи ID сервиса, робота или проекта
-            ctx['transactions'] = APIConnector.get_transaction_list(page=page_number, per_page=per_page)
-            print(f"[DBG][create_context] ctx['transactions'] = '{ctx['transactions']}'")
+            if current_service_id:
+                ctx['current_service'] = APIConnector.get_service(current_service_id)
+                print(f"[DBG][create_context] ctx['current_service'] = '{ctx['current_service']}'")
+            else:
+                ctx['current_service'] = None
+                # add global SLA for all processes
+                ctx['global_sla'] = GlobalSLA.from_api()
+
 
         elif template == 'mvp-transaction.html':
             transaction_id = request.args.get('transaction_id', None, type=str)
@@ -342,11 +349,18 @@ def r_charts_heatmap():
 @blueprint.route('/charts/runs')
 @login_required
 def r_charts_runs():
-    service_id = request.args["service_id"]
+    service_id = request.args.get("service_id", None)
     start_time = request.args["start_time"]
     end_time = request.args["end_time"]
 
-    runs = Charts.get_transaction_runs(service_id=service_id, start_time=start_time, end_time=end_time)
+    if service_id:
+        runs = Charts.get_transaction_runs(service_id=service_id, start_time=start_time, end_time=end_time)
+    else:
+        params = {
+            "start": start_time,
+            "end": end_time
+        }
+        runs = TransactionRun.list_all(params)
 
     res = {"OK": [], "Failed": []}
 
@@ -371,30 +385,49 @@ def r_charts_timevserr():
 
     res = []
 
-    if not process_id:
-        services = APIConnector.get_services_list()['services']
-    else:
-        services = APIConnector.get_services_list(process_id=process_id)['services']
+    if not service_id:
+        if process_id:
+            services = APIConnector.get_services_list(process_id=process_id)['services']
+        else:
+            services = APIConnector.get_services_list()['services']
 
-    for service in services:
-        runs = Charts.get_transaction_runs(service_id=str(service.service_id), start_time=start_time, end_time=end_time)
-        err_percentage = round((len(list(filter(lambda x: x["runresult"] == "FAIL", runs)))) / (len(runs)),4)*100
-        all_time = sum([(datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"],"%Y-%m-%d %H:%M:%S.%f")).microseconds/1000 for run in runs])
-        average_time = round(all_time / len(runs), 2)
-        res.append({"service_name": service.name, "err_percentage": err_percentage, "average_time": average_time})
+        for service in services:
+            runs = Charts.get_transaction_runs(service_id=str(service.service_id), start_time=start_time, end_time=end_time)
+            err_percentage = round((len(list(filter(lambda x: x["runresult"] == "FAIL", runs)))) / (len(runs)),4)*100
+            all_time = sum([(datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"],"%Y-%m-%d %H:%M:%S.%f")).microseconds/1000 for run in runs])
+            average_time = round(all_time / len(runs), 2)
+            res.append({"service_name": service.name, "err_percentage": err_percentage, "average_time": average_time})
+    else:
+        # same but for transaction
+        transactions = APIConnector.get_transaction_list(service_id=service_id)['transactions']
+
+        for transaction in transactions:
+            params = {
+                "transactionid": str(transaction.transaction_id),
+                "start": start_time,
+                "end": end_time
+            }
+            runs = TransactionRun.list_all(params)
+            err_percentage = round((len(list(filter(lambda x: x["runresult"] == "FAIL", runs)))) / (len(runs)),4)*100
+            all_time = sum([(datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"],"%Y-%m-%d %H:%M:%S.%f")).microseconds/1000 for run in runs])
+            average_time = round(all_time / len(runs), 2)
+            res.append({"service_name": transaction.name, "err_percentage": err_percentage, "average_time": average_time}) # in Javascript we have hardcoded "service_name" key
 
     res.sort(key=lambda x: x["err_percentage"])
 
     return res
 
-def get_daily_runs(start_time, end_time, process_id=None):
+def get_daily_runs(start_time, end_time, process_id=None, service_id=None):
     start_date = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S.%f").date()
     end_date = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S.%f").date()
     period_len = (end_date - start_date).days + 1
 
     result = [{"date": start_date + timedelta(days=i), "runs": []} for i in range(period_len)]
 
-    services_id = [str(service.service_id) for service in APIConnector.get_services_list(process_id=process_id)["services"]]
+    if service_id:
+        services_id = [service_id]
+    else:
+        services_id = [str(service.service_id) for service in APIConnector.get_services_list(process_id=process_id)["services"]]
 
     all_runs = Charts.get_transaction_runs(service_id=services_id, start_time=start_time, end_time=end_time)
 
@@ -410,8 +443,9 @@ def r_charts_perfomance():
     start_time = request.args["start_time"]
     end_time = request.args["end_time"]
     process_id = request.args.get("process_id", None)
+    service_id = request.args.get("service_id", None)
 
-    daily_runs = get_daily_runs(start_time=start_time, end_time=end_time, process_id=process_id)
+    daily_runs = get_daily_runs(start_time=start_time, end_time=end_time, process_id=process_id, service_id=service_id)
 
     res = []
 

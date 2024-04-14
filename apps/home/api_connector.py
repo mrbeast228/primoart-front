@@ -90,8 +90,8 @@ class APIConnector(api_model.APIBase):
     def get_service(cls, service_id, full=True):
         try:
             result = api_model.Service.from_id(service_id)
-            if full:
-                result.get_business_processes()
+            #if full:
+            #    result.get_business_processes()
 
             return result
         except Exception as e:
@@ -140,11 +140,14 @@ class APIConnector(api_model.APIBase):
             return {}
 
     @classmethod
-    def get_transaction_list(cls, full=True, page=1, per_page=10):
+    def get_transaction_list(cls, full=True, page=1, per_page=10, service_id=None):
         try:
             url = f'{cls.api_endpoint}/transactions'
 
-            response = requests.get(url)
+            if service_id:
+                response = requests.get(url, json={'serviceid': service_id})
+            else:
+                response = requests.get(url)
 
             print(f"[DBG][get_transaction_list] response: {response.json()}")
 
@@ -210,11 +213,11 @@ class APIConnector(api_model.APIBase):
             return {}
 
     @classmethod
-    def get_transaction_runs(cls, transaction_id=None, robot_id=None, page=1, per_page=10):
+    def get_transaction_runs(cls, transaction_id=None, robot_id=None, page=1, per_page=10, start_time=None, end_time=None):
         try:
             if transaction_id:
                 transaction = cls.get_transaction(transaction_id, full=False)
-                result = cls.get_page(transaction.get_runs(), page, per_page)
+                result = cls.get_page(transaction.get_runs(start_time=None, end_time=None), page, per_page)
             elif robot_id:
                 robot = cls.get_robot(robot_id, full=False)
                 result = robot.get_runs()
