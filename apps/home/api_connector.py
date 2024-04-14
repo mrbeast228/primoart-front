@@ -26,24 +26,30 @@ class APIConnector(api_model.APIBase):
             response = requests.get(url)
             subresult = cls.get_page(response.json()['robots'], page, per_page)
 
-            result = []
+            result = {'robots': [], 'success': 0, 'warning': 0, 'danger': 0}
             for robot in subresult:
-                robot_obj = api_model.Robot.from_json(robot)
-                if full:
-                    robot_obj.get_runs()
-                cls.last_loaded_robots[robot_obj.robot_id] = robot_obj
-                result.append(robot_obj)
+                robot_obj = api_model.Robot.from_id(robot['robotid']) # for dynamic loading
+                if robot_obj.sla_cur >= cls.sla_target:
+                    robot_obj.current_state = 'success'
+                    result['success'] += 1
+                elif robot_obj.fail_cur == 0:
+                    robot_obj.current_state = 'warning'
+                    result['warning'] += 1
+                else:
+                    robot_obj.current_state = 'danger'
+                    result['danger'] += 1
+                result['robots'].append(robot_obj)
 
             return result
         except Exception as e:
             print(f"[ERR] Can't get robots list: {e}")
-            return []
+            return {}
     @classmethod
     def get_robot(cls, robot_id, full=True):
         try:
             result = api_model.Robot.from_id(robot_id)
-            if full:
-                result.get_runs()
+            #if full:
+            #    result.get_runs()
 
             return result
         except Exception as e:
@@ -51,29 +57,34 @@ class APIConnector(api_model.APIBase):
             return {}
 
     @classmethod
-    def get_services_list(cls, full=True, page=1, per_page=10):
+    def get_services_list(cls, full=True, page=1, per_page=10, process_id=None):
         try:
             url = f'{cls.api_endpoint}/services'
-            response = requests.get(url)
+            if process_id:
+                response = requests.get(url, json={'processid': process_id})
+            else:
+                response = requests.get(url)
             subresult = cls.get_page(response.json()['services'], page, per_page)
             print(f"[DBG][get_services_list] subresult = '{subresult}'")
 
-            result = []
+            result = {'services': [], 'success': 0, 'warning': 0, 'danger': 0}
             for service in subresult:
-                service_obj = api_model.Service.from_json(service)
-
-                print(f"[DBG][get_services_list] service_obj = '{service_obj}'")
-
-                # Пока прикомментил, но вероятно нам это не понадобится в будущем
-                #if full:
-                #    service_obj.get_business_processes()
-                cls.last_loaded_services[service_obj.service_id] = service_obj
-                result.append(service_obj)
+                service_obj = api_model.Service.from_id(service['serviceid']) # for dynamic loading
+                if service_obj.sla_cur >= cls.sla_target:
+                    service_obj.current_state = 'success'
+                    result['success'] += 1
+                elif service_obj.fail_cur == 0:
+                    service_obj.current_state = 'warning'
+                    result['warning'] += 1
+                else:
+                    service_obj.current_state = 'danger'
+                    result['danger'] += 1
+                result['services'].append(service_obj)
 
             return result
         except Exception as e:
             print(f"[ERR] Can't get services list: {e}")
-            return []
+            return {}
 
     @classmethod
     def get_service(cls, service_id, full=True):
@@ -96,24 +107,32 @@ class APIConnector(api_model.APIBase):
 
             print(f"[DBG][get_business_processes_list] subresult: {subresult}")
 
-            result = []
+            result = {'processes': [], 'success': 0, 'warning': 0, 'danger': 0}
             for business_process in subresult:
-                business_process_obj = api_model.BusinessProcess.from_json(business_process)
+                business_process_obj = api_model.BusinessProcess.from_id(business_process['processid']) # for dynamic loading
+                if business_process_obj.sla_cur >= cls.sla_target:
+                    business_process_obj.current_state = 'success'
+                    result['success'] += 1
+                elif business_process_obj.fail_cur == 0:
+                    business_process_obj.current_state = 'warning'
+                    result['warning'] += 1
+                else:
+                    business_process_obj.current_state = 'danger'
+                    result['danger'] += 1
 
-                cls.last_loaded_business_processes[business_process_obj.process_id] = business_process_obj
-                result.append(business_process_obj)
+                result['processes'].append(business_process_obj)
 
             return result
         except Exception as e:
             print(f"[ERR] Can't get business processes list: {e}")
-            return []
+            return {}
 
     @classmethod
     def get_business_process(cls, business_process_id, full=True):
         try:
             result = api_model.BusinessProcess.from_id(business_process_id)
-            if full:
-                result.get_transactions()
+            #if full:
+            #    result.get_transactions()
 
             return result
         except Exception as e:
@@ -131,22 +150,24 @@ class APIConnector(api_model.APIBase):
 
             subresult = cls.get_page(response.json()['transactions'], page, per_page)
 
-            result = []
+            result = {'transactions': [], 'success': 0, 'warning': 0, 'danger': 0}
             for transaction in subresult:
-                transaction_obj = api_model.Transaction.from_json(transaction)
-
-                # Поживем пока без этого
-                # if full:
-                #    transaction_obj.get_steps()
-                #    transaction_obj.get_runs()
-                # transaction_obj.process = cls.last_loaded_business_processes[transaction_obj.process_id].name
-                # cls.last_loaded_transactions[transaction_obj.transaction_id] = transaction_obj
-                result.append(transaction_obj)
+                transaction_obj = api_model.Transaction.from_id(transaction['transactionid']) # for dynamic loading
+                if transaction_obj.sla_cur >= cls.sla_target:
+                    transaction_obj.current_state = 'success'
+                    result['success'] += 1
+                elif transaction_obj.fail_cur == 0:
+                    transaction_obj.current_state = 'warning'
+                    result['warning'] += 1
+                else:
+                    transaction_obj.current_state = 'danger'
+                    result['danger'] += 1
+                result['transactions'].append(transaction_obj)
 
             return result
         except Exception as e:
             print(f"[ERR][get_transaction_list] Can't get transactions list: {e}")
-            return []
+            return {}
 
     @classmethod
     def get_transaction(cls, transaction_id, full=True):

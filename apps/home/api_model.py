@@ -10,11 +10,41 @@ import apps.config
 
 class APIBase:
     max_runs: int = 5
+    sla_target: float = 99.9
     api_endpoint: str = f'{apps.config.Config.API_ENDPOINT}'
 
     @staticmethod
     def datetime_from_str(datetime_str):
         return datetime.datetime.strptime(datetime_str.split('+')[0], '%Y-%m-%d %H:%M:%S.%f')
+
+
+@dataclass
+class GlobalSLA(APIBase):
+    fail_cur: int
+    sla_cur: float
+    sla_prev: float
+    sla_daily: float
+
+    @staticmethod
+    def from_json(json):
+        return GlobalSLA(
+            fail_cur=json['fail_cur'],
+            sla_cur=json['sla_cur'],
+            sla_prev=json['sla_prev'],
+            sla_daily=json['sla_daily']
+        )
+
+    @staticmethod
+    def from_api():
+        try:
+            url = f'{APIBase.api_endpoint}/global_sla'
+            response = requests.get(url)
+            subresult = response.json()['global_sla']
+
+            return GlobalSLA.from_json(subresult)
+        except Exception as e:
+            print(f"[ERR] Can't get global SLA: {e}")
+            return {'fail_cur': 0, 'sla_cur': 0, 'sla_prev': 0, 'sla_daily': 0}
 
 
 @dataclass
@@ -189,7 +219,6 @@ class Transaction(APIBase):
     transaction_id: uuid.UUID
     name: str
     service_id: Optional[uuid.UUID]
-    service_name: str
     description: str
     created_datetime: datetime.datetime
     created_by: str
@@ -197,33 +226,34 @@ class Transaction(APIBase):
     cron: str
 
     runs: Optional[list] = field(default=None, init=False)
-    steps: Optional[list] = field(default=None, init=False)
     steps_count: Optional[int] = field(default=None, init=False)
     process: Optional[str] = field(default=None, init=False)
-    robots: Optional['Robot'] = field(default=None, init=False)
+    current_state: Optional[str] = field(default=None, init=False)
 
-    # TODO: robots parameters exists for the sole purpose of speeding up
-    # requests when robots are not needed.
-    # After (if) the API is updated so that this data can be acquired without
-    # making additional requests, this parameter probably won't be needed.
-    # ...As for now:
+    # dynamic fields
+    robots: Optional[dict]
+    fail_cur: Optional[float]
+    sla_cur: Optional[float]
+    sla_prev: Optional[float]
+    sla_daily: Optional[float]
+    steps: Optional[dict]
+
     @staticmethod
-    def from_id(transaction_id, robots=False):
+    def from_id(transaction_id, sublists=False, start_time=None, end_time=None):
         try:
             url = f'{APIBase.api_endpoint}/transactions/{transaction_id}'
-            response = requests.get(url)
+            params = {
+                "sublists": sublists,
+            }
+            if start_time and end_time:
+                params["start"] = start_time
+                params["end"] = end_time
+            response = requests.get(url, json=params)
             subresult = response.json()['transaction']
 
             result = Transaction.from_json(subresult)
-            service = Service.from_id(result.service_id)
-            result.service = service.name
-
-            if robots:
-                result.robots = []
-                for robot_id, stats in subresult["robots"].items():
-                    robot = Robot.from_id(robot_id)
-                    robot.stats = stats
-                    result.robots.append(robot)
+            #service = Service.from_id(result.service_id)
+            #result.service = service.name
 
             return result
         except Exception as e:
@@ -236,12 +266,17 @@ class Transaction(APIBase):
             transaction_id=uuid.UUID(json['transactionid']),
             name=json['name'],
             service_id=json['serviceid'],
-            service_name=Service.from_id(json['serviceid']).name,
             description=json['description'],
             created_datetime=APIBase.datetime_from_str(json['createddatetime']),
             created_by=json['createdby'],
             state=json['state'],
-            cron=json['cron']
+            cron=json['cron'],
+            fail_cur=json['fail_cur'] if 'fail_cur' in json else None,
+            sla_cur=json['sla_cur'] if 'sla_cur' in json else None,
+            sla_prev=json['sla_prev'] if 'sla_prev' in json else None,
+            sla_daily=json['sla_daily'] if 'sla_daily' in json else None,
+            steps=json['steps'] if 'steps' in json else None,
+            robots=json['robots'] if 'robots' in json else None
         )
 
     @staticmethod
@@ -257,24 +292,6 @@ class Transaction(APIBase):
         except Exception as e:
             print(f"[ERR] Can't list transactions: {e}")
             return None
-
-    def get_steps(self):
-        try:
-            url = f'{self.api_endpoint}/transactions/{self.transaction_id}/steps'
-            response = requests.get(url)
-            self.steps = []
-            for step in response.json()['steps']:
-                transaction_step = Step.from_json(step)
-                transaction_step.transaction_name = self.name
-                # we don't need to get runs for each step
-                self.steps.append(transaction_step)
-
-            self.steps_count = len(self.steps)
-            return self.steps
-
-        except Exception as e:
-            print(f"[ERR] Can't get steps for transaction {self.transaction_id}: {e}")
-            return []
 
     def get_runs(self, result=None, max_runs=APIBase.max_runs):
         try:
@@ -297,6 +314,7 @@ class Transaction(APIBase):
 @dataclass
 class BusinessProcess(APIBase):
     process_id: uuid.UUID
+    project_id: uuid.UUID
     name: str
     description: str
     created_datetime: datetime.datetime
@@ -306,6 +324,15 @@ class BusinessProcess(APIBase):
     transactions_count: Optional[int] = field(default=None, init=False)
     sla_history: Optional[list] = field(default=None, init=False)
     service: Optional[str] = field(default=None, init=False)
+    current_state: Optional[str] = field(default=None, init=False)
+
+    # dynamic fields
+    fail_cur: Optional[float]
+    sla_cur: Optional[float]
+    sla_prev: Optional[float]
+    sla_daily: Optional[float]
+    trans_daily: Optional[dict]
+    services: Optional[dict]
 
     @staticmethod
     def add(name, description, created_by):
@@ -385,15 +412,21 @@ class BusinessProcess(APIBase):
             return None
 
     @staticmethod
-    def from_id(process_id):
+    def from_id(process_id, sublists=False, start_time=None, end_time=None):
 
         #print(f"[DBG][BusinessProcess/from_id] process_id: {process_id}")
 
         try:
             url = f'{APIBase.api_endpoint}/processes/{process_id}'
+            params = {
+                "sublists": sublists,
+            }
+            if start_time and end_time:
+                params["start"] = start_time
+                params["end"] = end_time
             #print(f"[DBG][BusinessProcess/from_id] url: {url}")
 
-            response = requests.get(url)
+            response = requests.get(url, json=params)
 
             subresult = response.json()
             #print(f"[DBG][BusinessProcess/from_id] subresult: {subresult}")
@@ -412,50 +445,43 @@ class BusinessProcess(APIBase):
         #print(f"[DBG][BusinessProcess/from_json] json: {json}")
 
         return BusinessProcess(
-            process_id=json['processid'],
+            process_id=json['processid'] if 'processid' in json else json['pojectid'],
+            project_id=json['projectid'] if 'projectid' in json else json['processid'], # alias hook
             name=json['name'],
             description=json['description'],
             created_datetime=json['createddatetime'],
             created_by=json['createdby'],
+            fail_cur=json['fail_cur'] if 'fail_cur' in json else None,
+            sla_cur=json['sla_cur'] if 'sla_cur' in json else None,
+            sla_prev=json['sla_prev'] if 'sla_prev' in json else None,
+            sla_daily=json['sla_daily'] if 'sla_daily' in json else None,
+            trans_daily=json['trans_daily'] if 'trans_daily' in json else None,
+            services=json['services'] if 'services' in json else None
         )
-
-    def get_transactions(self):
-        try:
-            url = f'{self.api_endpoint}/business_processes/{self.process_id}/transactions'
-            response = requests.get(url)
-            raw_transactions = response.json()['transactions']
-            self.transactions_count = len(raw_transactions)
-
-            self.transactions = []
-            self.sla_history = [0 for _ in range(APIBase.max_runs)]
-            for transaction in raw_transactions:
-                transaction_obj = Transaction.from_json(transaction)
-                transaction_obj.get_runs()
-                for i in range(APIBase.max_runs):
-                    self.sla_history[i] += int(transaction_obj.runs[i].run_result == 'OK')
-                self.transactions.append(transaction_obj)
-
-            for i in range(APIBase.max_runs):
-                self.sla_history[i] /= self.transactions_count
-                self.sla_history[i] *= 100
-
-            return self.transactions
-        except Exception as e:
-            print(f"[ERR] Can't get transactions for process {self.process_id}: {e}")
-            return []
 
 
 @dataclass
 class Service(APIBase):
     service_id: uuid.UUID
     name: str
-    project_name: str
     description: str
     created_datetime: datetime.datetime
     created_by: str
 
     processes: Optional[list] = field(default=None, init=False)
     processes_count: Optional[int] = field(default=None, init=False)
+    current_state: Optional[str] = field(default=None, init=False)
+
+    # dynamic fields
+    fail_cur: Optional[float]
+    sla_cur: Optional[float]
+    sla_prev: Optional[float]
+    sla_daily: Optional[float]
+    trans_ok: Optional[int]
+    trans_warning: Optional[int]
+    trans_fail: Optional[int]
+    trans_daily: Optional[dict]
+    transactions: Optional[dict]
 
     @staticmethod
     def add(project_id, name, description, created_by):
@@ -540,10 +566,16 @@ class Service(APIBase):
 
 
     @staticmethod
-    def from_id(service_id):
+    def from_id(service_id, sublists=False, start_time=None, end_time=None):
         try:
             url = f'{APIBase.api_endpoint}/services/{service_id}'
-            response = requests.get(url)
+            params = {
+                "sublists": sublists,
+            }
+            if start_time and end_time:
+                params["start"] = start_time
+                params["end"] = end_time
+            response = requests.get(url, json=params)
             subresult = response.json()['service']
 
             result = Service.from_json(subresult)
@@ -559,11 +591,19 @@ class Service(APIBase):
 
         return Service(
             service_id=uuid.UUID(json['serviceid']),
-            project_name=BusinessProcess.from_id(json['processid']).name,
             name=json['name'],
             description=json['description'],
             created_datetime=APIBase.datetime_from_str(json['createddatetime']),
-            created_by=json['createdby']
+            created_by=json['createdby'],
+            fail_cur=json['fail_cur'] if 'fail_cur' in json else None,
+            sla_cur=json['sla_cur'] if 'sla_cur' in json else None,
+            sla_prev=json['sla_prev'] if 'sla_prev' in json else None,
+            sla_daily=json['sla_daily'] if 'sla_daily' in json else None,
+            trans_ok=json['trans_ok'] if 'trans_ok' in json else None,
+            trans_warning=json['trans_warning'] if 'trans_warning' in json else None,
+            trans_fail=json['trans_fail'] if 'trans_fail' in json else None,
+            trans_daily=json['trans_daily'] if 'trans_daily' in json else None,
+            transactions=json['transactions'] if 'transactions' in json else None
         )
 
     @staticmethod
@@ -577,21 +617,6 @@ class Service(APIBase):
         except Exception as e:
             print(f"[ERR] Can't list services: {e}")
             return None
-
-    def get_processes(self):
-        try:
-            url = f'{self.api_endpoint}/services/{self.service_id}/business_processes'
-            response = requests.get(url)
-            self.processes = []
-            for process in response.json()['business_processes']:
-                process_obj = BusinessProcess.from_json(process)
-                process_obj.get_transactions()
-                self.processes.append(process_obj)
-
-            return self.processes
-        except Exception as e:
-            print(f"[ERR] Can't get processes for service {self.service_id}: {e}")
-            return []
 
 
 # robots are separated from the rest of the entities
@@ -608,6 +633,13 @@ class Robot(APIBase):
 
     runs: Optional[list] = field(default=None, init=False)
     stats: Optional[dict[str, float]] = field(default=None, init=False)
+    current_state: Optional[str] = field(default=None, init=False)
+
+    # dynamic fields
+    fail_cur: Optional[int]
+    sla_cur: Optional[float]
+    sla_prev: Optional[float]
+    sla_daily: Optional[float]
 
     @staticmethod
     def from_id(robot_id):
@@ -633,15 +665,23 @@ class Robot(APIBase):
             longitude=json['longitude'],
             ip_address=json['ipaddr'],
             created_datetime=APIBase.datetime_from_str(json['createddatetime']),
-            created_by=json['createdby']
+            created_by=json['createdby'],
+            fail_cur=json['fail_cur'] if 'fail_cur' in json else None,
+            sla_cur=json['sla_cur'] if 'sla_cur' in json else None,
+            sla_prev=json['sla_prev'] if 'sla_prev' in json else None,
+            sla_daily=json['sla_daily'] if 'sla_daily' in json else None
         )
 
     def get_runs(self, max_runs=APIBase.max_runs):
         try:
-            url = f'{self.api_endpoint}/runs/filter?key=robotid&value={self.robot_id}&first={max_runs}'
-            response = requests.get(url)
+            url = f'{self.api_endpoint}/runs'
+            response = requests.get(url, json={
+                "robotid": self.robot_id,
+                "page": 1,
+                "per_page": max_runs
+            })
             self.runs = []
-            for run in response.json()['transactions_runs']:
+            for run in response.json()['runs']:
                 transaction_run = TransactionRun.from_json(run)
                 transaction_run.name = self.name
                 self.runs.append(transaction_run)
@@ -654,12 +694,10 @@ class Robot(APIBase):
 
 class Charts(APIBase):
     @staticmethod
-    def get_heatmap(service_id):
+    def get_heatmap(filter_json):
         try:
             url = f'{APIBase.api_endpoint}/runs/heatmap'
-            response = requests.get(url, json={
-                "serviceid": service_id
-            })
+            response = requests.get(url, json=filter_json)
             return response.json()['heatmap']
         except Exception as e:
             print(f"[ERR] Can't get heatmap data: {e}")

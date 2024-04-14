@@ -106,8 +106,13 @@
                 <div class="row d-block d-xl-flex align-items-center">
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0">SLA Проекта</h2>
-                            <h3 class="fw-extrabold text-success mb-2">96.78%</h3>
+                            {% if context.current_process %}
+                                <h2 class="h6 text-gray-400 mb-0">SLA проекта {{ context.current_process.name }}</h2>
+                                <h3 class="fw-extrabold text-success mb-2">{{ '%.2f' % context.current_process.sla_cur }}%</h3>
+                            {% else %}
+                                <h2 class="h6 text-gray-400 mb-0">SLA проектов</h2>
+                                <h3 class="fw-extrabold text-success mb-2">{{ '%.2f' % context.global_sla.sla_cur }}%</h3>
+                            {% endif %}
                         </div>
                         <small class="d-flex align-items-center text-gray-500">
                             01.03.2024 - 31.03.2024,&nbsp;
@@ -115,14 +120,20 @@
                             &nbsp;Москва
                         </small>
                         <div class="small d-flex mt-1">
-                            <div>Изменение относительно прошлого месяца
-                                <svg class="icon icon-xs text-success" fill="currentColor" viewBox="0 0 20 20"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                          d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-success fw-bolder">22%</span></div>
+                            <div>Изменение относительно предыдущего периода</div>
+                                {% if context.current_process %}
+                                    {% if context.current_process.sla_cur > context.current_process.sla_prev %}
+                                        <span class="text-success fw-bolder">{{ '%.2f' % (context.current_process.sla_cur - context.current_process.sla_prev) }}%</span>
+                                    {% else %}
+                                        <span class="text-danger fw-bolder">{{ '%.2f' % (context.current_process.sla_cur - context.current_process.sla_prev) }}%</span>
+                                    {% endif %}
+                                {% else %}
+                                    {% if context.global_sla.sla_cur > context.global_sla.sla_prev %}
+                                        <span class="text-success fw-bolder">{{ '%.2f' % (context.global_sla.sla_cur - context.global_sla.sla_prev) }}%</span>
+                                    {% else %}
+                                        <span class="text-danger fw-bolder">{{ '%.2f' % (context.global_sla.sla_cur - context.global_sla.sla_prev) }}%</span>
+                                    {% endif %}
+                                {% endif %}
                         </div>
                     </div>
                 </div>
@@ -137,6 +148,17 @@
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0">Дневной SLA</h2>
+                            {% if context.current_process %}
+                                <h3 class="fw-extrabold text-{% if context.current_process.sla_daily < context.sla_target %}warning{% else %}success{% endif %} mb-2">{{ '%.2f' % context.current_process.sla_daily }}%</h3>
+                            {% else %}
+                                <h3 class="fw-extrabold text-{% if context.global_sla.sla_daily < context.sla_target %}warning{% else %}success{% endif %} mb-2">{{ '%.2f' % context.global_sla.sla_daily }}%</h3>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex align-items-center text-gray-500">
+                            <div>
+                                При целевом показателе
+                                <span class="text-success fw-bolder">{{ '%.2f' % context.sla_target }}%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -169,27 +191,33 @@
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0">Состояние проектов</h2>
-                            <span class="fw-extrabold text-success mb-2">2&nbsp; OK</span>
+                            <span class="fw-extrabold text-success mb-2">{{ context.projects.success }} OK</span>
                             <span>&nbsp;/&nbsp;</span>
-                            <span></span><span class="fw-extrabold text-secondary mb-2">1&nbsp; Warning</span>
+                            <span></span><span class="fw-extrabold text-secondary mb-2">{{ context.projects.warning }} Warning</span>
                             <span>&nbsp;/&nbsp;</span>
-                            <span class="fw-extrabold text-danger mb-2">0&nbsp; Critical</span>
+                            <span class="fw-extrabold text-danger mb-2">{{ context.projects.danger }} Critical</span>
                         </div>
                     </div>
                     <div class="card-mid-buffer"></div>
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
-                            {% for project in context.projects %}
-                            <button class="btn btn-pill btn-outline-success btn-buffer btn-project"
-                                    id="btn_project_id_{{ project.project_id }}"
-                                    type="button"
-                                    onclick="clickProjectLink('btn_project_id_{{ project.project_id }}', 'service_id_{{ project.project_id}}', 'project_collapsable_link')"
-                            >
-                                <span hidden id="project_id_{{ project.project_id}}">{{ project.project_id }}</span>
-                                {{ project.name }}
-                            </button>
+                            {% for project in context.projects.processes %}
+                                <button class="btn btn-pill btn-outline-{{ project.current_state }} btn-buffer btn-project {% if context.current_process and project.process_id == context.current_process.process_id %}active{% endif %}"
+                                        id="btn_project_id_{{ project.project_id }}"
+                                        type="button"
+                                        onclick="clickProjectLink('btn_project_id_{{ project.project_id }}', 'project_id_{{ project.project_id}}', 'project_collapsable_link')"
+                                >
+                                    <span hidden id="project_id_{{ project.project_id}}">{{ project.project_id }}</span>
+                                    {{ project.name }}
+                                </button>
                             {% endfor %}
                         </div>
+                    </div>
+                    <div class="col-12 col-xl-12 px-xl-0 text-end" style="display: none;" id="project_collapsable_link">
+                        <hr/>
+                        <a href="./mvp-projects.html" class="text-info me-1">
+                            <span class="small">Перейти к выбранному проекту</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -203,25 +231,25 @@
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0">Состояние сервисов</h2>
-                            <span class="fw-extrabold text-success mb-2">14&nbsp; OK</span>
+                            <span class="fw-extrabold text-success mb-2">{{ context.services.success }} OK</span>
                             <span>&nbsp;/&nbsp;</span>
-                            <span></span><span class="fw-extrabold text-secondary mb-2">2&nbsp; Warning</span>
+                            <span></span><span class="fw-extrabold text-secondary mb-2">{{ context.services.warning }} Warning</span>
                             <span>&nbsp;/&nbsp;</span>
-                            <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
+                            <span class="fw-extrabold text-danger mb-2">{{ context.services.danger }} Critical</span>
                         </div>
                     </div>
                     <div class="card-mid-buffer"></div>
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
-                            {% for service in context.services %}
-                            <button class="btn btn-pill btn-outline-success btn-buffer btn-service"
-                                    id="btn_service_id_{{ service.service_id }}"
-                                    type="button"
-                                    onclick="clickServiceLink('btn_service_id_{{ service.service_id }}', 'service_id_{{ service.service_id}}', 'service_collapsable_link')"
-                            >
-                                <span hidden id="service_id_{{ service.service_id}}">{{ service.service_id }}</span>
-                                {{ service.name }}
-                            </button>
+                            {% for service in context.services.services %}
+                                <button class="btn btn-pill btn-outline-{{ service.current_state }} btn-buffer btn-service"
+                                        id="btn_service_id_{{ service.service_id }}"
+                                        type="button"
+                                        onclick="clickServiceLink('btn_service_id_{{ service.service_id }}', 'service_id_{{ service.service_id}}', 'service_collapsable_link')"
+                                >
+                                    <span hidden id="service_id_{{ service.service_id }}">{{ service.service_id }}</span>
+                                    {{ service.name }}
+                                </button>
                             {% endfor %}
                         </div>
                     </div>
@@ -243,25 +271,25 @@
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0">Доступность роботов</h2>
-                            <span class="fw-extrabold text-success mb-2">5&nbsp; OK</span>
+                            <span class="fw-extrabold text-success mb-2">{{ context.robots.success }} OK</span>
                             <span>&nbsp;/&nbsp;</span>
-                            <span></span><span class="fw-extrabold text-secondary mb-2">0&nbsp; Warning</span>
+                            <span></span><span class="fw-extrabold text-secondary mb-2">{{ context.robots.warning }} Warning</span>
                             <span>&nbsp;/&nbsp;</span>
-                            <span class="fw-extrabold text-danger mb-2">1&nbsp; Critical</span>
+                            <span class="fw-extrabold text-danger mb-2">{{ context.robots.danger }} Critical</span>
                         </div>
                     </div>
                     <div class="card-mid-buffer"></div>
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
-                            {% for robot in context.robots %}
-                            <button class="btn btn-pill btn-outline-success btn-buffer btn-robot"
-                                    id="btn_robot_id_{{ robot.robot_id }}"
-                                    type="button"
-                                    onclick="clickRobotLink('btn_robot_id_{{ robot.robot_id }}', 'robot_id_{{ robot.robot_id}}', 'robot_collapsable_link')"
-                            >
-                                <span hidden id="robot_id_{{ robot.robot_id}}">{{ robot.robot_id }}</span>
-                                {{ robot.name }}
-                            </button>
+                            {% for robot in context.robots.robots %}
+                                <button class="btn btn-pill btn-outline-{{ robot.current_state }} btn-buffer btn-robot"
+                                        id="btn_robot_id_{{ robot.robot_id }}"
+                                        type="button"
+                                        onclick="clickRobotLink('btn_robot_id_{{ robot.robot_id }}', 'robot_id_{{ robot.robot_id}}', 'robot_collapsable_link')"
+                                >
+                                    <span hidden id="robot_id_{{ robot.robot_id}}">{{ robot.robot_id }}</span>
+                                    {{ robot.name }}
+                                </button>
                             {% endfor %}
                         </div>
                     </div>
@@ -399,8 +427,8 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/chartjs-adapter-date-fns.bundle.min.js"></script>
-<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-heatmap-charts.js"></script>
-<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-heatmap-charts.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-transaction-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-datatables/primoart-datatables.js"></script>
 
@@ -426,23 +454,43 @@
         const startTime = convertTime(start);
         const endTime = convertTime(end);
 
-        axios.get("/charts/timevserr", {params: {"start_time": startTime, "end_time": endTime}}).then((r) => {
-            const data = r.data;
+        {% if context.current_process %}
+            axios.get("/charts/timevserr", {params: {"start_time": startTime, "end_time": endTime, "process_id": "{{ context.current_process.process_id }}"}}).then((r) => {
+                const data = r.data;
 
-            servicetimevserrchart.init("transactionTimeVsErrsChart01", data);
-        });
+                servicetimevserrchart.init("transactionTimeVsErrsChart01", data);
+            });
 
-        axios.get("/charts/perfomance", {params: {"start_time": startTime, "end_time": endTime}}).then((r) => {
-            const data = r.data;
+            axios.get("/charts/perfomance", {params: {"start_time": startTime, "end_time": endTime, "process_id": "{{ context.current_process.process_id }}"}}).then((r) => {
+                const data = r.data;
 
-            performancechart.init("chartTransactionPerf01", data);
-        });
+                performancechart.init("chartTransactionPerf01", data);
+            });
 
-        axios.get("/data/services").then((r) => {
-            const serviceId = r.data[0].serviceid;
+            axios.get("/charts/heatmap", {params: {"start_time": startTime, "end_time": endTime, "process_id": "{{ context.current_process.process_id }}"}}).then((r) => {
+                const data = r.data;
 
-            heatmapchart.initFromApiByService("chartHeatmap01", serviceId);
-        });
+                heatmapchart.init("chartHeatmap01", data);
+            });
+        {% else %}
+            axios.get("/charts/timevserr", {params: {"start_time": startTime, "end_time": endTime}}).then((r) => {
+                const data = r.data;
+
+                servicetimevserrchart.init("transactionTimeVsErrsChart01", data);
+            });
+
+            axios.get("/charts/perfomance", {params: {"start_time": startTime, "end_time": endTime}}).then((r) => {
+                const data = r.data;
+
+                performancechart.init("chartTransactionPerf01", data);
+            });
+
+            axios.get("/charts/heatmap", {params: {"start_time": startTime, "end_time": endTime}}).then((r) => {
+                const data = r.data;
+
+                heatmapchart.init("chartHeatmap01", data);
+            });
+        {% endif %}
     });
 </script>
 <script>

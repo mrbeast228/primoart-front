@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+    # -*- encoding: utf-8 -*-
 """
 Copyright (c) 2019 - present AppSeed.us
 """
@@ -24,26 +24,29 @@ class RouterHelper:
 
     @staticmethod
     def create_context(template):
-        ctx = {}
+        ctx = {'sla_target': APIBase.sla_target}
         id_type = 'empty'
 
         page_number = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', 10, type=int)
 
-        # sync "pretty constant" data
-        # Не понял что здесь происходит, выкинул
-        # APIConnector.get_services_list(full=False, page=-1)
-        # APIConnector.get_robots_list(full=False, page=-1)
-        # APIConnector.get_business_processes_list(full=False, page=-1)
-        # APIConnector.get_transactions_list(full=False, page=-1)
-
         if template == 'mvp-main-dashboard.html':
-            ctx['services'] = APIConnector.get_services_list(page=page_number, per_page=per_page)
+            current_process_id = request.args.get('project_id', None, type=str)
+
+            ctx['services'] = APIConnector.get_services_list(page=page_number, per_page=per_page, process_id=current_process_id)
             print(f"[DBG][create_context] ctx['services'] = '{ctx['services']}'")
             ctx['projects'] = APIConnector.get_business_processes_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['projects'] = '{ctx['projects']}'")
             ctx['robots'] = APIConnector.get_robots_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['robots'] = '{ctx['robots']}'")
+
+            if current_process_id:
+                ctx['current_process'] = APIConnector.get_business_process(current_process_id)
+                print(f"[DBG][create_context] ctx['current_process'] = '{ctx['current_process']}'")
+            else:
+                ctx['current_process'] = None
+                # add global SLA for all processes
+                ctx['global_sla'] = GlobalSLA.from_api()
 
         elif template == 'mvp-objects-projects.html':
             ctx['projects'] = APIConnector.get_business_processes_list(page=page_number, per_page=per_page)
@@ -183,7 +186,8 @@ def route_template(template):
     except TemplateNotFound:
         return render_template('home/page-404.html'), 404
 
-    except:
+    except Exception as e:
+        print(f"[ERR] route_template: {e}")
         return render_template('home/page-500.html'), 500
 
 
@@ -328,7 +332,12 @@ def r_data_runs():
 @blueprint.route('/charts/heatmap')
 @login_required
 def r_charts_heatmap():
-    return Charts.get_heatmap(request.args["service_id"])
+    filter_json = {}
+    for idtype in 'process', 'service', 'transaction':
+        if f'{idtype}_id' in request.args:
+            filter_json[f'{idtype}id'] = request.args[f'{idtype}_id']
+            break
+    return Charts.get_heatmap(filter_json)
 
 @blueprint.route('/charts/runs')
 @login_required
@@ -357,30 +366,35 @@ def r_charts_runs():
 def r_charts_timevserr():
     start_time = request.args["start_time"]
     end_time = request.args["end_time"]
+    process_id = request.args.get("process_id", None)
+    service_id = request.args.get("service_id", None) # TODO
 
     res = []
 
-    services = Service.list_all()
+    if not process_id:
+        services = APIConnector.get_services_list()['services']
+    else:
+        services = APIConnector.get_services_list(process_id=process_id)['services']
 
     for service in services:
-        runs = Charts.get_transaction_runs(service_id=service["serviceid"], start_time=start_time, end_time=end_time)
+        runs = Charts.get_transaction_runs(service_id=str(service.service_id), start_time=start_time, end_time=end_time)
         err_percentage = round((len(list(filter(lambda x: x["runresult"] == "FAIL", runs)))) / (len(runs)),4)*100
         all_time = sum([(datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"],"%Y-%m-%d %H:%M:%S.%f")).microseconds/1000 for run in runs])
         average_time = round(all_time / len(runs), 2)
-        res.append({"service_name": service["name"], "err_percentage": err_percentage, "average_time": average_time})
+        res.append({"service_name": service.name, "err_percentage": err_percentage, "average_time": average_time})
 
     res.sort(key=lambda x: x["err_percentage"])
 
     return res
 
-def get_daily_runs(start_time, end_time):
+def get_daily_runs(start_time, end_time, process_id=None):
     start_date = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S.%f").date()
     end_date = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S.%f").date()
     period_len = (end_date - start_date).days + 1
 
     result = [{"date": start_date + timedelta(days=i), "runs": []} for i in range(period_len)]
 
-    services_id = [service["serviceid"] for service in Service.list_all()]
+    services_id = [str(service.service_id) for service in APIConnector.get_services_list(process_id=process_id)["services"]]
 
     all_runs = Charts.get_transaction_runs(service_id=services_id, start_time=start_time, end_time=end_time)
 
@@ -395,8 +409,9 @@ def get_daily_runs(start_time, end_time):
 def r_charts_perfomance():
     start_time = request.args["start_time"]
     end_time = request.args["end_time"]
+    process_id = request.args.get("process_id", None)
 
-    daily_runs = get_daily_runs(start_time=start_time, end_time=end_time)
+    daily_runs = get_daily_runs(start_time=start_time, end_time=end_time, process_id=process_id)
 
     res = []
 

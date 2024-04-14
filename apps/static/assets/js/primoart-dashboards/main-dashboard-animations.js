@@ -98,6 +98,19 @@ function clickProjectLink(buttonId, hiddenSpanId, elementToToggleId) {
         $('.btn-project').removeClass('active');
         $("#" + elementToToggleId).hide();
     } else {
+
+        // Toggle visibility of the element
+        $("#" + elementToToggleId).show();
+
+        // Get value from hidden input and append to the content if the element is visible
+        if ($("#" + elementToToggleId).is(":visible")) {
+            var hiddenIdValue = $("#" + hiddenSpanId).text(); // Get the ID value
+            // Append the ID value to the href of the link inside the elementToToggle
+            $("#" + elementToToggleId + " a").attr("href", function (i, originalHref) {
+                return "./mvp-main-dashboard.html?project_id=" + hiddenIdValue;
+            });
+        }
+
         $('.btn-project').removeClass('active');
         $("#" + buttonId).addClass('active');
     }

@@ -35,6 +35,18 @@ function generateData() {
   return data;
 }
 
+const colors = [
+    ['rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132)'],
+    ['rgba(255, 159, 64, 0.2)', 'rgba(255, 159, 64)'],
+    ['rgba(255, 205, 86, 0.2)', 'rgba(255, 205, 86)'],
+    ['rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192)'],
+    ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235)']
+];
+
+function getColor(idx) {
+    return colors[idx % colors.length];
+}
+
 steprunfloatchart = {
 
     init: function() {
@@ -110,31 +122,46 @@ steprunfloatchart = {
 }
 
 steprunbarchart = {
+    mockData: [
+        {
+            step_name: "DNS Lookup",
+            time: 0.45,
+            status: 'OK',
+        }, {
+            step_name: "Connection",
+            time: 0.59,
+            status: 'OK',
+        }, {
+            step_name: "SSL Handshake",
+            time: 0.31,
+            status: 'OK',
+        }, {
+            step_name: "First Byte",
+            time: 1.07,
+            status: 'OK',
+        }, {
+            step_name: "Content Transfer",
+            time: 1.18,
+            status: 'ERR',
+        },
+    ],
+    init: function(canvasId, dataset) {
+        console.log(dataset);
 
-    init: function() {
+        if (dataset === undefined) {
+            dataset = steprunbarchart.mockData;
+        }
 
-        const labels = ["DNS Lookup", "Connection", "SSL Handshake", "First Byte", "Content Transfer"]
+        const labels = dataset.map(({step_name}) => step_name);
 
         const data = {
           labels: labels,
           datasets: [
             {
               label: 'Время выполнения шагов транзакции, с',
-              data: [0.45, 0.59, 0.31, 1.07, 1.18],
-                backgroundColor: [
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(255, 99, 132, 0.2)'
-                ],
-                borderColor: [
-                  'rgb(75, 192, 192)',
-                  'rgb(75, 192, 192)',
-                  'rgb(75, 192, 192)',
-                  'rgb(75, 192, 192)',
-                  'rgb(255, 99, 132)'
-                ]
+              data: dataset.map(({time}) => time),
+                backgroundColor: dataset.map(({status}) => (status == 'OK' ? 'rgba(75, 192, 192, 0.2)' : 'rgba(255, 99, 132, 0.2)')),
+                borderColor: dataset.map(({status}) => (status == 'OK' ? 'rgb(75, 192, 192)' : 'rgb(255, 99, 132)')),
             }
           ]
         };
@@ -172,8 +199,17 @@ steprunbarchart = {
           }
         };
 
-        var ctx = document.getElementById("stepRunBarChart01").getContext("2d");
+        var ctx = document.getElementById(canvasId).getContext("2d");
         var floatingChart = new Chart(ctx, config);
+    },
+    initFromApiByTransactionRunId: function(canvasId, transactionRunId) {
+        axios.get("/charts/step_run", {params: {"transaction_run_id": transactionRunId}}).then((r) => {
+            const data = r.data;
+            console.log(r);
+            console.log(data);
+
+            steprunbarchart.init(canvasId, data);
+        });
     }
 }
 
@@ -241,23 +277,25 @@ steprunfailchart = {
 
 performancechart = {
 
-    init: function() {
+    init: function(elementId, perfData) {
 
-        const labels = ["18.03.2024", "19.03.2024", "20.03.2024", "21.03.2024", "22.03.2024", "23.03.2024", "24.03.2024", "25.03.2024"];
+        const labels = perfData.map(day => day["date"]);
+        const allNum = perfData.map(day => day["all_num"]);
+        const errNum = perfData.map(day => day["err_num"]);
 
         const data = {
           labels: labels,
           datasets: [
             {
               label: 'Количество транзакций за сутки',
-              data: [1285, 1175, 2357, 1245, 1624, 476, 328, 1134],
+              data: allNum,
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 borderColor: 'rgb(255, 159, 64)',
                 yAxisID: 'y'
             },
             {
               label: 'Количество ошибок выполнения',
-              data: [125, 208, 56, 178, 73, 12, 43, 250],
+              data: errNum,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 yAxisID: 'y1'
@@ -303,7 +341,7 @@ performancechart = {
           },
         };
 
-        var ctx = document.getElementById("chartTransactionPerf01").getContext("2d");
+        var ctx = document.getElementById(elementId).getContext("2d");
         var floatingChart = new Chart(ctx, config);
     }
 }
@@ -346,16 +384,18 @@ heatmapchart2 = {
 }
 
 servicetimevserrchart = {
-    init: function() {
+    init: function(elementId, servicesData) {
 
-        const labels = ["meaty", "lamentable", "tested", "clammy", "jolly"]
+        const labels = servicesData.map(service => service.service_name);
+        const dataAverageTime = servicesData.map(service => service.average_time);
+        const dataErrPercentage = servicesData.map(service => service.err_percentage);
 
         const data = {
           labels: labels,
           datasets: [
             {
               label: 'Среднее время выполнения транзакций, с',
-              data: [150, 400, 320, 840, 500],
+              data: dataAverageTime,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 order: 1,
@@ -363,7 +403,7 @@ servicetimevserrchart = {
             },
             {
               label: 'Процент ошибок выполнения',
-              data: [12, 24, 37, 5, 30],
+              data: dataErrPercentage,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 type: 'line',
@@ -411,32 +451,50 @@ servicetimevserrchart = {
           }
         };
 
-        var ctx = document.getElementById("transactionTimeVsErrsChart01").getContext("2d");
+        var ctx = document.getElementById(elementId).getContext("2d");
         var floatingChart = new Chart(ctx, config);
     }
 }
 
 transactionrunbarchart = {
-    init: function() {
+    mockData: [
+        {
+            name: 'Робот "Москва"',
+            stats: {
+                "0-30": 150,
+                "30-60": 400,
+                "60-120": 320,
+                "120-300": 840,
+                "300+": 30,
+            },
+        }, {
+            name: 'Робот "Волгоград"',
+            stats: {
+                "0-30": 50,
+                "30-60": 120,
+                "60-120": 40,
+                "120-300": 310,
+                "300+": 50,
+            },
+        }
+    ],
+    init: function(canvasId, dataset) {
+        if (dataset === undefined) {
+            dataset = transactionrunbarchart.mockData;
+        }
 
         const labels = ["< 30 c", "30-60 c", "60-120 c", "120-300 c", "> 300 c"]
 
         const data = {
           labels: labels,
-          datasets: [
-            {
-              label: 'Робот "Москва", количество транзакций',
-              data: [150, 400, 320, 840, 30],
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgb(75, 192, 192)'
-            },
-            {
-              label: 'Робот "Волгоград", количество транзакций',
-              data: [50, 120, 40, 310, 50],
-                backgroundColor: 'rgba(255, 205, 86, 0.2)',
-                borderColor: 'rgb(255, 205, 86)'
-            }
-          ]
+          datasets: dataset.map(({name, stats}, idx) => {
+              return {
+                  label: `Робот "${name}", количество транзакций`,
+                  data: [stats["0-30"], stats["30-60"], stats["60-120"], stats["120-300"], stats["300+"]],
+                  backgroundColor: getColor(idx)[0],
+                  borderColor: getColor(idx)[1],
+              }
+          }),
         };
 
         console.log(data);
@@ -476,7 +534,7 @@ transactionrunbarchart = {
           }
         };
 
-        var ctx = document.getElementById("transactionRunBarChart01").getContext("2d");
+        var ctx = document.getElementById(canvasId).getContext("2d");
         var floatingChart = new Chart(ctx, config);
     }
 }
@@ -522,26 +580,38 @@ transactionrundonutchart = {
 }
 
 transactionrunhorizontalchart = {
-    init: function() {
+    mockData: [
+        {
+            name: 'Робот "Москва"',
+            stats: {
+                ok: 1578,
+                failed: 315
+            },
+        }, {
+            name: 'Робот "Волгоград"',
+            stats: {
+                ok: 215,
+                failed: 56
+            },
+        }
+    ],
+    init: function(canvasId, dataset) {
+        if (dataset === undefined) {
+            dataset = transactionrunhorizontalchart.mockData;
+        }
 
         const labels = ["OK", "Failed"]
 
         const data = {
           labels: labels,
-          datasets: [
-            {
-              label: 'Робот "Москва"',
-              data: [1578, 315],
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgb(75, 192, 192)'
-            },
-            {
-              label: 'Робот "Волгоград"',
-              data: [215, 56],
-                backgroundColor: 'rgba(255, 205, 86, 0.2)',
-                borderColor: 'rgb(255, 205, 86)'
-            }
-          ]
+          datasets: dataset.map(({name, stats: {ok, failed}}, idx) => {
+              return {
+                  label: name,
+                  data: [ok, failed],
+                  backgroundColor: getColor(idx)[0],
+                  borderColor: getColor(idx)[1],
+              };
+          }),
         };
 
         console.log(data);
@@ -571,67 +641,106 @@ transactionrunhorizontalchart = {
           },
         };
 
-        var ctx = document.getElementById("transactionRunHorizontalChart01").getContext("2d");
+        var ctx = document.getElementById(canvasId).getContext("2d");
         var floatingChart = new Chart(ctx, config);
     }
 }
 
-scatterstatuschart = {
-    init: function() {
+const defaultScatterData = {
+  "OK": [
+    {
+      x: "2024-01-01",
+      y: 0
+    },
+    {
+      x: "2024-01-02",
+      y: 10
+    },
+    {
+      x: "2024-01-03",
+      y: 5
+    },
+    {
+      x: "2024-01-04",
+      y: 5.5
+    }
+  ],
+  "Failed": [
+    {
+      x: "2024-02-01",
+      y: 2
+    },
+    {
+      x: "2024-02-02",
+      y: 17
+    },
+    {
+      x: "2024-02-03",
+      y: 1
+    },
+    {
+      x: "2024-02-04",
+      y: 4
+    }
+  ]
+}
 
+scatterstatuschart = {
+    init: function(elementId, transactionData) {
+        if (transactionData === undefined) {
+          transactionData = defaultScatterData
+        }
         const data = {
           datasets: [
           {
             label: 'OK',
-            data: [{
-              x: -10,
-              y: 0
-            }, {
-              x: 0,
-              y: 10
-            }, {
-              x: 10,
-              y: 5
-            }, {
-              x: 0.5,
-              y: 5.5
-            }],
-            backgroundColor: 'rgb(255, 99, 132)'
+            data: transactionData["OK"],
+            backgroundColor: 'rgb(75, 140, 60)'
           },
           {
             label: 'Failed',
-            data: [{
-              x: -15,
-              y: 2
-            }, {
-              x: 3,
-              y: 17
-            }, {
-              x: 27,
-              y: 1
-            }, {
-              x: 16,
-              y: 4
-            }],
-            backgroundColor: 'rgb(75, 140, 60)'
+            data: transactionData["Failed"],
+            backgroundColor: 'rgb(255, 99, 132)'
           }
         ],
         };
 
+        const options = {
+          scales: {
+              x: {
+                type: "time",
+                title: {
+                    text: "Transaction time",
+                    display: true,
+                },
+                position: 'bottom',
+
+              },
+              y: {
+                type: 'linear',
+                title: {
+                    text: "Response time, microseconds",
+                    display: true,
+                },
+                position: "left"
+              }
+            }
+        }
+
         const config = {
           type: 'scatter',
           data: data,
-          options: {
-            scales: {
-              x: {
-                type: 'linear',
-                position: 'bottom'
-              }
-            }
-          }
+          options: options
         };
 
-        var ctx = document.getElementById("transactionScatterChart01").getContext("2d");
+        var ctx = document.getElementById(elementId).getContext("2d");
         var scatterChart = new Chart(ctx, config);
+    },
+    initFromApiByService(elementId, serviceId, startTime, endTime) {
+        axios.get("/charts/runs", {params: {"service_id": serviceId, "start_time": startTime, "end_time": endTime}}).then((response) => {
+            const data = response.data;
+
+            scatterstatuschart.init(elementId, data);
+        });
     }
 }
