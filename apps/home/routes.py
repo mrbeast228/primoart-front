@@ -61,6 +61,15 @@ class RouterHelper:
                 # add global SLA for all processes
                 ctx['global_sla'] = GlobalSLA.from_api(start=start_dt, end=end_dt)
 
+            # add runs information from self (request.host) endpoint
+            params = {
+                "start_date": start_dt.strftime("%Y-%m-%d %H:%M:%S"),
+                "end_date": end_dt.strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            if current_process_id:
+                params["process_id"] = current_process_id
+            ctx['runs'] = requests.get(f"{request.host_url}/project_runs", params=params).json()
+
         elif template == 'mvp-objects-projects.html':
             ctx['projects'] = APIConnector.get_business_processes_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['projects'] = '{ctx['projects']}'")
@@ -103,6 +112,14 @@ class RouterHelper:
                 # add global SLA for all processes
                 ctx['global_sla'] = GlobalSLA.from_api(start=start_dt, end=end_dt)
 
+            # add runs information from self (request.host) endpoint
+            params = {
+                "start_date": start_dt.strftime("%Y-%m-%d %H:%M:%S"),
+                "end_date": end_dt.strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            if current_service_id:
+                params["service_id"] = current_service_id
+            ctx['runs'] = requests.get(f"{request.host_url}/service_runs", params=params).json()
 
         elif template == 'mvp-robots.html':
             current_robot_id = request.args.get('robot_id', None, type=str)
@@ -118,13 +135,22 @@ class RouterHelper:
                 # add global SLA for all processes
                 ctx['global_sla'] = GlobalSLA.from_api(start=start_dt, end=end_dt)
 
+            # add runs of robot using APIConnector
+            ctx['runs'] = TransactionRun.list_all(params={"robot_id": current_robot_id,
+                                                          "start": start_dt.strftime("%Y-%m-%d %H:%M:%S"),
+                                                          "end": end_dt.strftime("%Y-%m-%d %H:%M:%S")
+                                                          })
+
 
         elif template == 'mvp-transaction.html':
             transaction_id = request.args.get('transaction_id', None, type=str)
 
             ctx['transaction'] = APIConnector.get_transaction(transaction_id=transaction_id, full=False, start=start_dt, end=end_dt)
             print(f"[DBG][create_context] ctx['transaction'] = '{ctx['transaction']}'")
-            ctx['runs'] = APIConnector.get_transaction_runs(transaction_id=transaction_id, page=page_number, per_page=per_page, start=start_dt, end=end_dt)
+            ctx['runs'] = TransactionRun.list_all(params={"transactionid": transaction_id,
+                                                          "start": start_dt.strftime("%Y-%m-%d %H:%M:%S"),
+                                                          "end": end_dt.strftime("%Y-%m-%d %H:%M:%S")
+                                                          })
             print(f"[DBG][create_context] ctx['runs'] = '{ctx['runs']}'")
 
 
@@ -533,7 +559,6 @@ def r_charts_step_run():
     return res
 
 @blueprint.route('/project_runs')
-@login_required
 def r_project_runs():
     process_id = request.args.get("process_id", None)
     start_date = request.args.get("start_date", None)
@@ -559,7 +584,6 @@ def r_project_runs():
     return runs
 
 @blueprint.route('/service_runs')
-@login_required
 def r_service_runs():
     service_id = request.args.get("service_id", None)
     start_date = request.args.get("start_date", None)
