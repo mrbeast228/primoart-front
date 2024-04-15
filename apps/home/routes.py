@@ -78,7 +78,8 @@ class RouterHelper:
         elif template == 'mvp-objects-transactions.html':
             ctx['services'] = APIConnector.get_services_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['services'] = '{ctx['services']}'")
-
+            ctx['projects'] = APIConnector.get_business_processes_list(page=page_number, per_page=per_page)
+            print(f"[DBG][create_context] ctx['projects'] = '{ctx['projects']}'")
             ctx['transactions'] = APIConnector.get_transaction_list(page=page_number, per_page=per_page)
             print(f"[DBG][create_context] ctx['transactions'] = '{ctx['transactions']}'")
 
@@ -531,11 +532,58 @@ def r_charts_step_run():
 
     return res
 
+@blueprint.route('/project_runs')
+@login_required
+def r_project_runs():
+    process_id = request.args.get("process_id", None)
+    start_date = request.args.get("start_date", None)
+    end_date = request.args.get("end_date", None)
+    params = {}
+    if process_id:
+        params["processid"] = process_id
+    # get all services of the project
+    services = Service.list_all(filter_json=params)
+    # get list of service ids
+    services_id = [service['serviceid'] for service in services]
+    # get all transactions of the services
+    trans_params = {"serviceid": services_id}
+    transactions = Transaction.list_all(params=trans_params)
+    # get list of transaction ids
+    transactions_id = [transaction['transactionid'] for transaction in transactions]
+    # get all runs of the transactions
+    run_params = {"transactionid": transactions_id}
+    if start_date and end_date:
+        run_params["start"] = start_date
+        run_params["end"] = end_date
+    runs = TransactionRun.list_all(params=run_params)
+    return runs
+
+@blueprint.route('/service_runs')
+@login_required
+def r_service_runs():
+    service_id = request.args.get("service_id", None)
+    start_date = request.args.get("start_date", None)
+    end_date = request.args.get("end_date", None)
+    params = {}
+    if service_id:
+        params["serviceid"] = service_id
+    # get all transactions of the services
+    transactions = Transaction.list_all(params=params)
+    # get list of transaction ids
+    transactions_id = [transaction['transactionid'] for transaction in transactions]
+    # get all runs of the transactions
+    run_params = {"transactionid": transactions_id}
+    if start_date and end_date:
+        run_params["start"] = start_date
+        run_params["end"] = end_date
+    runs = TransactionRun.list_all(params=run_params)
+    return runs
+
 @blueprint.route('/charts/transaction_robots')
 # @login_required
 def r_charts_transaction_robots():
     trx_id = request.args["transaction_id"]
-    trx = Transaction.from_id(trx_id, robots=True)
+    trx = Transaction.from_id(trx_id)
 
     res = []
 
