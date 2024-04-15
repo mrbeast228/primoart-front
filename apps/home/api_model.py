@@ -16,6 +16,15 @@ class APIBase:
     @staticmethod
     def datetime_from_str(datetime_str):
         return datetime.datetime.strptime(datetime_str.split('+')[0], '%Y-%m-%d %H:%M:%S.%f')
+    
+    @staticmethod
+    def datetime_to_str(datetime_obj):
+        if isinstance(datetime_obj, str):
+            return datetime_obj
+        elif isinstance(datetime_obj, datetime.datetime):
+            return datetime_obj.strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            raise ValueError("Invalid datetime!")
 
 
 @dataclass
@@ -35,10 +44,14 @@ class GlobalSLA(APIBase):
         )
 
     @staticmethod
-    def from_api():
+    def from_api(start=None, end=None):
         try:
             url = f'{APIBase.api_endpoint}/global_sla'
-            response = requests.get(url)
+            params = {}
+            if start and end:
+                params["start"] = APIBase.datetime_to_str(start)
+                params["end"] = APIBase.datetime_to_str(end)
+            response = requests.get(url, json=params)
             subresult = response.json()['global_sla']
 
             return GlobalSLA.from_json(subresult)
@@ -246,8 +259,8 @@ class Transaction(APIBase):
                 "sublists": sublists,
             }
             if start_time and end_time:
-                params["start"] = start_time
-                params["end"] = end_time
+                params["start"] = APIBase.datetime_to_str(start_time)
+                params["end"] = APIBase.datetime_to_str(end_time)
             response = requests.get(url, json=params)
             subresult = response.json()['transaction']
 
@@ -284,8 +297,8 @@ class Transaction(APIBase):
         if params is None:
             params = {}
         try:
-            url = f'{APIBase.api_endpoint}/transactions/'
-            response = requests.get(url=url, data=json.dumps(params))
+            url = f'{APIBase.api_endpoint}/transactions'
+            response = requests.get(url=url, json=params)
             subresult = response.json()['transactions']
 
             return subresult
@@ -422,8 +435,8 @@ class BusinessProcess(APIBase):
                 "sublists": sublists,
             }
             if start_time and end_time:
-                params["start"] = start_time
-                params["end"] = end_time
+                params["start"] = APIBase.datetime_to_str(start_time)
+                params["end"] = APIBase.datetime_to_str(end_time)
             #print(f"[DBG][BusinessProcess/from_id] url: {url}")
 
             response = requests.get(url, json=params)
@@ -573,8 +586,8 @@ class Service(APIBase):
                 "sublists": sublists,
             }
             if start_time and end_time:
-                params["start"] = start_time
-                params["end"] = end_time
+                params["start"] = APIBase.datetime_to_str(start_time)
+                params["end"] = APIBase.datetime_to_str(end_time)
             response = requests.get(url, json=params)
             subresult = response.json()['service']
 
@@ -607,10 +620,10 @@ class Service(APIBase):
         )
 
     @staticmethod
-    def list_all():
+    def list_all(filter_json={}):
         try:
-            url = f'{APIBase.api_endpoint}/services/'
-            response = requests.get(url)
+            url = f'{APIBase.api_endpoint}/services'
+            response = requests.get(url, json=filter_json)
             subresult = response.json()['services']
 
             return subresult
@@ -642,10 +655,14 @@ class Robot(APIBase):
     sla_daily: Optional[float]
 
     @staticmethod
-    def from_id(robot_id):
+    def from_id(robot_id, start_time=None, end_time=None):
         try:
             url = f'{APIBase.api_endpoint}/robots/{robot_id}'
-            response = requests.get(url)
+            params = {}
+            if start_time and end_time:
+                params["start"] = APIBase.datetime_to_str(start_time)
+                params["end"] = APIBase.datetime_to_str(end_time)
+            response = requests.get(url, json=params)
             subresult = response.json()['robot']
 
             result = Robot.from_json(subresult)
@@ -653,6 +670,24 @@ class Robot(APIBase):
             return result
         except Exception as e:
             print(f"[ERR] Can't init robot from id: {e}")
+            return None
+
+    @staticmethod
+    def extended_json(robot_id, start_time=None, end_time=None):
+        try:
+            url = f'{APIBase.api_endpoint}/robots/{robot_id}'
+            params = {
+                "sublists": True,
+            }
+            if start_time and end_time:
+                params["start"] = APIBase.datetime_to_str(start_time)
+                params["end"] = APIBase.datetime_to_str(end_time)
+            response = requests.get(url, json=params)
+            subresult = response.json()['robot']
+
+            return subresult
+        except Exception as e:
+            print(f"[ERR] Can't get robot from id: {e}")
             return None
 
     @staticmethod
@@ -704,11 +739,14 @@ class Charts(APIBase):
             return None
 
     @staticmethod
-    def get_transaction_runs(service_id, start_time="", end_time=""):
+    def get_transaction_runs(service_id=None, robot_id=None, start_time="", end_time=""):
         try:
-            config = {
-                "serviceid": service_id
-            }
+            config = {}
+            if service_id:
+                config["serviceid"] = service_id
+            elif robot_id:
+                config["robotid"] = robot_id
+
             transactions = Transaction.list_all(params=config)
             transactions_id = [tr["transactionid"] for tr in transactions]
 

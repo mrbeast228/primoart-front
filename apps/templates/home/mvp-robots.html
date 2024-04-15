@@ -10,16 +10,14 @@
     .card-mid-buffer { margin-top:10px; }
     .btn-buffer { margin-top:2px; margin-bottom:2px; }
     .btn-block-custom { width: 100%; }
+</style>
 
+<style>
     .card-fill-all-space {
         #border: 1px solid #444;
         height: 100%;
         width: 100%;
     }
-
-    .btn-service {} // Пустой класс для переключения селекторов
-    .btn-robot {} // Пустой класс для переключения селекторов
-    .btn-project {} // Пустой класс для переключения селекторов
 </style>
 
 
@@ -40,7 +38,7 @@
                     </svg>
                 </a>
             </li>
-            <li class="breadcrumb-item"><a href="#">Основной дашборд</a></li>
+            <li class="breadcrumb-item"><a href="#">Роботы</a></li>
         </ol>
     </nav>
 </div>
@@ -106,26 +104,26 @@
                 <div class="row d-block d-xl-flex align-items-center">
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
-                            {% if context.current_process %}
-                                <h2 class="h6 text-gray-400 mb-0">SLA проекта {{ context.current_process.name }}</h2>
-                                <h3 class="fw-extrabold text-success mb-2">{{ '%.2f' % context.current_process.sla_cur }}%</h3>
+                           {% if context.current_robot %}
+                                <h2 class="h6 text-gray-400 mb-0">SLA робота {{ context.current_robot.name }}</h2>
+                                <h3 class="fw-extrabold text-success mb-2">{{ '%.2f' % context.current_robot.sla_cur }}%</h3>
                             {% else %}
-                                <h2 class="h6 text-gray-400 mb-0">SLA проектов</h2>
+                                <h2 class="h6 text-gray-400 mb-0">SLA роботов</h2>
                                 <h3 class="fw-extrabold text-success mb-2">{{ '%.2f' % context.global_sla.sla_cur }}%</h3>
                             {% endif %}
                         </div>
                         <small class="d-flex align-items-center text-gray-500">
-                            <span id="start-date-display"></span>&nbsp;-&nbsp;<span id="finish-date-display"></span>
+                            <span id="start-date-display"></span> - <span id="finish-date-display"></span>
                             <i>{{font_awesome.render_icon("fas fa-globe")}}</i>
                             &nbsp;Москва
                         </small>
                         <div class="small d-flex mt-1">
-                            <div>Изменение относительно предыдущего периода</div>
-                                {% if context.current_process %}
-                                    {% if context.current_process.sla_cur > context.current_process.sla_prev %}
-                                        <span class="text-success fw-bolder">{{ '%.2f' % (context.current_process.sla_cur - context.current_process.sla_prev) }}%</span>
+                            <div>Изменение относительно предыдущего периода
+                                {% if context.current_robot %}
+                                    {% if context.current_robot.sla_cur > context.current_robot.sla_prev %}
+                                        <span class="text-success fw-bolder">{{ '%.2f' % (context.current_robot.sla_cur - context.current_robot.sla_prev) }}%</span>
                                     {% else %}
-                                        <span class="text-danger fw-bolder">{{ '%.2f' % (context.current_process.sla_cur - context.current_process.sla_prev) }}%</span>
+                                        <span class="text-danger fw-bolder">{{ '%.2f' % (context.current_robot.sla_cur - context.current_robot.sla_prev) }}%</span>
                                     {% endif %}
                                 {% else %}
                                     {% if context.global_sla.sla_cur > context.global_sla.sla_prev %}
@@ -134,6 +132,7 @@
                                         <span class="text-danger fw-bolder">{{ '%.2f' % (context.global_sla.sla_cur - context.global_sla.sla_prev) }}%</span>
                                     {% endif %}
                                 {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -147,18 +146,7 @@
                 <div class="row d-block d-xl-flex align-items-center">
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0">Дневной SLA</h2>
-                            {% if context.current_process %}
-                                <h3 class="fw-extrabold text-{% if context.current_process.sla_daily < context.sla_target %}warning{% else %}success{% endif %} mb-2">{{ '%.2f' % context.current_process.sla_daily }}%</h3>
-                            {% else %}
-                                <h3 class="fw-extrabold text-{% if context.global_sla.sla_daily < context.sla_target %}warning{% else %}success{% endif %} mb-2">{{ '%.2f' % context.global_sla.sla_daily }}%</h3>
-                            {% endif %}
-                        </div>
-                        <div class="d-flex align-items-center text-gray-500">
-                            <div>
-                                При целевом показателе
-                                <span class="text-success fw-bolder">{{ '%.2f' % context.sla_target }}%</span>
-                            </div>
+                            <h2 class="h6 text-gray-400 mb-0">TODO, Бизнес-показатель</h2>
                         </div>
                     </div>
                 </div>
@@ -184,87 +172,8 @@
 
 <!-- Область селекторов -->
 <div class="row mb-2">
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card border-0 shadow card-fill-all-space">
-            <div class="card-body">
-                <div class="row d-block d-xl-flex align-items-center">
-                    <div class="col-12 col-xl-12 px-xl-0">
-                        <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0">Состояние проектов</h2>
-                            <span class="fw-extrabold text-success mb-2">{{ context.projects.success }} OK</span>
-                            <span>&nbsp;/&nbsp;</span>
-                            <span></span><span class="fw-extrabold text-secondary mb-2">{{ context.projects.warning }} Warning</span>
-                            <span>&nbsp;/&nbsp;</span>
-                            <span class="fw-extrabold text-danger mb-2">{{ context.projects.danger }} Critical</span>
-                        </div>
-                    </div>
-                    <div class="card-mid-buffer"></div>
-                    <div class="col-12 col-xl-12 px-xl-0">
-                        <div class="d-none d-sm-block">
-                            {% for project in context.projects.processes %}
-                                <button class="btn btn-pill btn-outline-{{ project.current_state }} btn-buffer btn-project {% if context.current_process and project.process_id == context.current_process.process_id %}active{% endif %}"
-                                        id="btn_project_id_{{ project.project_id }}"
-                                        type="button"
-                                        onclick="clickProjectLink('btn_project_id_{{ project.project_id }}', 'project_id_{{ project.project_id}}', 'project_collapsable_link')"
-                                >
-                                    <span hidden id="project_id_{{ project.project_id}}">{{ project.project_id }}</span>
-                                    {{ project.name }}
-                                </button>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="col-12 col-xl-12 px-xl-0 text-end" style="display: none;" id="project_collapsable_link">
-                        <hr/>
-                        <a href="./mvp-projects.html" class="text-info me-1">
-                            <span class="small">Перейти к выбранному проекту</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="col-12 col-sm-6 col-xl-6">
-        <div class="card border-0 shadow card-fill-all-space">
-            <div class="card-body">
-                <div class="row d-block d-xl-flex align-items-center">
-                    <div class="col-12 col-xl-12 px-xl-0">
-                        <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0">Состояние сервисов</h2>
-                            <span class="fw-extrabold text-success mb-2">{{ context.services.success }} OK</span>
-                            <span>&nbsp;/&nbsp;</span>
-                            <span></span><span class="fw-extrabold text-secondary mb-2">{{ context.services.warning }} Warning</span>
-                            <span>&nbsp;/&nbsp;</span>
-                            <span class="fw-extrabold text-danger mb-2">{{ context.services.danger }} Critical</span>
-                        </div>
-                    </div>
-                    <div class="card-mid-buffer"></div>
-                    <div class="col-12 col-xl-12 px-xl-0">
-                        <div class="d-none d-sm-block">
-                            {% for service in context.services.services %}
-                                <button class="btn btn-pill btn-outline-{{ service.current_state }} btn-buffer btn-service"
-                                        id="btn_service_id_{{ service.service_id }}"
-                                        type="button"
-                                        onclick="clickServiceLink('btn_service_id_{{ service.service_id }}', 'service_id_{{ service.service_id}}', 'service_collapsable_link')"
-                                >
-                                    <span hidden id="service_id_{{ service.service_id }}">{{ service.service_id }}</span>
-                                    {{ service.name }}
-                                </button>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="col-12 col-xl-12 px-xl-0 text-end" style="display: none;" id="service_collapsable_link">
-                        <hr/>
-                        <a href="./mvp-services.html" class="text-info me-1">
-                            <span class="small">Перейти к выбранному сервису</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-xl-3">
+    <div class="col-12 col-sm-12 col-xl-12">
         <div class="card border-0 shadow card-fill-all-space">
             <div class="card-body">
                 <div class="row d-block d-xl-flex align-items-center">
@@ -272,9 +181,9 @@
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0">Доступность роботов</h2>
                             <span class="fw-extrabold text-success mb-2">{{ context.robots.success }} OK</span>
-                            <span>&nbsp;/&nbsp;</span>
+                            <span> / </span>
                             <span></span><span class="fw-extrabold text-secondary mb-2">{{ context.robots.warning }} Warning</span>
-                            <span>&nbsp;/&nbsp;</span>
+                            <span> / </span>
                             <span class="fw-extrabold text-danger mb-2">{{ context.robots.danger }} Critical</span>
                         </div>
                     </div>
@@ -282,14 +191,14 @@
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
                             {% for robot in context.robots.robots %}
-                                <button class="btn btn-pill btn-outline-{{ robot.current_state }} btn-buffer btn-robot"
-                                        id="btn_robot_id_{{ robot.robot_id }}"
-                                        type="button"
-                                        onclick="clickRobotLink('btn_robot_id_{{ robot.robot_id }}', 'robot_id_{{ robot.robot_id}}', 'robot_collapsable_link')"
-                                >
-                                    <span hidden id="robot_id_{{ robot.robot_id}}">{{ robot.robot_id }}</span>
-                                    {{ robot.name }}
-                                </button>
+                            <button class="btn btn-pill btn-outline-{{ robot.current_state }} btn-buffer btn-robot {% if context.current_robot and robot.robot_id == context.current_robot.robot_id %}active{% endif %}"
+                                    id="btn_robot_id_{{ robot.robot_id }}"
+                                    type="button"
+                                    onclick="clickRobotLink('btn_robot_id_{{ robot.robot_id }}', 'robot_id_{{ robot.robot_id }}', 'robot_collapsable_link')"
+                            >
+                                <span hidden id="robot_id_{{ robot.robot_id }}">{{ robot.robot_id }}</span>
+                                {{ robot.name }}
+                            </button>
                             {% endfor %}
                         </div>
                     </div>
@@ -305,7 +214,44 @@
     </div>
 </div>
 
-<!-- Кнопка фильтра первого ряда диаграмм -->
+<!-- Кнопка коллапса карты -->
+<div class="row d-block d-xl-flex align-items-top">
+    <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
+        TODO, название для ряда
+        <span>
+			<button class="btn btn-link text-tertiary d-inline-flex align-items-center" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#mapRow" aria-expanded="false" aria-controls="mapRow">
+			  <i>{{font_awesome.render_icon("fas fa-chevron-down")}}</i>
+			</button>
+		</span>
+    </div>
+</div>
+
+<!-- Область карты  -->
+<div class="row collapse show mb-2" id="mapRow">
+    <div class="col-12 col-sm-12 col-xl-12">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <iframe width="100%"
+                        height="550"
+                        frameborder="0"
+                        scrolling="no"
+                        marginheight="0"
+                        marginwidth="0"
+                        {% if context.current_robot %}
+                            src="http://www.openstreetmap.org/export/embed.html?bbox={{ context.current_robot.longitude - 0.003 }}%2C{{ context.current_robot.latitude - 0.003 }}%2C{{ context.current_robot.longitude + 0.003 }}%2C{{ context.current_robot.latitude + 0.003 }}&amp;layers=ND"
+                        {% else %}
+                            src="http://www.openstreetmap.org/export/embed.html?bbox=37.6%2C55.7%2C37.8%2C55.9&amp;layers=ND"
+                        {% endif %}
+                        style="border: 1px solid black">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Кнопка коллапса первого ряда диаграмм -->
 <div class="row d-block d-xl-flex align-items-top">
     <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
         TODO, название для ряда
@@ -320,41 +266,26 @@
 </div>
 
 <!-- Первый ряд диаграмм -->
-<!-- Первый ряд диаграмм -->
 <div class="row mb-2 collapse show" id="firstRowCharts">
-    <div class="col-12 col-sm-12 col-xl-6 mb-2">
-        <div class="card border-0 shadow card-fill-all-space">
-            <div class="card-body">
-                <h2 class="h6 text-gray-400 mb-0">Транзакции и ошибки выполнения по сервисам</h2>
-                <div class="card-mid-buffer"></div>
-                <div>
-                    <canvas width="100%" height="35%" id="transactionTimeVsErrsChart01"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <div class="col-12 col-sm-12 col-xl-6 mb-2">
-        <div class="card border-0 shadow card-fill-all-space">
+    <div class="col-12 col-sm-12 col-xl-6">
+        <div class="card border-0 shadow">
             <div class="card-body">
                 <h2 class="h6 text-gray-400 mb-0">Сводные метрики выполнения транзакций</h2>
                 <div class="card-mid-buffer"></div>
                 <div>
-                    <canvas width="100%" height="35%" id="chartTransactionPerf01"></canvas>
+                    <canvas width="100%" height="50%" id="chartTransactionPerf01"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-12 col-sm-12 col-xl-12">
-        <div class="card border-0 shadow card-fill-all-space">
+    <div class="col-12 col-sm-12 col-xl-6">
+        <div class="card border-0 shadow">
             <div class="card-body">
                 <h2 class="h6 text-gray-400 mb-0">Среднее время выполнения транзакций</h2>
                 <div class="card-mid-buffer"></div>
                 <div>
-                      <canvas width="100%" height="20%" id="chartHeatmap01"></canvas>
+                    <canvas width="100%" height="50%" id="chartHeatmap01"></canvas>
                 </div>
             </div>
         </div>
@@ -362,7 +293,7 @@
 
 </div>
 
-<!-- Кнопка фильтра второго ряда диаграмм -->
+<!-- Кнопка коллапса второго ряда диаграмм -->
 <div class="row d-block d-xl-flex align-items-top">
     <div class="col-1 col-xl-2 px-xl-0 offset-md-10 text-end mb-2">
         TODO, название для ряда
@@ -378,6 +309,34 @@
 
 <!-- Второй ряд диаграмм -->
 <div class="row mb-5 collapse show" id="secondRowCharts">
+    <div class="col-12 col-sm-12 col-xl-6">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Соотношение количества транзакций к
+                    ошибкам выполнения</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="50%"
+                            id="transactionTimeVsErrsChart01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-12 col-xl-6">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Распределение транзакций по статусу
+                    выполнения</h2>
+                <div class="card-mid-buffer"></div>
+                <div>
+                    <canvas width="100%" height="50%"
+                            id="transactionScatterChart01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <!-- Кнопка коллапса таблицы событий -->
@@ -392,35 +351,80 @@
 			</button>
 		</span>
     </div>
-</div>
 
-<div class="row collapse show" id="eventTable">
-    <div class="col-12 col-sm-12 col-xl-12 mb-12">
-        <div class="card border-0 shadow">
-            <div class="card-body">
-                <h2 class="h6 text-gray-400 mb-0">Последние события</h2>
-                <div class="card-mid-buffer"></div>
-                <div class="table-responsive">
-                    <table class="table table-centered table-nowrap mb-0 rounded hover"
-                           id="dashboard-events">
-                        <thead>
-                        <tr>
-                            <th data-field="datetime">Время</th>
-                            <th data-field="severity">Критичность</th>
-                            <th data-field="event">Событие</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
 
-                    </table>
+    <div class="row collapse show" id="eventTable">
+        <div class="col-12 col-sm-12 col-xl-12 mb-12">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-0">Последние события</h2>
+                    <div class="card-mid-buffer"></div>
+                    <div class="table-responsive">
+                        <table class="table table-centered table-nowrap mb-0 rounded"
+                               id="dashboard-events">
+                            <thead>
+                            <tr>
+                                <th data-field="datetime">Время</th>
+                                <th data-field="severity">Критичность</th>
+                                <th data-field="event">Событие</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="table-danger">
+                                <td>26.03.2024 10:17:05</td>
+                                <td>Critical</td>
+                                <td class="fw-bold d-flex align-items-center">
+                                    Транзакция&nbsp<a href="#"
+                                                      class="text-info me-1">jolly</a>
+                                    завершилась с ошибкой
+                                </td>
+                            </tr>
+                            <tr class="table-info">
+                                <td>26.03.2024 10:15:13</td>
+                                <td>Information</td>
+                                <td class="fw-bold d-flex align-items-center">
+                                    Транзакция&nbsp<a href="#"
+                                                      class="text-info me-1">tested</a>
+                                    выполнена успешно
+                                </td>
+                            </tr>
+                            <tr class="table-info">
+                                <td>26.03.2024 09:47:28</td>
+                                <td>Information</td>
+                                <td class="fw-bold d-flex align-items-center">
+                                    Транзакция&nbsp<a href="#"
+                                                      class="text-info me-1">lamentable</a>
+                                    выполнена успешно
+                                </td>
+                            </tr>
+                            <tr class="table-info">
+                                <td>26.03.2024 07:52:32</td>
+                                <td>Information</td>
+                                <td class="fw-bold d-flex align-items-center">
+                                    Транзакция&nbsp<a href="#"
+                                                      class="text-info me-1">slimy</a>
+                                    выполнена успешно
+                                </td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>26.03.2024 06:16:09</td>
+                                <td>Warning</td>
+                                <td class="fw-bold d-flex align-items-center">
+                                    Транзакция&nbsp<a href="#"
+                                                      class="text-info me-1">clammy</a>
+                                    превысила расчетное время выполнения
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
-
 </div>
-
 
 {% endblock content %}
 
@@ -430,8 +434,7 @@
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-heatmap-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-transaction-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
-<script src="{{ config.ASSETS_ROOT }}/js/primoart-datatables/primoart-datatables.js"></script>
-<script>
+    <script>
     // handle on window load
     $(function() {
         const url = new URL(window.location.href);
@@ -464,8 +467,6 @@
 <script>
     $(function() {
         console.log("Page loaded!");
-
-        sandboxMainDashTable.init();
 
         // too many code just to get current time and time 2 weeks ago...
         // sry, couldn't find shorter way
@@ -507,20 +508,36 @@
         const startTime = convertTime(start);
         const endTime = convertTime(end);
 
-        {% if context.current_process %}
-            axios.get("/charts/timevserr", {params: {"start_time": startTime, "end_time": endTime, "process_id": "{{ context.current_process.process_id }}"}}).then((r) => {
+        {% if context.current_robot %}
+            axios.get("/charts/robot_dynamic", {params: {"start_time": startTime, "end_time": endTime, "robot_id": "{{ context.current_robot.robot_id }}"}}).then((r) => {
                 const data = r.data;
 
-                servicetimevserrchart.init("transactionTimeVsErrsChart01", data);
+                const serviceTimeVsErrsData = Object.entries(data['transactions']).map(([d, v]) => {
+                    return {
+                        service_name: v['name'],
+                        err_percentage: 100 - v['sla'],
+                        average_time: v['sla']
+                    };
+                });
+                servicetimevserrchart.init("transactionTimeVsErrsChart01", serviceTimeVsErrsData);
+
+                const performanceData = Object.entries(data['runs_daily']).map(([d, v]) => {
+                    return {
+                        all_num: v['total'],
+                        err_num: v['total'] - v['ok'],
+                        date: d
+                    };
+                });
+                performancechart.init("chartTransactionPerf01", performanceData);
             });
 
-            axios.get("/charts/perfomance", {params: {"start_time": startTime, "end_time": endTime, "process_id": "{{ context.current_process.process_id }}"}}).then((r) => {
+            axios.get("/charts/runs", {params: {"start_time": startTime, "end_time": endTime, "robot_id": "{{ context.current_robot.id }}"}}).then((r) => {
                 const data = r.data;
 
-                performancechart.init("chartTransactionPerf01", data);
+                scatterstatuschart.init("transactionScatterChart01", data);
             });
 
-            axios.get("/charts/heatmap", {params: {"start_time": startTime, "end_time": endTime, "process_id": "{{ context.current_process.process_id }}"}}).then((r) => {
+            axios.get("/charts/heatmap", {params: {"start_time": startTime, "end_time": endTime, "robot_id": "{{ context.current_robot.id }}"}}).then((r) => {
                 const data = r.data;
 
                 heatmapchart.init("chartHeatmap01", data);
@@ -542,6 +559,12 @@
                 const data = r.data;
 
                 heatmapchart.init("chartHeatmap01", data);
+            });
+
+            axios.get("/charts/runs", {params: {"start_time": startTime, "end_time": endTime}}).then((r) => {
+                const data = r.data;
+
+                scatterstatuschart.init("transactionScatterChart01", data);
             });
         {% endif %}
     });

@@ -36,6 +36,9 @@
                     </svg>
                 </a>
             </li>
+            {% if context.current_service %}
+                <li class="breadcrumb-item"><a href="/mvp-main-dashboard.html">Проекты</a></li>
+            {% endif %}
             <li class="breadcrumb-item"><a href="">Сервисы</a></li>
         </ol>
     </nav>
@@ -65,30 +68,20 @@
                                <span class="input-group-text fw-extrabold">
                                       Проект
                                   </span>
-                            <select class="form-select" id="robot" aria-label="Default select example">
-                                <option selected>Все проекты</option>
-                                <option value="1">Выдача кредитов</option>
-                                <option value="2">Обслуживание счетов</option>
-                                <option value="3">Нагрузочные тесты</option>
+                            <select class="form-select" id="project-selector" aria-label="Default select example">
+                                <option value="0" selected>Все проекты</option>
+                                {% for process in context.projects.processes %}
+                                    <option value="{{ process.process_id }}">{{ process.name }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="input-group ">
                                <span class="input-group-text fw-extrabold">
                                       Сервис
                                   </span>
-                            <select class="form-select" id="status" aria-label="Default select example">
-                                <option selected>Все</option>
-                                <option value="1">Кредиты</option>
-                                <option value="2">Ипотека</option>
-                                <option value="3">Автокредит</option>
-                                <option value="4">Микрозайм</option>
-                                <option value="5">Дебетовые карты</option>
-                                <option value="6">Кредитные карты</option>
-                                <option value="7">Сберегательные счета</option>
-                                <option value="8">Чековые счета</option>
-                                <option value="9">Ипотечные кредиты</option>
-                                <option value="10">Онлайн-банкинг</option>
-                                <option value="11">Инвестиционные счета</option>
+                            <select class="form-select" id="service-selector" aria-label="Default select example">
+                                <option value="0" selected>Все сервисы</option>
+                                <!-- other options will be populated by js -->
                             </select>
                         </div>
                     </div>
@@ -99,7 +92,7 @@
                                   </span>
                             <input class="form-control" id="start-date" type="date" placeholder="dd/mm/yyyy"
                                    required/>
-                            <input class="form-control" id="start-time" type="time" required/>
+                            <input class="form-control" id="start-time" type="time" required value="00:00"/>
                         </div>
                         <div class="input-group">
                                <span class="input-group-text fw-extrabold">
@@ -107,7 +100,7 @@
                                   </span>
                             <input class="form-control" id="finish-date" type="date" placeholder="dd/mm/yyyy"
                                    required/>
-                            <input class="form-control" id="finish-time" type="time" required/>
+                            <input class="form-control" id="finish-time" type="time" required value="00:00"/>
                         </div>
                     </div>
 
@@ -115,7 +108,7 @@
 
                 <div class="row d-block d-xl-flex align-items-top">
                     <div class="col-1 col-xl-1 px-xl-0 offset-md-11">
-                        <button class="btn btn-tertiary" type="button">Применить</button>
+                        <button class="btn btn-tertiary" id="apply-filter" type="button">Применить</button>
                     </div>
                     <div>
                     </div>
@@ -144,7 +137,7 @@
                             {% endif %}
                         </div>
                         <small class="d-flex align-items-center text-gray-500">
-                            01.03.2024 - 31.03.2024,&nbsp;
+                            <span id="start-date-display"></span>&nbsp;-&nbsp;<span id="finish-date-display"></span>
                             <i>{{font_awesome.render_icon("fas fa-globe")}}</i>
                             &nbsp;Москва
                         </small>
@@ -273,8 +266,7 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="col-12 col-xl-12 px-xl-0 text-end" style="display: none;"
-                         id="robot_collapsable_link">
+                    <div class="col-12 col-xl-12 px-xl-0 text-end" style="display: none;" id="robot_collapsable_link">
                         <hr/>
                         <a href="./mvp-robots.html" class="text-info me-1">
                             <span class="small">Перейти к выбранному роботу</span>
@@ -384,6 +376,69 @@
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-transaction-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
 <script>
+    // fill service-selector with services of selected project
+    const updater = function() {
+        const projectId = $(this).val();
+        // pre declare params - empty im projectId == "0", another - {process_id: projectId}
+        let params = {};
+        if (projectId !== "0") {
+            params = {"process_id": projectId};
+        }
+        axios.get("/project_services", {params: params}).then((r) => {
+            const services = r.data;
+            const serviceSelector = $('#service-selector');
+            serviceSelector.empty();
+            serviceSelector.append('<option selected>Все сервисы</option>');
+            services.forEach((service) => {
+                serviceSelector.append(`<option value="${service.serviceid}">${service.name}</option>`);
+            });
+
+            // check if service_id is in GET params and select it in service-selector
+            const url = new URL(window.location.href);
+            const serviceId = url.searchParams.get('service_id');
+            if (serviceId) {
+                serviceSelector.val(serviceId);
+            }
+
+            // and now same for dates and times
+            const startDate = url.searchParams.get('start_date');
+            const startTime = url.searchParams.get('start_time');
+            const finishDate = url.searchParams.get('finish_date');
+            const finishTime = url.searchParams.get('finish_time');
+            if (startDate && startTime && finishDate && finishTime) {
+                $('#start-date').val(startDate);
+                $('#start-time').val(startTime);
+                $('#finish-date').val(finishDate);
+                $('#finish-time').val(finishTime);
+            }
+        });
+    }
+
+    // handle on window load and project-selector change
+    $(function() {
+        $('#project-selector').change(updater);
+        updater.call($('#project-selector'));
+    });
+
+    // trigger on apply filter button click and receive projectId and serviceId from selectors and reload page with GET params
+    $('#apply-filter').click(function() {
+        const projectId = $('#project-selector').val();
+        const serviceId = $('#service-selector').val();
+        const startDate = $('#start-date').val();
+        const startTime = $('#start-time').val();
+        const finishDate = $('#finish-date').val();
+        const finishTime = $('#finish-time').val();
+        const url = new URL(window.location.href);
+        url.searchParams.set('project_id', projectId);
+        url.searchParams.set('service_id', serviceId);
+        url.searchParams.set('start_date', startDate);
+        url.searchParams.set('start_time', startTime);
+        url.searchParams.set('finish_date', finishDate);
+        url.searchParams.set('finish_time', finishTime);
+        window.location.href = url.href;
+    });
+</script>
+<script>
     $(function() {
         console.log("Page loaded!");
 
@@ -396,10 +451,36 @@
             return parts[0] + ' ' + parts[1].slice(0, 8) + '.' + parts[1].slice(9,12) + '000';
         }
 
-        const end = new Date()
-        const start = new Date();
+        // try to extract start_date, start_time, finish_date, finish_time from GET params and convert them to Date
+        // if failed - use current time and time 2 weeks ago
+        let start = new Date();
+        let end = new Date();
         start.setDate(start.getDate() - 14);
-        // these variables will get their values from filters
+
+        const url = new URL(window.location.href);
+        const startDateUrl = url.searchParams.get('start_date');
+        let startTimeUrl = url.searchParams.get('start_time');
+        // if no time, set 00:00
+        if (!startTimeUrl) {
+            startTimeUrl = '00:00';
+        }
+        const finishDateUrl = url.searchParams.get('finish_date');
+        let finishTimeUrl = url.searchParams.get('finish_time');
+        // if no time, set 23:59
+        if (!finishTimeUrl) {
+            finishTimeUrl = '23:59';
+        }
+        if (startDateUrl && startTimeUrl && finishDateUrl && finishTimeUrl) {
+            start = new Date(startDateUrl + 'T' + startTimeUrl);
+            end = new Date(finishDateUrl + 'T' + finishTimeUrl);
+        }
+
+        // extract date as string and set it to display
+        const startDateStr = start.toLocaleDateString('ru-RU');
+        const finishDateStr = end.toLocaleDateString('ru-RU');
+        $('#start-date-display').text(startDateStr);
+        $('#finish-date-display').text(finishDateStr);
+
         const startTime = convertTime(start);
         const endTime = convertTime(end);
 
