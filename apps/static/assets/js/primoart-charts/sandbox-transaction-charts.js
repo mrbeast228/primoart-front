@@ -348,7 +348,7 @@ heatmapchart2 = {
 servicetimevserrchart = {
     init: function() {
 
-        const labels = ["meaty", "lamentable", "tested", "clammy", "jolly"]
+        const labels = ["Управление кассовыми операциями", "Оценка кредитоспособности", "Управление корпоративными счетами", "Управление инвестиционными портфелями", "Анализ кредитных заявок"]
 
         const data = {
           labels: labels,
@@ -363,7 +363,7 @@ servicetimevserrchart = {
             },
             {
               label: 'Процент ошибок выполнения',
-              data: [12, 24, 37, 5, 30],
+              data: [5, 24, 37, 5, 30],
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 type: 'line',
