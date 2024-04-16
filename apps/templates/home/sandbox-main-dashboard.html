@@ -111,7 +111,7 @@
                         </div>
                         <small class="d-flex align-items-center text-gray-500">
                             01.03.2024 - 31.03.2024,&nbsp;
-                            <span class="fw-bold">по всем проектам</span>
+                            <span class="fw-bold">по всем подразделениям</span>
                         </small>
                         <div class="small d-flex mt-1">
                             <div>Изменение относительно прошлого периода
@@ -169,13 +169,17 @@
                 <div class="row d-block d-xl-flex align-items-center">
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0">ТОП плохих сервисов</h2>
+                            <h2 class="h6 text-gray-400 mb-0">ТОП проблемных сервисов</h2>
+                            <small class="d-flex align-items-center text-gray-500">
+                                (01.03.2024 - 31.03.2024)
+                            </small>
                             <div class="table-responsive">
                                 <table class="table table-centered table-nowrap mb-0 rounded table-hover"
                                        id="top-bad-services">
                                     <thead>
                                     <tr>
                                         <th data-field="service">Сервис</th>
+                                        <th class="table-tertiary" data-field="runs">SLA</th>
                                         <th class="table-info" data-field="runs">Запуски</th>
                                         <th class="table-secondary" data-field="timeouts">Таймауты</th>
                                         <th class="table-danger" data-field="errors">Ошибки</th>
@@ -183,19 +187,22 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td><a href="" class="text-info me-1">Ипотечные кредиты</a></td>
+                                        <td><a href="" class="text-info me-1">Оценка кредитоспособности</a></td>
+                                        <td class="table-danger"><span class="text">92.5%</span></td>
                                         <td><span class="text-info">568</span></td>
                                         <td><span class="text-secondary">37</span></td>
                                         <td><span class="text-danger">18</span></td>
                                     </tr>
                                     <tr>
-                                        <td><a href="" class="text-info me-1">Онлайн-банкинг</a></td>
+                                        <td><a href="" class="text-info me-1">Управление инвестиционными портфелями</a></td>
+                                        <td class="table-secondary"><span class="text">95.9%</span></td>
                                         <td><span class="text-info">140</span></td>
                                         <td><span class="text-secondary">76</span></td>
                                         <td><span class="text-danger">24</span></td>
                                     </tr>
                                     <tr>
-                                        <td><a href="" class="text-info me-1">Нагрузочные тесты</a></td>
+                                        <td><a href="" class="text-info me-1">Анализ кредитных заявок</a></td>
+                                        <td class="table-secondary"><span class="text">96.3%</span></td>
                                         <td><span class="text-info">5075</span></td>
                                         <td><span class="text-secondary">352</span></td>
                                         <td><span class="text-danger">1554</span></td>
@@ -221,7 +228,7 @@
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0">Бизнес-подразделения</h2>
-                            <span class="fw-extrabold text-success mb-2">2&nbsp; OK</span>
+                            <span class="fw-extrabold text-success mb-2">3&nbsp; OK</span>
                             <span>&nbsp;/&nbsp;</span>
                             <span></span><span class="fw-extrabold text-secondary mb-2">1&nbsp; Warning</span>
                             <span>&nbsp;/&nbsp;</span>
@@ -235,9 +242,11 @@
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Департамент финансов
                             </button>
-
-                            <button class="btn btn-pill btn-outline-warning btn-buffer" type="button">Департамент информационных технологий
+                            <button class="btn btn-pill btn-outline-success btn-buffer" type="button">Департамент корпоративного обслуживания
                             </button>
+                            <button class="btn btn-pill btn-outline-warning btn-buffer" type="button">Департамент кредитования и рисков
+                            </button>
+
                         </div>
                     </div>
                 </div>
@@ -263,35 +272,35 @@
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                Кредиты
+                                Обработка платежей
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                Ипотека
+                                Обработка переводов
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                Автокредит
+                                Открытие и закрытие счетов
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                Микрозайм
+                                Кредитные сделки
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                whole
+                                Выписки по счетам
                             </button>
 
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                decorous
+                                Финансовая отчетность и анализ
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                hissing
+                                Управление бюджетом и прогнозирование
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                kind
+                                Управление налоговыми обязательствами и отчетностью
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                tested
+                                Управление инвестиционными портфелями
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                broken
+                                Финансовое планирование и стратегическое управление
                             </button>
 
                             <button class="btn btn-pill btn-outline-success btn-buffer btn-service active"
@@ -300,31 +309,31 @@
                                     onclick="clickServiceLink('btn_debet_cards', 'id_debet_cards', 'service_link')"
                             >
                                 <span hidden id="id_debet_cards">uuid-for-debet-cards</span>
-                                Дебетовые карты
+                                Финансовая отчетность
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button"
                                     id="btn_credit_cards"
                                     onclick="clickServiceLink('btn_credit_cards', 'id_credit_cards', 'service_link')"
                             >
                                 <span hidden id="id_credit_cards">uuid-for-credit-cards</span>
-                                Кредитные карты
+                                Управление кредитным портфелем и рисками
+                            </button>
+
+                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
+                                Управление кассовыми операциями
                             </button>
                             <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                Сберегательные счета
-                            </button>
-                            <button class="btn btn-pill btn-outline-success btn-service btn-buffer" type="button">
-                                Чековые
-                                счета
+                                Кредитование корпоративных клиентов
                             </button>
                             <button class="btn btn-pill btn-outline-secondary btn-service btn-buffer" type="button">
-                                Ипотечные кредиты
+                                Управление корпоративными счетами
                             </button>
 
                             <button class="btn btn-pill btn-outline-secondary btn-service btn-buffer" type="button">
-                                Онлайн-банкинг
+                                Оценка кредитоспособности
                             </button>
                             <button class="btn btn-pill btn-outline-danger btn-service btn-buffer" type="button">
-                                Инвестиционные счета
+                                Анализ кредитных заявок
                             </button>
                         </div>
                     </div>
@@ -345,7 +354,7 @@
                 <div class="row d-block d-xl-flex align-items-center">
                     <div class="col-12 col-xl-12 px-xl-0">
                         <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0">Доступность роботов</h2>
+                            <h2 class="h6 text-gray-400 mb-0">Доступность площадок</h2>
                             <span class="fw-extrabold text-success mb-2">5&nbsp; OK</span>
                             <span>&nbsp;/&nbsp;</span>
                             <span></span><span class="fw-extrabold text-secondary mb-2">0&nbsp; Warning</span>
@@ -369,7 +378,7 @@
                                 Волгоград
                             </button>
 
-                            <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">ЦОД
+                            <button class="btn btn-pill btn-outline-danger btn-buffer" type="button">Екатеринбург
                             </button>
                         </div>
                     </div>
