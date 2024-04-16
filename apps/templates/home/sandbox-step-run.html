@@ -8,6 +8,10 @@
         height: 100%;
         width: 100%;
     }
+
+    .multiline {
+      white-space: pre-wrap;
+    }
 </style>
 {% endblock stylesheets %}
 
@@ -17,13 +21,15 @@
         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
             <li class="breadcrumb-item">
                 <a href="./sandbox-main-dashboard.html">
-                    <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                 </a>
             </li>
-			<li class="breadcrumb-item"><a href="./sandbox-services.html">Сервисы</a></li>
-			<li class="breadcrumb-item"><a href="./sandbox-services.html">Дебетовые карты</a></li>
+            <li class="breadcrumb-item"><a href="./sandbox-services.html">Сервисы</a></li>
+            <li class="breadcrumb-item"><a href="./sandbox-services.html">Дебетовые карты</a></li>
             <li class="breadcrumb-item">Транзакции</li>
             <li class="breadcrumb-item"><a href="./sandbox-transaction-run.html">Тестовая транзакция</a></li>
             <li class="breadcrumb-item"><a href="#">Запуск 27.03.2024 09:17:03</a></li>
@@ -32,32 +38,32 @@
 </div>
 
 <div class="container-flex">
-<div class="row equal mb-2">
-    <div class="col-7 col-xl-7 col-md-12 mb-2">
-        <div class="card border-0 shadow card-fill-all-space">
-            <div class="card-body">
-                <h2 class="h6 text-gray-400 mb-4">Время выполнения этапов транзакции</h2>
-                <div class="card-mid-buffer"></div>
-                <div>
-                    <canvas width="100%" height="40%" id="stepRunBarChart01"></canvas>
+    <div class="row equal mb-2">
+        <div class="col-7 col-xl-7 col-md-12 mb-2">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400 mb-4">Время выполнения этапов транзакции</h2>
+                    <div class="card-mid-buffer"></div>
+                    <div>
+                        <canvas width="100%" height="40%" id="stepRunBarChart01"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-5 col-xl-5 col-md-12 mb-2">
-        <div class="card border-0 shadow card-fill-all-space">
-            <div class="card-body">
-                <h2 class="h6 text-gray-400">Сводная информация по выполнению</h2>
-                <table class="table" id="">
-                    <thead class=" text-primary">
+        <div class="col-5 col-xl-5 col-md-12 mb-2">
+            <div class="card border-0 shadow card-fill-all-space">
+                <div class="card-body">
+                    <h2 class="h6 text-gray-400">Сводная информация по выполнению</h2>
+                    <table class="table" id="">
+                        <thead class=" text-primary">
                         <tr>
                             <th>
                             </th>
                             <th>
                             </th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>
                                 <span class="fw-extrabold">Локация/Робот</span>
@@ -65,8 +71,10 @@
                             <td>
                                 <span class="fw-bold mb-2">Москва, офис заместителя</span>
                                 <div class="small mt-1">
-                                    Этот робот выполняет транзакцию<br>на <span class="text-danger fw-bolder">5%</span> медленнее других
-                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
+                                    Этот робот выполняет транзакцию<br>на <span class="text-danger fw-bolder">5%</span>
+                                    медленнее других
+                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
+                                        fa-info-circle")}}</i></a>
                                 </div>
                             </td>
                         </tr>
@@ -78,15 +86,17 @@
                                 <span class="fw-bold text-success mb-2">25 секунд</span>
                                 <div class="small mt-1">
                                     В пределах допустимого диапазона
-                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
+                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
+                                        fa-info-circle")}}</i></a>
                                 </div>
                                 <div class="small mt-1">
                                     На <span class="text-success fw-bolder">10%</span> быстрее среднего за сегодня
-                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
+                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
+                                        fa-info-circle")}}</i></a>
                                 </div>
                             </td>
                         </tr>
-                        <tr >
+                        <tr>
                             <td>
                                 <span class="fw-extrabold">Количество шагов</span>
                             </td>
@@ -97,8 +107,10 @@
                                 <span>&nbsp;/&nbsp;</span>
                                 <span class="fw-bold text-danger mb-2">1 Failed</span>
                                 <div class="small mt-1">
-                                    Ошибки при выполнении этой транзакции <br>возникают в <span class="text-danger fw-bolder">3%</span> запусков
-                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
+                                    Ошибки при выполнении этой транзакции <br>возникают в <span
+                                        class="text-danger fw-bolder">3%</span> запусков
+                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
+                                        fa-info-circle")}}</i></a>
                                 </div>
                             </td>
                         </tr>
@@ -110,7 +122,7 @@
                                 <span class="fw-bold text-text-primary mb-2">12.02.2024 17:48:00</span>
                             </td>
                         </tr>
-                       <tr>
+                        <tr>
                             <td>
                                 <span class="fw-extrabold">Завершение транзакции</span>
                             </td>
@@ -118,28 +130,102 @@
                                 <span class="fw-bold text-text-primary mb-2">12.02.2024 17:48:25</span>
                             </td>
                         </tr>
-                       <tr>
+                        <tr>
                             <td>
                                 <span class="fw-extrabold">Лог</span>
                             </td>
                             <td>
-                                <i>{{font_awesome.render_icon("fas fa-lg fa-file-text")}}</i>
+                                <button class="btn btn-icon-only text-info" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#logModal"
+                                >
+                                    <i>{{font_awesome.render_icon("fas fa-lg fa-file-text")}}</i>
+                                </button>
                             </td>
                         </tr>
-                       <tr>
+                        <tr>
                             <td>
                                 <span class="fw-extrabold">Скриншот</span>
                             </td>
                             <td>
-                                <i>{{font_awesome.render_icon("fas fa-lg fa-image")}}</i>
+                                <button class="btn btn-icon-only text-info" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#screenshotModal"
+                                >
+                                    <i>{{font_awesome.render_icon("fas fa-lg fa-image")}}</i>
+                                </button>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Image Modal -->
+<div class="modal fade" id="screenshotModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="h6 text-gray-400">Скриншот ошибки выполнения</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="static/assets/img/sandbox/w11_err.jpeg" class="img-fluid" alt="...">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Log Modal -->
+<div class="modal fade" id="logModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="h6 text-gray-400">Лог выполнения транзакции</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <pre class="modal-body">
+                <p>
+                    <pre>
+                        <code>
+[2024-04-16 12:00:00.001] INFO: Starting synthetic monitoring transaction for www.example.com
+[2024-04-16 12:00:00.002] DEBUG: Initiating DNS Lookup for www.example.com
+[2024-04-16 12:00:00.100] DEBUG: DNS Lookup completed (98 ms)
+[2024-04-16 12:00:00.101] DEBUG: Resolved IP address: 93.184.216.34
+[2024-04-16 12:00:00.102] INFO: DNS Lookup successful
+[2024-04-16 12:00:00.103] DEBUG: Initiating TCP connection to 93.184.216.34:443
+[2024-04-16 12:00:00.203] INFO: TCP Connection established (100 ms)
+[2024-04-16 12:00:00.204] DEBUG: Starting SSL handshake
+[2024-04-16 12:00:00.300] INFO: SSL handshake completed (96 ms)
+[2024-04-16 12:00:00.301] DEBUG: Sending HTTP GET request to www.example.com
+[2024-04-16 12:00:00.401] DEBUG: Waiting for response...
+[2024-04-16 12:00:00.650] DEBUG: Received HTTP response header
+[2024-04-16 12:00:00.651] INFO: First Byte received (350 ms)
+[2024-04-16 12:00:00.652] DEBUG: Beginning content transfer
+[2024-04-16 12:00:00.900] ERROR: Content transfer failed due to connection timeout
+[2024-04-16 12:00:00.901] DEBUG: Error detail: Connection timed out after 250 ms
+[2024-04-16 12:00:00.902] WARNING: Attempting to reconnect...
+[2024-04-16 12:00:01.002] DEBUG: Reinitiating TCP connection to 93.184.216.34:443
+[2024-04-16 12:00:01.102] INFO: TCP Connection reestablished (100 ms)
+[2024-04-16 12:00:01.103] DEBUG: Restarting SSL handshake
+[2024-04-16 12:00:01.203] INFO: SSL handshake completed (100 ms)
+[2024-04-16 12:00:01.204] DEBUG: Resending HTTP GET request to www.example.com
+[2024-04-16 12:00:01.304] DEBUG: Waiting for response...
+[2024-04-16 12:00:01.554] DEBUG: Received HTTP response header
+[2024-04-16 12:00:01.555] INFO: First Byte received (251 ms)
+[2024-04-16 12:00:01.556] DEBUG: Beginning content transfer again
+[2024-04-16 12:00:02.056] ERROR: Content transfer failed again due to connection timeout
+<span class="text-danger">[2024-04-16 12:00:02.057] CRITICAL: Second content transfer attempt failed</span>
+[2024-04-16 12:00:02.058] ERROR: Transaction failed after second attempt
+[2024-04-16 12:00:02.059] INFO: Reporting failure to monitoring service
+[2024-04-16 12:00:02.060] INFO: Transaction completed with failure status
+                        </code>
+                    </pre>
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -150,113 +236,113 @@
                 <div class="table-responsive ">
                     <table class="table tablesorter " id="">
                         <thead class=" text-primary">
-                            <tr>
-                                <th>
-                                    Локация/Робот
-                                </th>
-                                <th>
-                                    Шаг
-                                </th>
-                                <th>
-                                    Время запуска
-                                </th>
-                                <th>
-                                    Время завершения
-                                </th>
-                                <th>
-                                    Длительность
-                                </th>
-                                <th>
-                                    Статус выполнения
-                                </th>
-                            </tr>
+                        <tr>
+                            <th>
+                                Локация/Робот
+                            </th>
+                            <th>
+                                Шаг
+                            </th>
+                            <th>
+                                Время запуска
+                            </th>
+                            <th>
+                                Время завершения
+                            </th>
+                            <th>
+                                Длительность
+                            </th>
+                            <th>
+                                Статус выполнения
+                            </th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <div>
-                                    <td>
-                                        Москва, офис заместителя
-                                    </td>
-                                    <td>
-                                        Step 1
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:00
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:01
-                                    </td>
-                                    <td>
-                                        1 с
-                                    </td>
-                                    <td>
-                                        <span class="text-success fw-bolder">Success</span>
-                                    </td>
-                                </div>
-                            </tr>
-                            <tr>
-                                <div>
-                                    <td>
-                                        Москва, офис заместителя
-                                    </td>
-                                    <td>
-                                        Step 2
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:01
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:11
-                                    </td>
-                                    <td>
-                                        10 с
-                                    </td>
-                                    <td>
-                                        <span class="text-success fw-bolder">Success</span>
-                                    </td>
-                                </div>
-                            </tr>
-                            <tr class="table-danger">
-                                <div>
-                                    <td>
-                                        Москва, офис заместителя
-                                    </td>
-                                    <td>
-                                        Step 3
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:11
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:20
-                                    </td>
-                                    <td>
-                                        9 с
-                                    </td>
-                                    <td>
-                                        <span class="text-danger fw-bolder">Failed</span>
-                                    </td>
-                                </div>
-                            </tr>
-                            <tr  class="table-light">
-                                <div>
-                                    <td>
-                                        Москва, офис заместителя
-                                    </td>
-                                    <td>
-                                        Step 4
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        Not executed
-                                    </td>
-                                </div>
-                            </tr>
+                        <tr>
+                            <div>
+                                <td>
+                                    Москва, офис заместителя
+                                </td>
+                                <td>
+                                    Step 1
+                                </td>
+                                <td>
+                                    12.02.2024 17:48:00
+                                </td>
+                                <td>
+                                    12.02.2024 17:48:01
+                                </td>
+                                <td>
+                                    1 с
+                                </td>
+                                <td>
+                                    <span class="text-success fw-bolder">Success</span>
+                                </td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div>
+                                <td>
+                                    Москва, офис заместителя
+                                </td>
+                                <td>
+                                    Step 2
+                                </td>
+                                <td>
+                                    12.02.2024 17:48:01
+                                </td>
+                                <td>
+                                    12.02.2024 17:48:11
+                                </td>
+                                <td>
+                                    10 с
+                                </td>
+                                <td>
+                                    <span class="text-success fw-bolder">Success</span>
+                                </td>
+                            </div>
+                        </tr>
+                        <tr class="table-danger">
+                            <div>
+                                <td>
+                                    Москва, офис заместителя
+                                </td>
+                                <td>
+                                    Step 3
+                                </td>
+                                <td>
+                                    12.02.2024 17:48:11
+                                </td>
+                                <td>
+                                    12.02.2024 17:48:20
+                                </td>
+                                <td>
+                                    9 с
+                                </td>
+                                <td>
+                                    <span class="text-danger fw-bolder">Failed</span>
+                                </td>
+                            </div>
+                        </tr>
+                        <tr class="table-light">
+                            <div>
+                                <td>
+                                    Москва, офис заместителя
+                                </td>
+                                <td>
+                                    Step 4
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                    Не выполнен
+                                </td>
+                            </div>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
