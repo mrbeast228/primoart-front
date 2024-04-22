@@ -65,6 +65,7 @@ class RouterHelper:
             params = {
                 "start_date": start_dt.strftime("%Y-%m-%d %H:%M:%S"),
                 "end_date": end_dt.strftime("%Y-%m-%d %H:%M:%S"),
+                "naming": True
             }
             if current_process_id:
                 params["process_id"] = current_process_id
@@ -624,6 +625,7 @@ def r_project_runs():
     process_id = request.args.get("process_id", None)
     start_date = request.args.get("start_date", None)
     end_date = request.args.get("end_date", None)
+
     params = {}
     if process_id:
         params["processid"] = process_id
@@ -635,13 +637,16 @@ def r_project_runs():
     trans_params = {"serviceid": services_id}
     transactions = Transaction.list_all(params=trans_params)
     # get list of transaction ids
-    transactions_id = [transaction['transactionid'] for transaction in transactions]
+    transactions_id = {transaction['transactionid']: transaction for transaction in transactions}
     # get all runs of the transactions
-    run_params = {"transactionid": transactions_id}
+    run_params = {"transactionid": list(transactions_id.keys())}
     if start_date and end_date:
         run_params["start"] = start_date
         run_params["end"] = end_date
     runs = TransactionRun.list_all(params=run_params)
+    # add naming to runs
+    for run in runs:
+        run["transaction"] = transactions_id[run["transactionid"]]["name"]
     return runs
 
 @blueprint.route('/service_runs')
@@ -655,13 +660,16 @@ def r_service_runs():
     # get all transactions of the services
     transactions = Transaction.list_all(params=params)
     # get list of transaction ids
-    transactions_id = [transaction['transactionid'] for transaction in transactions]
+    transactions_id = {transaction['transactionid']: transaction for transaction in transactions}
     # get all runs of the transactions
-    run_params = {"transactionid": transactions_id}
+    run_params = {"transactionid": list(transactions_id.keys())}
     if start_date and end_date:
         run_params["start"] = start_date
         run_params["end"] = end_date
     runs = TransactionRun.list_all(params=run_params)
+    # add naming to runs
+    for run in runs:
+        run["transaction"] = transactions_id[run["transactionid"]]["name"]
     return runs
 
 @blueprint.route('/charts/transaction_robots')

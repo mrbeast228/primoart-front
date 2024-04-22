@@ -205,7 +205,7 @@
                         </td>
                         <td>
                             <div class="small mt-1">
-                                Робот <span class=" fw-extrabold text-tertiary">{{ context.robot.name }}</span> выполняет транзакцию<br>на <span
+                                Робот <a href="./mvp-robots.html?robot_id={{ context.robot.robot_id }}" class="dynamic-link"><span class=" fw-extrabold text-tertiary">{{ context.robot.name }}</span></a> выполняет транзакцию<br>на <span
                                     {% if context.transaction.robots[context.robot.robot_id].avg < context.transaction.avg_cur %}
                                         class="text-success fw-bolder">{{ '%.2f' % (100 - context.transaction.robots[context.robot.robot_id].avg * 100 / context.transaction.avg_cur) }}%</span> быстрее других роботов
                                     {% else %}
@@ -323,7 +323,7 @@
                         <tbody>
                         {% for run in context.runs %}
                         {% if not context.robot or run.robotid == context.robot.robot_id %}
-                        <tr>
+                        <tr class="table-{% if run.runresult == 'OK' %}info{% elif run.runresult == 'WARNING' %}warning{% else %}danger{% endif %}">
                             <td>
                                 <a href="/mvp-step-run.html?run_id={{ run.transactionrunid }}">
                                   <span class="text-indigo">
@@ -368,13 +368,45 @@
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-heatmap-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-transaction-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-datatables/primoart-datatables.js"></script>
+<!-- dynamic links in table -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const links = document.querySelectorAll('.dynamic-link');
+
+    links.forEach(link => {
+        urlParams.forEach((value, key) => {
+            if (['start_date', 'start_time', 'finish_date', 'finish_time'].includes(key)) {
+                new_link = addOrUpdateParam(link.href, key, value);
+                link.href = new_link;
+            }
+        });
+    });
+
+    function addOrUpdateParam(url, key, value) {
+        let uri = new URL(url);
+        uri.searchParams.set(key, value);
+        return uri.toString();
+    }
+});
+</script>
 <script>
     $(function () {
-        // check if robot_id is in GET params and select it in service-selector
+        // handle on window load
         const url = new URL(window.location.href);
         const robotId = url.searchParams.get('robot_id');
+        const startDate = url.searchParams.get('start_date');
+        const startTime = url.searchParams.get('start_time');
+        const finishDate = url.searchParams.get('finish_date');
+        const finishTime = url.searchParams.get('finish_time');
         if (robotId) {
             $('#robot-selector').val(robotId);
+        }
+        if (startDate && startTime && finishDate && finishTime) {
+            $('#start-date').val(startDate);
+            $('#start-time').val(startTime);
+            $('#finish-date').val(finishDate);
+            $('#finish-time').val(finishTime);
         }
     });
 

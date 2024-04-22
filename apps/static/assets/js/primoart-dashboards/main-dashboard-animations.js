@@ -142,7 +142,7 @@ function clickProjectLink(buttonId, hiddenSpanId, elementToToggleId) {
             var hiddenIdValue = $("#" + hiddenSpanId).text(); // Get the ID value
             // Append the ID value to the href of the link inside the elementToToggle
             $("#" + elementToToggleId + " a").attr("href", function (i, originalHref) {
-                let return_value = "./mvp-project.html?project_id=" + hiddenIdValue;
+                let return_value = "./mvp-main-dashboard.html?project_id=" + hiddenIdValue;
 
                 // try to extract start_date, start_time, end_date, end_time from the originalHref and append if 4 values are found
                 let url = new URL(window.location.href);

@@ -215,7 +215,7 @@
                     </div>
                     <div class="col-12 col-xl-12 px-xl-0 text-end" style="display: none;" id="project_collapsable_link">
                         <hr/>
-                        <a href="./mvp-projects.html" class="text-info me-1">
+                        <a href="./mvp-main-dashboard.html" class="text-info me-1">
                             <span class="small">Перейти к выбранному проекту</span>
                         </a>
                     </div>
@@ -411,14 +411,73 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {% for run in context.runs %}
+                            {% if run.runresult == "OK" %}
+                                <tr class="table-info">
+                                  <td>
+                                    <a href="/mvp-step-run.html?run_id={{ run.transactionrunid }}">
+                                      <span class="text-indigo">
+                                        {{ str(run.runstart).split('.')[0] }}
+                                      </span>
+                                    </a>
+                                  </td>
+                                    <td>
+                                      Information
+                                    </td>
+                                    <td>
+                                        Транзакция <a href="/mvp-transaction.html?transaction_id={{ run.transactionid }}" class="dynamic-link">
+                                          <span class="text-indigo">
+                                            {{ run.transaction }}
+                                          </span>
+                                        </a> выполнена успешно
+                                    </td>
+                            {% elif run.runresult == "WARNING" %}
+                                <tr class="table-warning">
+                                    <td>
+                                        <a href="/mvp-step-run.html?run_id={{ run.transactionrunid }}">
+                                        <span class="text-warning">
+                                            {{ str(run.runstart).split('.')[0] }}
+                                        </span>
+                                        </a>
+                                    </td>
+                                        <td>
+                                        Warning
+                                        </td>
+                                        <td>
+                                        Транзакция <a href="/mvp-transaction.html?transaction_id={{ run.transactionid }}" class="dynamic-link">
+                                          <span class="text-indigo">
+                                            {{ run.transaction }}
+                                          </span>
+                                        </a> превысила расчетное время работы
+                                        </td>
+                            {% else %}
+                                <tr class="table-danger">
+                                    <td>
+                                        <a href="/mvp-step-run.html?run_id={{ run.transactionrunid }}">
+                                        <span class="text-danger">
+                                            {{ str(run.runstart).split('.')[0] }}
+                                        </span>
+                                        </a>
+                                    </td>
+                                        <td>
+                                        Critical
+                                        </td>
+                                        <td>
+                                        Транзакция <a href="/mvp-transaction.html?transaction_id={{ run.transactionid }}" class="dynamic-link">
+                                          <span class="text-indigo">
+                                            {{ run.transaction }}
+                                          </span>
+                                        </a> завершилась с ошибкой
+                                        </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
                         </tbody>
-
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 
@@ -431,6 +490,29 @@
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-transaction-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-datatables/primoart-datatables.js"></script>
+<!-- dynamic links in table -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const links = document.querySelectorAll('.dynamic-link');
+
+    links.forEach(link => {
+        urlParams.forEach((value, key) => {
+            if (['start_date', 'start_time', 'finish_date', 'finish_time'].includes(key)) {
+                new_link = addOrUpdateParam(link.href, key, value);
+                link.href = new_link;
+            }
+        });
+    });
+
+    function addOrUpdateParam(url, key, value) {
+        let uri = new URL(url);
+        uri.searchParams.set(key, value);
+        return uri.toString();
+    }
+});
+</script>
+
 <script>
     // handle on window load
     $(function() {

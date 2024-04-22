@@ -364,7 +364,93 @@
             </div>
         </div>
     </div>
+</div>
 
+<!-- events datatable -->
+<div class="row collapse show" id="eventTable">
+    <div class="col-12 col-sm-12 col-xl-12 mb-12">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400 mb-0">Последние события</h2>
+                <div class="card-mid-buffer"></div>
+                <div class="table-responsive">
+                    <table class="table table-centered table-nowrap mb-0 rounded hover"
+                           id="dashboard-events">
+                        <thead>
+                        <tr>
+                            <th data-field="datetime">Время</th>
+                            <th data-field="severity">Критичность</th>
+                            <th data-field="event">Событие</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for run in context.runs %}
+                            {% if run.runresult == "OK" %}
+                                <tr class="table-info">
+                                  <td>
+                                    <a href="/mvp-step-run.html?run_id={{ run.transactionrunid }}">
+                                      <span class="text-indigo">
+                                        {{ str(run.runstart).split('.')[0] }}
+                                      </span>
+                                    </a>
+                                  </td>
+                                    <td>
+                                      Information
+                                    </td>
+                                    <td>
+                                        Транзакция <a href="/mvp-transaction.html?transaction_id={{ run.transactionid }}" class="dynamic-link">
+                                          <span class="text-indigo">
+                                            {{ run.transaction }}
+                                          </span>
+                                        </a> выполнена успешно
+                                    </td>
+                            {% elif run.runresult == "WARNING" %}
+                                <tr class="table-warning">
+                                    <td>
+                                        <a href="/mvp-step-run.html?run_id={{ run.transactionrunid }}">
+                                        <span class="text-warning">
+                                            {{ str(run.runstart).split('.')[0] }}
+                                        </span>
+                                        </a>
+                                    </td>
+                                        <td>
+                                        Warning
+                                        </td>
+                                        <td>
+                                        Транзакция <a href="/mvp-transaction.html?transaction_id={{ run.transactionid }}" class="dynamic-link">
+                                          <span class="text-indigo">
+                                            {{ run.transaction }}
+                                          </span>
+                                        </a> превысила расчетное время работы
+                                        </td>
+                            {% else %}
+                                <tr class="table-danger">
+                                    <td>
+                                        <a href="/mvp-step-run.html?run_id={{ run.transactionrunid }}">
+                                        <span class="text-danger">
+                                            {{ str(run.runstart).split('.')[0] }}
+                                        </span>
+                                        </a>
+                                    </td>
+                                        <td>
+                                        Critical
+                                        </td>
+                                        <td>
+                                        Транзакция <a href="/mvp-transaction.html?transaction_id={{ run.transactionid }}" class="dynamic-link">
+                                          <span class="text-indigo">
+                                            {{ run.transaction }}
+                                          </span>
+                                        </a> завершилась с ошибкой
+                                        </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock content %}
@@ -375,6 +461,29 @@
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-heatmap-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-transaction-charts.js"></script>
 <script src="{{ config.ASSETS_ROOT }}/js/primoart-dashboards/main-dashboard-animations.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-datatables/primoart-datatables.js"></script>
+<!-- dynamic links in table -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const links = document.querySelectorAll('.dynamic-link');
+
+    links.forEach(link => {
+        urlParams.forEach((value, key) => {
+            if (['start_date', 'start_time', 'finish_date', 'finish_time'].includes(key)) {
+                new_link = addOrUpdateParam(link.href, key, value);
+                link.href = new_link;
+            }
+        });
+    });
+
+    function addOrUpdateParam(url, key, value) {
+        let uri = new URL(url);
+        uri.searchParams.set(key, value);
+        return uri.toString();
+    }
+});
+</script>
 <script>
     // fill service-selector with services of selected project
     const updater = function() {
@@ -441,6 +550,8 @@
 <script>
     $(function() {
         console.log("Page loaded!");
+
+        sandboxMainDashTable.init();
 
         // too many code just to get current time and time 2 weeks ago...
         // sry, couldn't find shorter way
