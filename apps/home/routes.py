@@ -5,7 +5,7 @@ Copyright (c) 2019 - present AppSeed.us
 
 from apps.home import blueprint
 from flask import render_template, request
-from flask_login import login_required, current_user
+from flask_login import login_required
 from jinja2 import TemplateNotFound
 
 from apps.home.api_connector import APIConnector
@@ -145,13 +145,23 @@ class RouterHelper:
         elif template == 'mvp-transaction.html':
             transaction_id = request.args.get('transaction_id', None, type=str)
 
-            ctx['transaction'] = APIConnector.get_transaction(transaction_id=transaction_id, full=False, start=start_dt, end=end_dt)
+            ctx['transaction'] = Transaction.from_id(transaction_id, start_time=start_dt, end_time=end_dt, sublists=True) # here they're needed for robots analysis
+            # We also need to get service by service_id from transaction for SLA analysis
+            service_id = ctx['transaction'].service_id
+            ctx['service'] = APIConnector.get_service(service_id=service_id, start=start_dt, end=end_dt)
             print(f"[DBG][create_context] ctx['transaction'] = '{ctx['transaction']}'")
             ctx['runs'] = TransactionRun.list_all(params={"transactionid": transaction_id,
                                                           "start": start_dt.strftime("%Y-%m-%d %H:%M:%S"),
                                                           "end": end_dt.strftime("%Y-%m-%d %H:%M:%S")
                                                           })
             print(f"[DBG][create_context] ctx['runs'] = '{ctx['runs']}'")
+
+            robot_id = request.args.get('robot_id', None, type=str)
+            if robot_id:
+                ctx['robot'] = APIConnector.get_robot(robot_id, start=start_dt, end=end_dt)
+                print(f"[DBG][create_context] ctx['robot'] = '{ctx['robot']}'")
+            else:
+                ctx['robot'] = None
 
 
         elif template == 'robot_list.html':
@@ -236,7 +246,7 @@ def route_template(template):
         print(f"[DBG][route_template] template: {template}")
         print(f"[DBG][route_template] segment: {segment}")
 
-        # Q: Непонятно назначение этой штуки
+        # for working with datetime objects inside template
         fmts = {
             'fmt_datetime': "%Y-%m-%d %H:%M:%S.%f",
             'fmt_date_output': "%Y-%m-%d %H:%M:%S"
@@ -244,7 +254,7 @@ def route_template(template):
         ctx, id_type = RouterHelper.create_context(template)
 
         # Serve the file (if exists) from app/templates/home/FILE.html
-        return render_template("home/" + template, segment=segment, context=ctx, str=str,
+        return render_template("home/" + template, segment=segment, context=ctx, str=str, to_dt=APIBase.datetime_from_str,
                                      badger=RouterHelper.badger, fmts=fmts, id_type=id_type)
 
     except TemplateNotFound:
@@ -410,16 +420,65 @@ def r_charts_heatmap():
             break
     return Charts.get_heatmap(filter_json)
 
+@blueprint.route('/charts/trans_robots')
+@login_required
+def r_transactions_robot_data():
+    transaction_id = request.args["transaction_id"]
+    start_time = request.args.get("start_time", None)
+    end_time = request.args.get("end_time", None)
+    robot_id = request.args.get("robot_id", None)
+
+    transaction = Transaction.from_id(transaction_id, sublists=True, start_time=start_time, end_time=end_time)
+
+    return [{"name": transaction.robots[rid]['name'],
+             "stats": {
+                 "0-30": transaction.robots[rid]["0-30"],
+                 "30-60": transaction.robots[rid]["30-60"],
+                 "60-120": transaction.robots[rid]["60-120"],
+                 "120-300": transaction.robots[rid]["120-300"],
+                 "300+": transaction.robots[rid]["300+"],
+                 "ok": transaction.robots[rid]["ok"],
+                 "failed": transaction.robots[rid]["fail"],
+             }
+            } for rid in transaction.robots if not robot_id or rid == robot_id]
+
+@blueprint.route('/charts/step_fails')
+@login_required
+def r_charts_step_fails():
+    transaction_id = request.args["transaction_id"]
+    start_time = request.args.get('start_time', None)
+    end_time = request.args.get('end_time', None)
+
+    steps = Step.list_all(params={"transactionid": transaction_id})
+
+    result = {}
+    for step in steps:
+        step_id = step['stepid']
+        filter_json = {"stepid": step_id, "runresult": "FAIL"}
+
+        if start_time and end_time:
+            filter_json['start'] = start_time
+            filter_json['end'] = end_time
+
+        step_runs = StepRun.list_all(params=filter_json)
+        result[step['name']] = len(step_runs)
+
+    print(f"[DBG][r_charts_step_fails] result: {result}")
+    return result
+
 @blueprint.route('/charts/runs')
 @login_required
 def r_charts_runs():
     service_id = request.args.get("service_id", None)
     robot_id = request.args.get("robot_id", None)
+    transaction_id = request.args.get("transaction_id", None)
     start_time = request.args["start_time"]
     end_time = request.args["end_time"]
 
     if service_id:
         runs = Charts.get_transaction_runs(service_id=service_id, start_time=start_time, end_time=end_time)
+    elif transaction_id:
+        runs = Charts.get_transaction_runs(transaction_id=transaction_id, start_time=start_time, end_time=end_time)
     elif robot_id:
         runs = Charts.get_transaction_runs(robot_id=robot_id, start_time=start_time, end_time=end_time)
     else:
@@ -432,6 +491,8 @@ def r_charts_runs():
     res = {"OK": [], "Failed": []}
 
     for run in runs:
+        if robot_id and run["robotid"] != robot_id:
+            continue
         response_time = (datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"],"%Y-%m-%d %H:%M:%S.%f")).microseconds
         response_time = round(response_time/1000, 2)
         cur = {

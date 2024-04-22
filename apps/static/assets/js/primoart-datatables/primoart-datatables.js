@@ -1,6 +1,7 @@
 sandboxMainDashTable = {
-    init: function() {
-        $('#dashboard-events').DataTable( {
+    // id with default = 'dashboard-events'
+    init: function(tableId = 'dashboard-events') {
+        $('#' + tableId).DataTable({
             "language": {
                 "decimal":        "",
                 "emptyTable":     "No data available in table",

@@ -215,30 +215,27 @@ steprunbarchart = {
 
 steprunfailchart = {
 
-    init: function() {
+    init: function(canvasId, dataset) {
+        let labels;
+        let in_data;
 
-        const labels = ["DNS Lookup", "Connection", "SSL Handshake", "First Byte", "Content Transfer"]
+        if (dataset === undefined) {
+            labels = ["DNS Lookup", "Connection", "SSL Handshake", "First Byte", "Content Transfer"]
+            in_data = [1, 4, 3, 12, 45]
+        }
+        else {
+            labels = Object.keys(dataset);
+            in_data = Object.values(dataset);
+        }
 
         const data = {
           labels: labels,
           datasets: [
             {
-              label: 'Количество ошибок шага транзакции',
-              data: [1, 4, 3, 12,45],
-                backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(255, 99, 132, 0.2)'
-                ],
-                borderColor: [
-                  'rgb(255, 99, 132)',
-                  'rgb(255, 99, 132)',
-                  'rgb(255, 99, 132)',
-                  'rgb(255, 99, 132)',
-                  'rgb(255, 99, 132)'
-                ]
+              label: 'Количество ошибок выполнения шагов транзакции',
+              data: in_data,
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgb(255, 99, 132)'
             }
           ]
         };
@@ -270,7 +267,7 @@ steprunfailchart = {
           },
         };
 
-        var ctx = document.getElementById("transactionStepFailChart01").getContext("2d");
+        var ctx = document.getElementById(canvasId).getContext("2d");
         var floatingChart = new Chart(ctx, config);
     }
 }

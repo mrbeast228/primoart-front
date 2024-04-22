@@ -18,7 +18,7 @@
     <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
             <li class="breadcrumb-item">
-                <a href="./mvp-main-dashboard.html">
+                <a href="./sandbox-main-dashboard.html">
                     <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                          xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -30,10 +30,10 @@
                     </svg>
                 </a>
             </li>
-            <li class="breadcrumb-item"><a href="./mvp-services.html">Сервисы</a></li>
-            <li class="breadcrumb-item"><a href="./mvp-services.html">Дебетовые карты</a></li>
-            <li class="breadcrumb-item">Транзакции</li>
-            <li class="breadcrumb-item"><a href="#">{{ context.transaction.name }}</a></li>
+            <li class="breadcrumb-item"><a href="/mvp-main-dashboard.html">Проекты</a></li>
+            <li class="breadcrumb-item"><a href="/mvp-services.html">Сервисы</a></li>
+            <li class="breadcrumb-item"><a href="/mvp-services.html?service_id={{ context.service.service_id }}">Сервис {{ context.service.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Транзакция {{ context.transaction.name }}</li>
         </ol>
     </nav>
 </div>
@@ -49,335 +49,437 @@
 			</button>
 		</span>
     </div>
-    <div>
+</div>
 
-        <div class="row mb-4 collapse show" id="collapseFilter">
-            <div class="col-12 col-sm-12 col-xl-12">
-                <div class="card border-0 shadow">
-                    <div class="card-body">
-                        <div class="row d-block d-xl-flex align-items-top">
-                            <div class="col-2 col-xl-2 px-xl-0 ">
-                                <div class="input-group mb-2">
+<div class="row mb-4 collapse show" id="collapseFilter">
+    <div class="col-12 col-sm-12 col-xl-12">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-top">
+                    <div class="col-2 col-xl-2 px-xl-0 ">
+                        <div class="input-group ">
                                <span class="input-group-text fw-extrabold">
-                                      Робот&nbsp;&nbsp;
+                                      Робот
                                   </span>
-                                    <select class="form-select" id="robot" aria-label="Default select example">
-                                        <option selected>Все роботы</option>
-                                        <option value="1">Москва</option>
-                                        <option value="2">Питер</option>
-                                        <option value="3">Ярославль</option>
-                                        <option value="4">Сочи</option>
-                                        <option value="5">Волгоград</option>
-                                        <option value="6">ЦОД</option>
-                                    </select>
-                                </div>
-                                <div class="input-group ">
+                            <select class="form-select" id="robot-selector" aria-label="Default select example">
+                                <option selected>Все роботы</option>
+                                {% for robot_id in context.transaction.robots %}
+                                    <option value="{{ robot_id }}">{{ context.transaction.robots[robot_id].name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    {% if false %} <!-- enable when implemented -->
+                    <div class="col-2 col-xl-2 px-xl-0 offset-md-1">
+                        <div class="input-group ">
                                <span class="input-group-text fw-extrabold">
                                       Статус
                                   </span>
-                                    <select class="form-select" id="status" aria-label="Default select example">
-                                        <option selected>Все</option>
-                                        <option value="1">OK</option>
-                                        <option value="2">Failed</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <select class="form-select" id="status-selector" aria-label="Default select example">
+                                <option value="all" selected>Все</option>
+                                <option value="OK">OK</option>
+                                <option value="FAIL">Failed</option>
+                            </select>
+                        </div>
+                    </div>
 
-                            <div class="col-2 col-xl-2 px-xl-0 offset-md-1">
-                                <div class="input-group mb-2">
+                    <div class="col-2 col-xl-2 px-xl-0 offset-md-1">
+                        <div class="input-group mb-2">
                                <span class="input-group-text fw-extrabold">
                                       Длительность от, с&nbsp;
                                   </span>
-                                    <input class="form-control" id="duration-from" type="number" min="0" placeholder=""
-                                           required/>
-                                </div>
-                                <div class="input-group">
+                            <input class="form-control" id="duration-from" type="number" min="0" placeholder=""
+                                   required/>
+                        </div>
+                        <div class="input-group">
                                <span class="input-group-text fw-extrabold">
                                       Длительность до, с
                                   </span>
-                                    <input class="form-control" id="duration-to" type="number" min="0" placeholder=""
-                                           required/>
-                                </div>
-                            </div>
-
-                            <div class="col-3 col-xl-3 px-xl-0 offset-md-1">
-                                <div class="input-group mb-2">
-													   <span class="input-group-text fw-extrabold">
-															  Начало&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-														  </span>
-                                    <input class="form-control" id="start-date" type="date" placeholder="dd/mm/yyyy"
-                                           required/>
-                                    <input class="form-control" id="start-time" type="time" required/>
-                                </div>
-                                <div class="input-group">
-													   <span class="input-group-text fw-extrabold">
-															  Завершение
-														  </span>
-                                    <input class="form-control" id="finish-date" type="date" placeholder="dd/mm/yyyy"
-                                           required/>
-                                    <input class="form-control" id="finish-time" type="time" required/>
-                                </div>
-                            </div>
-
+                            <input class="form-control" id="duration-to" type="number" min="0" placeholder=""
+                                   required/>
                         </div>
+                    </div>
+                    {% endif %}
 
-                        <div class="row d-block d-xl-flex align-items-top">
-                            <div class="col-1 col-xl-1 px-xl-0 offset-md-11">
-                                <button class="btn btn-tertiary" type="button">Применить</button>
-                            </div>
-                            <div>
+                    <div class="col-3 col-xl-3 px-xl-0 offset-md-1">
+                        <div class="input-group mb-2">
+                               <span class="input-group-text fw-extrabold">
+                                      Начало&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  </span>
+                            <input class="form-control" id="start-date" type="date" placeholder="dd/mm/yyyy"
+                                   required/>
+                            <input class="form-control" id="start-time" type="time" required value="00:00"/>
+                        </div>
+                        <div class="input-group">
+                               <span class="input-group-text fw-extrabold">
+                                      Завершение
+                                  </span>
+                            <input class="form-control" id="finish-date" type="date" placeholder="dd/mm/yyyy"
+                                   required/>
+                            <input class="form-control" id="finish-time" type="time" required value="00:00"/>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row d-block d-xl-flex align-items-top">
+                    <div class="col-1 col-xl-1 px-xl-0 offset-md-11">
+                        <button class="btn btn-tertiary" id="apply-filter" type="button">Применить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Область бизнес показателей  -->
+<div class="row mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-center">
+                    <div class="col-12 col-xl-12 px-xl-0">
+                        <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">SLA сервиса {{ context.service.name }}</h2>
+                                <h3 class="fw-extrabold text-success mb-2">{{ '%.2f' % context.service.sla_cur }}%</h3>
+                        </div>
+                        <small class="d-flex align-items-center text-gray-500">
+                            <span id="start-date-display"></span>&nbsp;-&nbsp;<span id="finish-date-display"></span>
+                            <i>{{font_awesome.render_icon("fas fa-globe")}}</i>
+                            &nbsp;Москва
+                        </small>
+                        <div class="small d-flex mt-1">
+                            <div>Изменение относительно предыдущего периода
+                                    {% if context.service.sla_cur > context.service.sla_prev %}
+                                        <span class="text-success fw-bolder">{{ '%.2f' % (context.service.sla_cur - context.service.sla_prev) }}%</span>
+                                    {% else %}
+                                        <span class="text-danger fw-bolder">{{ '%.2f' % (context.service.sla_cur - context.service.sla_prev) }}%</span>
+                                    {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Верхний ряд диаграмм  -->
-        <div class="row mb-2">
-            <div class="col-8 col-xl-8 col-md-12 mb-2">
-                <div class="row mb-2">
-                    <div class="col-12 col-xl-12 col-md-12 mb-2">
-                        <div class="card border-0 shadow card-fill-all-space">
-                            <div class="card-body">
-                                <h2 class="h6 text-gray-400">Распределение времени выполнения транзакции</h2>
-                                <div class="card-mid-buffer"></div>
-                                <div>
-                                    <canvas width="100%" height="25%" id="transactionRunBarChart01"></canvas>
-                                </div>
-                            </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-center">
+                    <div class="col-12 col-xl-12 px-xl-0">
+                        <div class="d-none d-sm-block">
+                            <h2 class="h6 text-gray-400 mb-0">Дневной SLA</h2>
+                                <h3 class="fw-extrabold text-{% if context.service.sla_daily < context.sla_target %}warning{% else %}success{% endif %} mb-2">{{ '%.2f' % context.service.sla_daily }}%</h3>
                         </div>
-                    </div>
-                    <div class="col-6 col-xl-6 col-md-12">
-                        <div class="card border-0 shadow card-fill-all-space">
-                            <div class="card-body">
-                                <h2 class="h6 text-gray-400">Статус выполнения транзакции</h2>
-                                <div class="card-mid-buffer"></div>
-                                <div>
-                                    <canvas width="100%" height="55%" id="transactionRunHorizontalChart01"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-xl-6 col-md-12">
-                        <div class="card border-0 shadow card-fill-all-space">
-                            <div class="card-body">
-                                <h2 class="h6 text-gray-400">TODO, место для диаграммы</h2>
-                                <div class="card-mid-buffer"></div>
+                        <div class="d-flex align-items-center text-gray-500">
+                            <div>
+                                При целевом показателе
+                                <span class="text-success fw-bolder">{{ '%.2f' % context.sla_target }}%</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="col-4 col-xl-4 col-md-12 mb-2">
+    <div class="col-12 col-sm-6 col-xl-6">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400">Сводная информация по выполнению</h2>
+                <table class="table" id="">
+                    <thead class=" text-primary">
+                    <tr>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if context.robot %}
+                    <tr>
+                        <td>
+                            <span class="fw-extrabold">Локации/Роботы</span>
+                        </td>
+                        <td>
+                            <div class="small mt-1">
+                                Робот <span class=" fw-extrabold text-tertiary">{{ context.robot.name }}</span> выполняет транзакцию<br>на <span
+                                    {% if context.transaction.robots[context.robot.robot_id].avg < context.transaction.avg_cur %}
+                                        class="text-success fw-bolder">{{ '%.2f' % (100 - context.transaction.robots[context.robot.robot_id].avg * 100 / context.transaction.avg_cur) }}%</span> быстрее других роботов
+                                    {% else %}
+                                        class="text-warning fw-bolder">{{ '%.2f' % (context.transaction.robots[context.robot.robot_id].avg * 100 / context.transaction.avg_cur - 100) }}%</span> медленнее других роботов
+                                    {% endif %}
+                                <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
+                                    fa-info-circle")}}</i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td>
+                            <span class="fw-extrabold">Время выполнения, сек</span>
+                        </td>
+                        <td>
+                            {% if context.robot %}
+                            <div><span class="small mb-2">Минимальное: </span><span class="fw-extrabold mb-2">{{ '%.2f' % context.transaction.robots[context.robot.robot_id].min }}</span></div>
+                            <div><span class="small mb-2">Среднее: </span><span class="fw-extrabold mb-2">{{ '%.2f' % context.transaction.robots[context.robot.robot_id].avg }}</span></div>
+                            <div><span class="small mb-2">Максимальное: </span><span class="fw-extrabold mb-2">{{ '%.2f' % context.transaction.robots[context.robot.robot_id].max }}</span></div>
+                            {% else %}
+                            <div><span class="small mb-2">Минимальное: </span><span class="fw-extrabold mb-2">{{ '%.2f' % context.transaction.min_cur }}</span></div>
+                            <div><span class="small mb-2">Среднее: </span><span class="fw-extrabold mb-2">{{ '%.2f' % context.transaction.avg_cur }}</span></div>
+                            <div><span class="small mb-2">Максимальное: </span><span class="fw-extrabold mb-2">{{ '%.2f' % context.transaction.max_cur }}</span></div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Верхний ряд диаграмм  -->
+<div class="row mb-2">
+    <div class="col-8 col-xl-8 col-md-12 mb-2">
+        <div class="row mb-2">
+            <div class="col-12 col-xl-12 col-md-12 mb-2">
                 <div class="card border-0 shadow card-fill-all-space">
                     <div class="card-body">
-                        <h2 class="h6 text-gray-400">Сводная информация по выполнению</h2>
-                        <table class="table" id="">
-                            <thead class=" text-primary">
-                            <tr>
-                                <th>
-                                </th>
-                                <th>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <span class="fw-extrabold">Локация/Робот</span>
-                                </td>
-                                <td>
-                                    <span class="fw-bold mb-2">Москва, офис заместителя</span>
-                                    <div class="small mt-1">
-                                        Этот робот выполняет транзакцию<br>на <span
-                                            class="text-danger fw-bolder">5%</span> медленнее других
-                                        <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
-                                            fa-info-circle")}}</i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="fw-extrabold">Время выполнения</span>
-                                </td>
-                                <td>
-                                    <span class="fw-bold text-success mb-2">25 секунд</span>
-                                    <div class="small mt-1">
-                                        В пределах допустимого диапазона
-                                        <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
-                                            fa-info-circle")}}</i></a>
-                                    </div>
-                                    <div class="small mt-1">
-                                        На <span class="text-success fw-bolder">10%</span> быстрее среднего за сегодня
-                                        <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
-                                            fa-info-circle")}}</i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="fw-extrabold">Количество шагов</span>
-                                </td>
-                                <td>
-                                    <span class="fw-bold text-primary mb-2">5 Всего</span>
-                                    <span>&nbsp;/&nbsp;</span>
-                                    <span></span><span class="fw-bold text-success mb-2">4 Success</span>
-                                    <span>&nbsp;/&nbsp;</span>
-                                    <span class="fw-bold text-danger mb-2">1 Failed</span>
-                                    <div class="small mt-1">
-                                        Ошибки при выполнении этой транзакции <br>возникают в <span
-                                            class="text-danger fw-bolder">3%</span> запусков
-                                        <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
-                                            fa-info-circle")}}</i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="fw-extrabold">Начало транзакции</span>
-                                </td>
-                                <td>
-                                    <span class="fw-bold text-text-primary mb-2">12.02.2024 17:48:00</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="fw-extrabold">Завершение транзакции</span>
-                                </td>
-                                <td>
-                                    <span class="fw-bold text-text-primary mb-2">12.02.2024 17:48:25</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="fw-extrabold">Лог</span>
-                                </td>
-                                <td>
-                                    <i>{{font_awesome.render_icon("fas fa-lg fa-file-text")}}</i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="fw-extrabold">Скриншот</span>
-                                </td>
-                                <td>
-                                    <i>{{font_awesome.render_icon("fas fa-lg fa-image")}}</i>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <h2 class="h6 text-gray-400">Распределение времени выполнения транзакции</h2>
+                        <div class="card-mid-buffer"></div>
+                        <div>
+                            <canvas width="100%" height="25%" id="transactionRunBarChart01"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
+            <div class="col-6 col-xl-6 col-md-12">
+                <div class="card border-0 shadow card-fill-all-space">
                     <div class="card-body">
-                        <h2 class="h6 text-gray-400">Выполненные транзакции</h2>
-                        <div class="table-responsive">
-                            <table class="table tablesorter" id="">
-                                <thead class="text-primary">
-                                <tr>
-                                    <th>
-                                        Время выполнения
-                                    </th>
-                                    <th>
-                                        Робот/Локация
-                                    </th>
-                                    <th>
-                                        Транзакция
-                                    </th>
-                                    <th>
-                                        Статус
-                                    </th>
-                                    <th>
-                                        # Шагов успешно выполненных
-                                    </th>
-                                    <th>
-                                        Длительность
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="table-danger">
-                                    <div>
-                                        <td>
-                                            <a href="./sandbox-step-run.html" class="text-info me-1">12.02.2024 17:48 -
-                                                12.02.2024 17:50</a>
-                                        </td>
-                                        <td>
-                                            Москва, офис заместителя
-                                        </td>
-                                        <td>
-                                            TR-010
-                                        </td>
-                                        <td>
-                                            <span class="text-danger fw-bolder">Failed</span>
-                                        </td>
-                                        <td>
-                                            3/4
-                                        </td>
-                                        <td>
-                                            120 c
-                                        </td>
-                                    </div>
-                                </tr>
-                                <tr>
-                                    <div>
-                                        <td>
-                                            <a href="#" class="text-info me-1">12.02.2024 18:30 - 12.02.2024 18:35</a>
-                                        </td>
-                                        <td>
-                                            Питер, офис помощника
-                                        </td>
-                                        <td>
-                                            TR-010
-                                        </td>
-                                        <td>
-                                            <span class="text-success fw-bolder">Success</span>
-                                        </td>
-                                        <td>
-                                            4/4
-                                        </td>
-                                        <td>
-                                            140 c
-                                        </td>
-                                    </div>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <h2 class="h6 text-gray-400">Статус выполнения транзакции</h2>
+                        <div class="card-mid-buffer"></div>
+                        <div>
+                            <canvas width="100%" height="55%" id="transactionRunHorizontalChart01"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-xl-6 col-md-12">
+                <div class="card border-0 shadow card-fill-all-space">
+                    <div class="card-body">
+                        <h2 class="h6 text-gray-400">Распределение по статусу выполнения</h2>
+                        <div class="card-mid-buffer"></div>
+                        <div>
+                            <canvas width="100%" height="50%" id="transactionScatterChart01"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        {% endblock content %}
+    <div class="col-4 col-xl-4 col-md-12 mb-2">
+        <div class="card border-0 shadow card-fill-all-space">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400">Сводная информация по выполнению</h2>
+                <div>
+                    <canvas width="100%" height="100%" id="transactionStepFailChart01"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <!-- Specific Page JS goes HERE  -->
-        {% block javascripts %}
-        <script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
-        <script>
-            $(function() {
-                console.log("Page loaded!");
 
-                // TODO: get trxid from page params
-                // const tranactionId = ...;
-                axios.get("/data/transactions").then((r) => {
-                    const transactionId = r.data[0]["transactionid"];
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h6 text-gray-400">Выполненные транзакции</h2>
+                <div class="table-responsive">
+                    <table class="table tablesorter" id="trans-events">
+                        <thead class="text-primary">
+                        <tr>
+                            <th>
+                                Время выполнения
+                            </th>
+                            <th>
+                                Робот/Локация
+                            </th>
+                            <th>
+                                Транзакция
+                            </th>
+                            <th>
+                                Статус
+                            </th>
+                            <th>
+                                Длительность, сек
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for run in context.runs %}
+                        {% if not context.robot or run.robotid == context.robot.robot_id %}
+                        <tr>
+                            <td>
+                                <a href="/mvp-step-run.html?run_id={{ run.transactionrunid }}">
+                                  <span class="text-indigo">
+                                    {{ str(run.runstart).split('.')[0] }}
+                                  </span>
+                                </a>
+                            </td>
+                            <td>
+                                {{ context.transaction.robots[run.robotid].name }}
+                            </td>
+                            <td>
+                                {{ context.transaction.name }}
+                            </td>
+                            <td>
+                                {% if run.runresult == 'OK' %}
+                                    <span class="text-success fw-bolder">OK</span>
+                                {% elif run.runresult == 'WARNING' %}
+                                    <span class="text-warning fw-bolder">WARNING</span>
+                                {% else %}
+                                    <span class="text-danger fw-bolder">FAIL</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ '%.2f' % (to_dt(run.runend) - to_dt(run.runstart)).total_seconds() }}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                    axios.get("/charts/transaction_robots", {params: {"transaction_id": transactionId}}).then((r) => {
-                        const data = r.data;
+{% endblock content %}
 
-                        transactionrunbarchart.init("transactionRunBarChart01", data);
-                        transactionrunhorizontalchart.init("transactionRunHorizontalChart01", data);
-                    });
-                });
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-heatmap-charts.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-transaction-charts.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-datatables/primoart-datatables.js"></script>
+<script>
+    $(function () {
+        // check if robot_id is in GET params and select it in service-selector
+        const url = new URL(window.location.href);
+        const robotId = url.searchParams.get('robot_id');
+        if (robotId) {
+            $('#robot-selector').val(robotId);
+        }
+    });
+
+    $('#apply-filter').click(function() {
+        const robotId = $('#robot-selector').val();
+        const startDate = $('#start-date').val();
+        const startTime = $('#start-time').val();
+        const finishDate = $('#finish-date').val();
+        const finishTime = $('#finish-time').val();
+        const url = new URL(window.location.href);
+        url.searchParams.set('robot_id', robotId);
+        url.searchParams.set('start_date', startDate);
+        url.searchParams.set('start_time', startTime);
+        url.searchParams.set('finish_date', finishDate);
+        url.searchParams.set('finish_time', finishTime);
+        window.location.href = url.href;
+    });
+</script>
+<script>
+    $(function() {
+        console.log("Page loaded!");
+
+        sandboxMainDashTable.init('trans-events');
+
+        // too many code just to get current time and time 2 weeks ago...
+        // sry, couldn't find shorter way
+        function convertTime(time){
+            const nowMsk = new Date(time.toLocaleString('en-US', { timeZone: "Indian/Chagos" }));
+            const nowStr = nowMsk.toJSON();
+            const parts = nowStr.split('T');
+            return parts[0] + ' ' + parts[1].slice(0, 8) + '.' + parts[1].slice(9,12) + '000';
+        }
+
+        // try to extract start_date, start_time, finish_date, finish_time from GET params and convert them to Date
+        // if failed - use current time and time 2 weeks ago
+        let start = new Date();
+        let end = new Date();
+        start.setDate(start.getDate() - 14);
+
+        const url = new URL(window.location.href);
+        const startDateUrl = url.searchParams.get('start_date');
+        let startTimeUrl = url.searchParams.get('start_time');
+        // if no time, set 00:00
+        if (!startTimeUrl) {
+            startTimeUrl = '00:00';
+        }
+        const finishDateUrl = url.searchParams.get('finish_date');
+        let finishTimeUrl = url.searchParams.get('finish_time');
+        // if no time, set 23:59
+        if (!finishTimeUrl) {
+            finishTimeUrl = '23:59';
+        }
+        if (startDateUrl && startTimeUrl && finishDateUrl && finishTimeUrl) {
+            start = new Date(startDateUrl + 'T' + startTimeUrl);
+            end = new Date(finishDateUrl + 'T' + finishTimeUrl);
+        }
+
+        // extract date as string and set it to display
+        const startDateStr = start.toLocaleDateString('ru-RU');
+        const finishDateStr = end.toLocaleDateString('ru-RU');
+        $('#start-date-display').text(startDateStr);
+        $('#finish-date-display').text(finishDateStr);
+
+        const startTime = convertTime(start);
+        const endTime = convertTime(end);
+
+        {% if context.robot %}
+            axios.get("/charts/trans_robots", {params: {"start_time": startTime, "end_time": endTime, "transaction_id": "{{ context.transaction.transaction_id }}", "robot_id": "{{ context.robot.robot_id }}"}}).then((r) => {
+                const data = r.data;
+
+                transactionrunbarchart.init("transactionRunBarChart01", data);
+                transactionrunhorizontalchart.init("transactionRunHorizontalChart01", data);
             });
-        </script>
-        {% endblock javascripts %}
+
+            axios.get("/charts/runs", {params: {"start_time": startTime, "end_time": endTime, "transaction_id": "{{ context.transaction.transaction_id }}", "robot_id": "{{ context.robot.robot_id }}"}}).then((r) => {
+                const data = r.data;
+
+                scatterstatuschart.init("transactionScatterChart01", data);
+            });
+
+            axios.get("/charts/step_fails", {params: {"start_time": startTime, "end_time": endTime, "transaction_id": "{{ context.transaction.transaction_id }}", "robot_id": "{{ context.robot.robot_id }}"}}).then((r) => {
+                const data = r.data;
+
+                steprunfailchart.init("transactionStepFailChart01", data);
+            });
+        {% else %}
+            axios.get("/charts/trans_robots", {params: {"start_time": startTime, "end_time": endTime, "transaction_id": "{{ context.transaction.transaction_id }}"}}).then((r) => {
+                const data = r.data;
+
+                transactionrunbarchart.init("transactionRunBarChart01", data);
+                transactionrunhorizontalchart.init("transactionRunHorizontalChart01", data);
+            });
+
+            axios.get("/charts/runs", {params: {"start_time": startTime, "end_time": endTime, "transaction_id": "{{ context.transaction.transaction_id }}"}}).then((r) => {
+                const data = r.data;
+
+                scatterstatuschart.init("transactionScatterChart01", data);
+            });
+
+            axios.get("/charts/step_fails", {params: {"start_time": startTime, "end_time": endTime, "transaction_id": "{{ context.transaction.transaction_id }}"}}).then((r) => {
+                const data = r.data;
+
+                steprunfailchart.init("transactionStepFailChart01", data);
+            });
+        {% endif %}
+    });
+</script>
+{% endblock javascripts %}

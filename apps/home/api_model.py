@@ -3,7 +3,6 @@ import datetime
 import uuid
 from dataclasses import dataclass, field
 from typing import Optional
-import json
 
 import apps.config
 
@@ -90,6 +89,18 @@ class StepRun(APIBase):
             error_code=json['errorcode']
         )
 
+    @staticmethod
+    def list_all(params={}):
+        try:
+            url = f'{APIBase.api_endpoint}/step_runs'
+            response = requests.get(url, json=params)
+            subresult = response.json()['step_runs']
+
+            return subresult
+        except Exception as e:
+            print(f"[ERR] Can't list step runs: {e}")
+            return None
+
 
 @dataclass
 class Step(APIBase):
@@ -148,6 +159,18 @@ class Step(APIBase):
         except Exception as e:
             print(f"[ERR] Can't get runs for step {self.step_id}: {e}")
             return []
+
+    @staticmethod
+    def list_all(params={}):
+        try:
+            url = f'{APIBase.api_endpoint}/steps'
+            response = requests.get(url=url, json=params)
+            subresult = response.json()['steps']
+
+            return subresult
+        except Exception as e:
+            print(f"[ERR] Can't list steps: {e}")
+            return None
 
 
 @dataclass
@@ -249,6 +272,11 @@ class Transaction(APIBase):
     sla_cur: Optional[float]
     sla_prev: Optional[float]
     sla_daily: Optional[float]
+    # specific for transaction - min/max/avg time
+    min_cur: Optional[float]
+    max_cur: Optional[float]
+    avg_cur: Optional[float]
+
     steps: Optional[dict]
 
     @staticmethod
@@ -286,6 +314,9 @@ class Transaction(APIBase):
             cron=json['cron'],
             fail_cur=json['fail_cur'] if 'fail_cur' in json else None,
             sla_cur=json['sla_cur'] if 'sla_cur' in json else None,
+            min_cur=json['min_cur'] if 'min_cur' in json else None,
+            max_cur=json['max_cur'] if 'max_cur' in json else None,
+            avg_cur=json['avg_cur'] if 'avg_cur' in json else None,
             sla_prev=json['sla_prev'] if 'sla_prev' in json else None,
             sla_daily=json['sla_daily'] if 'sla_daily' in json else None,
             steps=json['steps'] if 'steps' in json else None,
@@ -726,6 +757,18 @@ class Robot(APIBase):
             print(f"[ERR] Can't get runs for robot {self.robot_id}: {e}")
             return []
 
+    @staticmethod
+    def list_all(filter_json={}):
+        try:
+            url = f'{APIBase.api_endpoint}/robots'
+            response = requests.get(url, json=filter_json)
+            subresult = response.json()['robots']
+
+            return subresult
+        except Exception as e:
+            print(f"[ERR] Can't list robots: {e}")
+            return None
+
 
 class Charts(APIBase):
     @staticmethod
@@ -739,16 +782,19 @@ class Charts(APIBase):
             return None
 
     @staticmethod
-    def get_transaction_runs(service_id=None, robot_id=None, start_time="", end_time=""):
+    def get_transaction_runs(service_id=None, robot_id=None, transaction_id=None, start_time="", end_time=""):
         try:
-            config = {}
-            if service_id:
-                config["serviceid"] = service_id
-            elif robot_id:
-                config["robotid"] = robot_id
+            if not transaction_id:
+                config = {}
+                if service_id:
+                    config["serviceid"] = service_id
+                elif robot_id:
+                    config["robotid"] = robot_id
 
-            transactions = Transaction.list_all(params=config)
-            transactions_id = [tr["transactionid"] for tr in transactions]
+                transactions = Transaction.list_all(params=config)
+                transactions_id = [tr["transactionid"] for tr in transactions]
+            else:
+                transactions_id = transaction_id
 
             config = {
                 "transactionid": transactions_id,
