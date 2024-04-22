@@ -22,11 +22,11 @@
                     </svg>
                 </a>
             </li>
-			<li class="breadcrumb-item"><a href="./sandbox-services.html">Сервисы</a></li>
-			<li class="breadcrumb-item"><a href="./sandbox-services.html">Дебетовые карты</a></li>
-            <li class="breadcrumb-item">Транзакции</li>
-            <li class="breadcrumb-item"><a href="./sandbox-transaction-run.html">Тестовая транзакция</a></li>
-            <li class="breadcrumb-item"><a href="#">Запуск 27.03.2024 09:17:03</a></li>
+            <li class="breadcrumb-item"><a href="/mvp-main-dashboard.html">Проекты</a></li>
+            <li class="breadcrumb-item"><a href="/mvp-services.html">Сервисы</a></li>
+            <li class="breadcrumb-item"><a href="/mvp-services.html?service_id={{ context.service.service_id }}">Сервис {{ context.service.name }}</a></li>
+            <li class="breadcrumb-item"><a href="/mvp-transaction.html?transaction_id={{ context.transaction.transaction_id }}">Транзакция {{ context.transaction.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Запуск {{ str(context.run.run_start).split('.')[0] }}</li>
         </ol>
     </nav>
 </div>
@@ -63,11 +63,21 @@
                                 <span class="fw-extrabold">Локация/Робот</span>
                             </td>
                             <td>
-                                <span class="fw-bold mb-2">Москва, офис заместителя</span>
-                                <div class="small mt-1">
-                                    Этот робот выполняет транзакцию<br>на <span class="text-danger fw-bolder">5%</span> медленнее других
-                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
-                                </div>
+                                <span class="fw-bold mb-2">{{ context.robot.name }}</span>
+                                  <div class="small mt-1">
+                                  {% if context.transaction.avg_cur == 0 %}
+                                    Нет данных или они некорректны
+                                  {% else %}
+                                    Робот <a href="./mvp-robots.html?robot_id={{ context.robot.robot_id }}"><span class=" fw-extrabold text-tertiary">{{ context.robot.name }}</span></a> выполняет транзакцию<br>на <span
+                                    {% if context.transaction.robots[context.robot.robot_id].avg < context.transaction.avg_cur %}
+                                        class="text-success fw-bolder">{{ '%.2f' % (100 - context.transaction.robots[context.robot.robot_id].avg * 100 / context.transaction.avg_cur) }}%</span> быстрее других роботов
+                                    {% else %}
+                                        class="text-warning fw-bolder">{{ '%.2f' % (context.transaction.robots[context.robot.robot_id].avg * 100 / context.transaction.avg_cur - 100) }}%</span> медленнее других роботов
+                                    {% endif %}
+                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
+                                        fa-info-circle")}}</i></a>
+                                  {% endif %}
+                                  </div>
                             </td>
                         </tr>
                         <tr>
@@ -75,13 +85,15 @@
                                 <span class="fw-extrabold">Время выполнения</span>
                             </td>
                             <td>
-                                <span class="fw-bold text-success mb-2">25 секунд</span>
+                                <span class="fw-bold text-success mb-2">{{ '%.2f' % (context.run.run_end - context.run.run_start).total_seconds() }} секунд</span>
                                 <div class="small mt-1">
-                                    В пределах допустимого диапазона
-                                    <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
-                                </div>
-                                <div class="small mt-1">
-                                    На <span class="text-success fw-bolder">10%</span> быстрее среднего за сегодня
+                                    {% if context.run.run_result == "OK" %}
+                                        В пределах допустимого диапазона
+                                    {% elif context.run.run_result == "WARNING" %}
+                                        Превышение допустимого диапазона
+                                    {% elif context.run.run_result == "FAIL" %}
+                                        Транзакция завершена с ошибкой
+                                    {% endif %}
                                     <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
                                 </div>
                             </td>
@@ -91,13 +103,15 @@
                                 <span class="fw-extrabold">Количество шагов</span>
                             </td>
                             <td>
-                                <span class="fw-bold text-primary mb-2">5 Всего</span>
+                                <span class="fw-bold text-primary mb-2">{{ context.total }} Всего</span>
                                 <span>&nbsp;/&nbsp;</span>
-                                <span></span><span class="fw-bold text-success mb-2">4 Success</span>
+                                <span></span><span class="fw-bold text-success mb-2">{{ context.ok }} Success</span>
                                 <span>&nbsp;/&nbsp;</span>
-                                <span class="fw-bold text-danger mb-2">1 Failed</span>
+                                <span class="fw-bold text-danger mb-2">{{ context.warning }} Warning</span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span class="fw-bold text-danger mb-2">{{ context.fail }} Fail</span>
                                 <div class="small mt-1">
-                                    Ошибки при выполнении этой транзакции <br>возникают в <span class="text-danger fw-bolder">3%</span> запусков
+                                    Ошибки при выполнении этой транзакции <br>возникают в <span class="text-{% if (100 - context.transaction.sla_cur) < context.sla_target %}success{% else %}warning{% endif %} }} fw-bolder">{{ '%.2f' % (100 - context.transaction.sla_cur) }}%</span> запусков
                                     <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas fa-info-circle")}}</i></a>
                                 </div>
                             </td>
@@ -107,7 +121,7 @@
                                 <span class="fw-extrabold">Начало транзакции</span>
                             </td>
                             <td>
-                                <span class="fw-bold text-text-primary mb-2">12.02.2024 17:48:00</span>
+                                <span class="fw-bold text-text-primary mb-2">{{ str(context.run.run_start).split('.')[0] }}</span>
                             </td>
                         </tr>
                        <tr>
@@ -115,7 +129,7 @@
                                 <span class="fw-extrabold">Завершение транзакции</span>
                             </td>
                             <td>
-                                <span class="fw-bold text-text-primary mb-2">12.02.2024 17:48:25</span>
+                                <span class="fw-bold text-text-primary mb-2">{{ str(context.run.run_end).split('.')[0] }}</span>
                             </td>
                         </tr>
                        <tr>
@@ -123,7 +137,12 @@
                                 <span class="fw-extrabold">Лог</span>
                             </td>
                             <td>
-                                <i>{{font_awesome.render_icon("fas fa-lg fa-file-text")}}</i>
+                                <button class="btn btn-icon-only text-info" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#logModal"
+                                        id="logButton"
+                                >
+                                  <i>{{font_awesome.render_icon("fas fa-lg fa-file-text")}}</i>
+                                </button>
                             </td>
                         </tr>
                        <tr>
@@ -131,7 +150,12 @@
                                 <span class="fw-extrabold">Скриншот</span>
                             </td>
                             <td>
-                                <i>{{font_awesome.render_icon("fas fa-lg fa-image")}}</i>
+                                <button class="btn btn-icon-only text-info" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#screenshotModal"
+                                        id="screenshotButton"
+                                >
+                                  <i>{{font_awesome.render_icon("fas fa-lg fa-image")}}</i>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -142,13 +166,45 @@
 </div>
 </div>
 
+<!-- Image Modal -->
+<div class="modal fade" id="screenshotModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="h6 text-gray-400">Скриншот ошибки выполнения</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="screenshotModalBody">
+                <!-- to be fulfilled via JS -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Log Modal -->
+<div class="modal fade" id="logModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="h6 text-gray-400">Лог выполнения транзакции</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <pre class="modal-body">
+                <code id="logModalBody" class="multiline">
+                    <!-- to be fulfilled via JS -->
+                </code>
+            </pre>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card ">
             <div class="card-body">
                 <h2 class="h6 text-gray-400">Этапы выполнения</h2>
                 <div class="table-responsive ">
-                    <table class="table tablesorter " id="">
+                    <table class="table tablesorter " id="step-runs">
                         <thead class=" text-primary">
                             <tr>
                                 <th>
@@ -172,91 +228,36 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <div>
-                                    <td>
-                                        Москва, офис заместителя
-                                    </td>
-                                    <td>
-                                        Step 1
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:00
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:01
-                                    </td>
-                                    <td>
-                                        1 с
-                                    </td>
-                                    <td>
+                          {% for step in context.steps %}
+                            <tr class="table-{% if step.runresult == 'OK' %}info{% elif step.runresult == 'WARNING' %}warning{% else %}danger{% endif %}">
+                                <td>
+                                    <a href="./mvp-robots.html?robot_id={{ context.robot.robot_id }}">
+                                      <span class="text-indigo fw-bold">{{ context.robot.name }}</span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="fw-bold">{{ step.name }}</span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold">{{ str(step.runstart).split('.')[0] }}</span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold">{{ str(step.runend).split('.')[0] }}</span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold">{{ '%.2f' % (to_dt(step.runend) - to_dt(step.runstart)).total_seconds() }} секунд</span>
+                                </td>
+                                <td>
+                                    {% if step.runresult == "OK" %}
                                         <span class="text-success fw-bolder">Success</span>
-                                    </td>
-                                </div>
+                                    {% elif step.runresult == "WARNING" %}
+                                        <span class="text-warning fw-bolder">Warning</span>
+                                    {% elif step.runresult == "FAIL" %}
+                                        <span class="text-danger fw-bolder">Fail</span>
+                                    {% endif %}
+                                </td>
                             </tr>
-                            <tr>
-                                <div>
-                                    <td>
-                                        Москва, офис заместителя
-                                    </td>
-                                    <td>
-                                        Step 2
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:01
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:11
-                                    </td>
-                                    <td>
-                                        10 с
-                                    </td>
-                                    <td>
-                                        <span class="text-success fw-bolder">Success</span>
-                                    </td>
-                                </div>
-                            </tr>
-                            <tr class="table-danger">
-                                <div>
-                                    <td>
-                                        Москва, офис заместителя
-                                    </td>
-                                    <td>
-                                        Step 3
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:11
-                                    </td>
-                                    <td>
-                                        12.02.2024 17:48:20
-                                    </td>
-                                    <td>
-                                        9 с
-                                    </td>
-                                    <td>
-                                        <span class="text-danger fw-bolder">Failed</span>
-                                    </td>
-                                </div>
-                            </tr>
-                            <tr  class="table-light">
-                                <div>
-                                    <td>
-                                        Москва, офис заместителя
-                                    </td>
-                                    <td>
-                                        Step 4
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        Not executed
-                                    </td>
-                                </div>
-                            </tr>
+                          {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -267,19 +268,32 @@
 {% endblock content %}
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/sandbox-transaction-charts.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-charts/mvp-transaction-charts.js"></script>
+<script src="{{ config.ASSETS_ROOT }}/js/primoart-datatables/primoart-datatables.js"></script>
+<script>
+document.getElementById('logButton').addEventListener('click', function() {
+    const currentTime = new Date().toLocaleString();
+    const logContent = `Log will be loaded dynamically here via JS when implemented. Current time: ${currentTime}`;
+    document.getElementById('logModalBody').innerText = logContent;
+});
+
+document.getElementById('screenshotButton').addEventListener('click', function() {
+    const currentTime = new Date().toLocaleString();
+    const screenshotContent = `Screenshot will be loaded dynamically here via JS when implemented. Current time: ${currentTime}`;
+    document.getElementById('screenshotModalBody').innerText = screenshotContent;
+});
+</script>
+
 <script>
     $(function() {
         console.log("Page loaded!");
 
-        //steprunfloatchart.init();
+        sandboxMainDashTable.init('step-runs');
 
-        // TODO: get trx_run_id from page params
-        // const tranactionRunId = ...;
-        axios.get("/data/runs").then((r) => {
-            const transactionRunId = r.data[0]["transactionrunid"];
+        axios.get("/data/runs", {params: {run_id: "{{ context.run.transaction_run_id }}"}}).then((r) => {
+            const data = r.data;
 
-            steprunbarchart.initFromApiByTransactionRunId("stepRunBarChart01", transactionRunId);
+            steprunbarchart.init("stepRunBarChart01", data);
         });
     });
 </script>

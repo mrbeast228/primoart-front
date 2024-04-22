@@ -160,8 +160,8 @@ steprunbarchart = {
             {
               label: 'Время выполнения шагов транзакции, с',
               data: dataset.map(({time}) => time),
-                backgroundColor: dataset.map(({status}) => (status == 'OK' ? 'rgba(75, 192, 192, 0.2)' : 'rgba(255, 99, 132, 0.2)')),
-                borderColor: dataset.map(({status}) => (status == 'OK' ? 'rgb(75, 192, 192)' : 'rgb(255, 99, 132)')),
+                backgroundColor: dataset.map(({status}) => (status === 'OK' ? 'rgba(75, 192, 192, 0.2)' : 'rgba(255, 99, 132, 0.2)')),
+                borderColor: dataset.map(({status}) => (status === 'OK' ? 'rgb(75, 192, 192)' : 'rgb(255, 99, 132)')),
             }
           ]
         };

@@ -14,7 +14,12 @@ class APIBase:
 
     @staticmethod
     def datetime_from_str(datetime_str):
-        return datetime.datetime.strptime(datetime_str.split('+')[0], '%Y-%m-%d %H:%M:%S.%f')
+        if isinstance(datetime_str, datetime.datetime):
+            return datetime_str
+        elif isinstance(datetime_str, str):
+            return datetime.datetime.strptime(datetime_str.split('+')[0], '%Y-%m-%d %H:%M:%S.%f')
+        else:
+            raise ValueError("Invalid datetime object!")
     
     @staticmethod
     def datetime_to_str(datetime_obj):
@@ -23,7 +28,7 @@ class APIBase:
         elif isinstance(datetime_obj, datetime.datetime):
             return datetime_obj.strftime('%Y-%m-%d %H:%M:%S')
         else:
-            raise ValueError("Invalid datetime!")
+            raise ValueError("Invalid datetime string!")
 
 
 @dataclass
@@ -106,10 +111,10 @@ class StepRun(APIBase):
 class Step(APIBase):
     step_id: uuid.UUID
     transaction_id: uuid.UUID
-    name: str
     description: str
     created_datetime: datetime.datetime
     created_by: str
+    name: str
 
     transaction_name: Optional[str] = field(default=None, init=False)
     runs: Optional[list] = field(default=None, init=False)
@@ -122,8 +127,8 @@ class Step(APIBase):
             subresult = response.json()['step'][0]
 
             result = Step.from_json(subresult)
-            transaction = Transaction.from_id(result.transaction_id)
-            result.transaction_name = transaction.name
+            #transaction = Transaction.from_id(result.transaction_id)
+            #result.transaction_name = transaction.name
 
             return result
         except Exception as e:
@@ -135,10 +140,10 @@ class Step(APIBase):
         return Step(
             step_id=uuid.UUID(json['stepid']),
             transaction_id=uuid.UUID(json['transactionid']),
-            name=json['name'],
             description=json['description'],
             created_datetime=APIBase.datetime_from_str(json['createddatetime']),
-            created_by=json['createdby']
+            created_by=json['createdby'],
+            name=json['name']
         )
 
     def get_runs(self, run_result=None, max_runs=APIBase.max_runs):

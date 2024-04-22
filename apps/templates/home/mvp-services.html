@@ -14,8 +14,8 @@
 
     .filter-buffer {margin-right: 20px; margin-left: 20px;}
 
-    .btn-transaction {} // Пустой класс для переключения селекторов
-    .btn-robot {} // Пустой класс для переключения селекторов
+    .btn-transaction {}
+    .btn-robot {}
 </style>
 {% endblock stylesheets %}
 
@@ -37,7 +37,7 @@
                 </a>
             </li>
             {% if context.current_service %}
-                <li class="breadcrumb-item"><a href="/mvp-main-dashboard.html">Проекты</a></li>
+                <li class="breadcrumb-item"><a href="/mvp-main-dashboard.html" class="dynamic-link">Проекты</a></li>
             {% endif %}
             <li class="breadcrumb-item active"><a href="">Сервисы</a></li>
         </ol>

@@ -30,9 +30,9 @@
                     </svg>
                 </a>
             </li>
-            <li class="breadcrumb-item"><a href="/mvp-main-dashboard.html">Проекты</a></li>
-            <li class="breadcrumb-item"><a href="/mvp-services.html">Сервисы</a></li>
-            <li class="breadcrumb-item"><a href="/mvp-services.html?service_id={{ context.service.service_id }}">Сервис {{ context.service.name }}</a></li>
+            <li class="breadcrumb-item"><a href="/mvp-main-dashboard.html" class="dynamic-link">Проекты</a></li>
+            <li class="breadcrumb-item"><a href="/mvp-services.html" class="dynamic-link">Сервисы</a></li>
+            <li class="breadcrumb-item"><a href="/mvp-services.html?service_id={{ context.service.service_id }}" class="dynamic-link">Сервис {{ context.service.name }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">Транзакция {{ context.transaction.name }}</li>
         </ol>
     </nav>
@@ -205,6 +205,9 @@
                         </td>
                         <td>
                             <div class="small mt-1">
+                            {% if context.transaction.avg_cur == 0 %}
+                                    Нет данных или они некорректны
+                            {% else %}
                                 Робот <a href="./mvp-robots.html?robot_id={{ context.robot.robot_id }}" class="dynamic-link"><span class=" fw-extrabold text-tertiary">{{ context.robot.name }}</span></a> выполняет транзакцию<br>на <span
                                     {% if context.transaction.robots[context.robot.robot_id].avg < context.transaction.avg_cur %}
                                         class="text-success fw-bolder">{{ '%.2f' % (100 - context.transaction.robots[context.robot.robot_id].avg * 100 / context.transaction.avg_cur) }}%</span> быстрее других роботов
@@ -214,6 +217,7 @@
                                 <a href="#"><i class="text-tertiary">{{font_awesome.render_icon("fas
                                     fa-info-circle")}}</i></a>
                             </div>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endif %}
@@ -332,7 +336,9 @@
                                 </a>
                             </td>
                             <td>
-                                {{ context.transaction.robots[run.robotid].name }}
+                                <a href="./mvp-robots.html?robot_id={{ run.robotid }}" class="dynamic-link">
+                                  <span class="text-indigo">{{ context.transaction.robots[run.robotid].name }}</span>
+                                </a>
                             </td>
                             <td>
                                 {{ context.transaction.name }}

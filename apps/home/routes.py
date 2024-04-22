@@ -164,6 +164,27 @@ class RouterHelper:
             else:
                 ctx['robot'] = None
 
+        elif template == "mvp-step-run.html":
+            run_id = request.args.get('run_id', None, type=str)
+            ctx['run'] = TransactionRun.from_id(run_id)
+            ctx['transaction'] = Transaction.from_id(ctx['run'].transaction_id, sublists=True)
+            ctx['service'] = Service.from_id(ctx['transaction'].service_id)
+            ctx['robot'] = Robot.from_id(ctx['run'].robot_id)
+            ctx['steps'] = StepRun.list_all(params={"transactionrunid": run_id})
+            ctx['ok'] = ctx['warning'] = ctx['fail'] = ctx['total'] = 0
+            for step_index in range(len(ctx['steps'])):
+                step = ctx['steps'][step_index]
+                if step['runresult'] == 'OK':
+                    ctx['ok'] += 1
+                elif step['runresult'] == 'WARNING':
+                    ctx['warning'] += 1
+                else:
+                    ctx['fail'] += 1
+                ctx['total'] += 1
+                step_object = Step.from_id(step['stepid'])
+                ctx['steps'][step_index]['name'] = step_object.name
+            print(f"[DBG][create_context] ctx['steps'] = '{ctx['steps']}'")
+
 
         elif template == 'robot_list.html':
             ctx['robots'] = APIConnector.get_robots_list(page=page_number, per_page=per_page)
@@ -402,7 +423,21 @@ def r_data_steps():
 @blueprint.route('/data/runs')
 @login_required
 def r_data_runs():
-    return TransactionRun.list_all()
+    run_id = request.args["run_id"]
+    step_runs = StepRun.list_all(params={"transactionrunid": run_id})
+
+    result = []
+    for step_run in step_runs:
+        step_id = step_run["stepid"]
+        step = Step.from_id(step_id)
+        result.append({
+            'step_name': step.name,
+            'time': (APIBase.datetime_from_str(step_run["runend"]) -
+                     APIBase.datetime_from_str(step_run["runstart"])).total_seconds(),
+            'status': step_run["runresult"]
+        })
+
+    return result
 
 @blueprint.route('/charts/heatmap')
 @login_required
