@@ -3,6 +3,8 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+import os
+
 from apps.home import blueprint
 from flask import render_template, request
 from flask_login import login_required
@@ -34,6 +36,15 @@ class RouterHelper:
         start_time = request.args.get('start_time', None, type=str)
         end_date = request.args.get('finish_date', None, type=str)
         end_time = request.args.get('finish_time', None, type=str)
+
+        env = os.getenv('FLASK_DEBUG', False)
+        if env:
+            self_host = request.host_url # we're running inside IDE on same host with user's browser address bar
+        else:
+            self_protocol = os.getenv('GUNICORN_PROTOCOL', 'http')
+            self_hostname = os.getenv('GUNICORN_BIND', request.host)
+            self_host = f"{self_protocol}://{self_hostname}"
+        print(f"[DBG][create_context] self_host = '{self_host}'")
 
         if start_date and start_time and end_date and end_time:
             start_dt = datetime.strptime(f"{start_date} {start_time}", "%Y-%m-%d %H:%M")
@@ -69,7 +80,9 @@ class RouterHelper:
             }
             if current_process_id:
                 params["process_id"] = current_process_id
-            ctx['runs'] = requests.get(f"{request.host_url}/project_runs", params=params).json()
+
+            print("[DBG][step] at loading self data now")
+            ctx['runs'] = requests.get(f"{self_host}/project_runs", params=params).json()
 
         elif template == 'mvp-objects-projects.html':
             ctx['projects'] = APIConnector.get_business_processes_list(page=page_number, per_page=per_page)
@@ -120,7 +133,7 @@ class RouterHelper:
             }
             if current_service_id:
                 params["service_id"] = current_service_id
-            ctx['runs'] = requests.get(f"{request.host_url}/service_runs", params=params).json()
+            ctx['runs'] = requests.get(f"{self_host}/service_runs", params=params).json()
 
         elif template == 'mvp-robots.html':
             current_robot_id = request.args.get('robot_id', None, type=str)
@@ -557,9 +570,13 @@ def r_charts_timevserr():
 
         for service in services:
             runs = Charts.get_transaction_runs(service_id=str(service.service_id), start_time=start_time, end_time=end_time)
-            err_percentage = round((len(list(filter(lambda x: x["runresult"] == "FAIL", runs)))) / (len(runs)),4)*100
-            all_time = sum([(datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"],"%Y-%m-%d %H:%M:%S.%f")).microseconds/1000 for run in runs])
-            average_time = round(all_time / len(runs), 2)
+            try:
+                err_percentage = round((len(list(filter(lambda x: x["runresult"] == "FAIL", runs)))) / (len(runs)),4)*100
+                all_time = sum([(datetime.strptime(run["runend"], "%Y-%m-%d %H:%M:%S.%f") - datetime.strptime(run["runstart"],"%Y-%m-%d %H:%M:%S.%f")).microseconds/1000 for run in runs])
+                average_time = round(all_time / len(runs), 2)
+            except ZeroDivisionError:
+                err_percentage = 0
+                average_time = 0
             res.append({"service_name": service.name, "err_percentage": err_percentage, "average_time": average_time})
     else:
         # same but for transaction

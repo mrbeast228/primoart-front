@@ -23,3 +23,6 @@ blinker==1.6.2
 
 # PrimoArd deps
 Font-Awesome-Flask==0.1.4
+
+# for async gunicorn
+gevent==24.2.1

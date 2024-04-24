@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   appseed-app:
+    env_file: .env
     container_name: appseed_app
     restart: always
     build: .
@@ -9,7 +10,7 @@ services:
       - web_network
     volumes:
       - ./:/primoart/
-    command: /bin/bash -c "cp -ar /node_modules /primoart/apps/static/assets/ && gunicorn --config gunicorn-cfg.py run:app"
+    command: /bin/bash -c "cp -ar /node_modules /primoart/apps/static/assets/ && gunicorn --config gunicorn-cfg.py run:app -k gevent"
 
   nginx:
     container_name: nginx
